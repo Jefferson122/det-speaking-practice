@@ -158,6 +158,9 @@ main{margin-top:60px}
   line-height:1.5;text-align:left;display:none}
 .transcript-box.active{display:block}
 .transcript-box .interim{color:var(--tm)}
+.live-stat{font-size:.72rem;font-weight:800;color:var(--tm);text-align:right;padding:2px 4px;opacity:0;transition:opacity .3s;pointer-events:none}
+.live-stat.show{opacity:1}
+.live-stat .wc-hi{color:var(--g)}.live-stat .wc-warn{color:var(--y)}.live-stat .wc-bad{color:var(--r)}
 
 /* ─── PLAYBACK ─── */
 .playback-row{display:flex;align-items:center;gap:10px;display:none}
@@ -643,6 +646,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="mic-ring"><div class="mic-pulse" id="ph-pulse"></div><button class="mic-btn" id="ph-mic" onclick="togglePhotoRec()">🎙️</button></div>
     <canvas id="wv-photo" width="500" height="60"></canvas>
     <div class="transcript-box" id="ph-transcript"></div>
+    <div class="live-stat" id="ph-live-stat"></div>
     <div class="playback-row" id="ph-playback">
       <button class="play-back-btn" onclick="playBack('ph-audio')">▶ Play back</button>
       <span class="rec-size" id="ph-rec-size"></span>
@@ -722,6 +726,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="mic-ring"><div class="mic-pulse" id="rd-pulse"></div><button class="mic-btn disabled" id="rd-mic" onclick="toggleReadRec()">🎙️</button></div>
     <canvas id="wv-read" width="500" height="60"></canvas>
     <div class="transcript-box" id="rd-transcript"></div>
+    <div class="live-stat" id="rd-live-stat"></div>
     <div class="playback-row" id="rd-playback">
       <button class="play-back-btn" onclick="playBack('rd-audio')">▶ Play back</button>
       <span class="rec-size" id="rd-rec-size"></span>
@@ -807,6 +812,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="mic-ring"><div class="mic-pulse" id="sp-pulse"></div><button class="mic-btn disabled" id="sp-mic" onclick="toggleSampleRec()">🎙️</button></div>
     <canvas id="wv-sample" width="500" height="60"></canvas>
     <div class="transcript-box" id="sp-transcript"></div>
+    <div class="live-stat" id="sp-live-stat"></div>
     <div class="playback-row" id="sp-playback">
       <button class="play-back-btn" onclick="playBack('sp-audio')">▶ Play back</button>
       <span class="rec-size" id="sp-rec-size"></span>
@@ -1190,7 +1196,7 @@ let recognition=null,recogActive=false;
 let activeCanvas=null,wvRAF=null;
 let phaseTimer=null,drillIv=null;
 const micGranted={val:false};
-let lastTranscript='',lastQuestion='',lastQType='',lastHint='',improvedText='';
+let lastTranscript='',lastQuestion='',lastQType='',lastHint='',improvedText='',lastPhotoSrc='';
 
 function getAC(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx}
 
@@ -1482,7 +1488,7 @@ function newPhoto(){
   const p=pickNext('det_seen_photo',PHOTOS).item;
   const img=document.getElementById('ph-img'),ph=document.getElementById('ph-placeholder');
   img.style.opacity='0';ph.style.display='flex';
-  img.src=p.img;
+  img.src=p.img;lastPhotoSrc=p.img;
   document.getElementById('ph-title').textContent=p.title;
   document.getElementById('ph-sub').textContent='Vocabulary guide available → click Show Hints';
   document.getElementById('ph-hint-text').textContent=p.hint;
@@ -1503,6 +1509,7 @@ function resetPhoto(){
   document.getElementById('ph-pulse').classList.remove('active');
   setBanner('ph-banner','idle','⏸','Ready — press Start','20s');
   setBar('ph-bar',1,1,'prep');setTB(null,'');
+  const _s=document.getElementById('ph-live-stat');if(_s)_s.classList.remove('show');
 }
 function togglePhotoRec(){
   if(phPhase!=='speaking')return;
@@ -1591,9 +1598,14 @@ function startPhotoTimer(){
   setBanner('ph-banner','prep','⏳','PREPARATION TIME','0:20');
   setBar('ph-bar',20,20,'prep');setTB('prep','0:20');
   document.getElementById('ph-mic').className='mic-btn prep';
-  showPrepOverlay('photo');
   phIv=setInterval(()=>{
     phLeft--;
+    if(phPhase==='speaking'){
+      const _tx=(document.getElementById('ph-transcript').textContent||'').trim();
+      const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
+      const _se=document.getElementById('ph-live-stat');
+      if(_se&&_wc>0){const _el=90-phLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+    }
     if(phLeft<=0&&phPhase==='prep'){
       beepPhase();phPhase='speaking';phLeft=90;
       setBanner('ph-banner','rec','🎙','RESPONSE TIME — Speak now!','1:30');
@@ -1746,6 +1758,7 @@ function resetRead(){
   document.getElementById('rd-pulse').classList.remove('active');
   setBanner('rd-banner','idle','⏸','Ready','—');
   setBar('rd-bar',1,1,'');setTB(null,'');
+  const _s=document.getElementById('rd-live-stat');if(_s)_s.classList.remove('show');
 }
 function toggleReadRec(){
   if(rdPhase!=='speaking')return;
@@ -1768,9 +1781,14 @@ function startReadTimer(){
   setBanner('rd-banner','prep','⏳','PREPARATION TIME','0:20');
   setBar('rd-bar',20,20,'prep');setTB('prep','0:20');
   document.getElementById('rd-tts-bar').style.display='none';
-  showPrepOverlay('read');
   rdIv=setInterval(()=>{
     rdLeft--;
+    if(rdPhase==='speaking'){
+      const _tx=(document.getElementById('rd-transcript').textContent||'').trim();
+      const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
+      const _se=document.getElementById('rd-live-stat');
+      if(_se&&_wc>0){const _el=90-rdLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+    }
     if(rdLeft<=0&&rdPhase==='prep'){
       beepPhase();rdPhase='speaking';rdLeft=90;
       setBanner('rd-banner','rec','🎙','RESPONSE TIME — Speak now!','1:30');
@@ -1892,6 +1910,7 @@ function resetSample(){
   document.getElementById('sp-pulse').classList.remove('active');
   setBanner('sp-banner','idle','⏸','Ready','—');
   setBar('sp-bar',1,1,'');setTB(null,'');
+  const _s=document.getElementById('sp-live-stat');if(_s)_s.classList.remove('show');
 }
 function toggleSampleRec(){
   if(spPhase!=='speaking')return;
@@ -1913,9 +1932,14 @@ function startSampleTimer(){
   setBanner('sp-banner','prep','⏳','PREPARATION TIME','0:30');
   setBar('sp-bar',30,30,'prep');setTB('prep','0:30');
   document.getElementById('sp-tts-bar').style.display='none';
-  showPrepOverlay('sample');
   spIv=setInterval(()=>{
     spLeft--;
+    if(spPhase==='speaking'){
+      const _tx=(document.getElementById('sp-transcript').textContent||'').trim();
+      const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
+      const _se=document.getElementById('sp-live-stat');
+      if(_se&&_wc>0){const _el=180-spLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+    }
     if(spLeft<=0&&spPhase==='prep'){
       beepPhase();spPhase='speaking';spLeft=180;
       setBanner('sp-banner','rec','🎙','RESPONSE TIME — Speak!','3:00');
@@ -2025,7 +2049,6 @@ function showISQ(doSpeak){
     const lblEl=document.getElementById('is-tts-label');
     dotEl.classList.add('show');lblEl.textContent=' Speaking…';lblEl.style.display='block';
     setBanner('is-banner','prep','🤖','AI EXAMINER — listening…','—');
-    showPrepOverlay('interactive');
     speak(q.q,()=>{
       av.classList.remove('talking');
       dotEl.classList.remove('show');lblEl.style.display='none';
@@ -2143,8 +2166,14 @@ function analyzeTranscript(text,targetSecs){
   const expectedW=120*(targetSecs/60);
   const comp=Math.min(100,Math.round((wc/expectedW)*100));
 
+  // Filler words (um/uh always penalize in DET)
+  const fillerRe=/\b(um+|uh+|umm+|uhh+|hmm+)\b/gi;
+  const fillerCount=(clean.match(fillerRe)||[]).length;
+  const fillerPenalty=Math.min(25,fillerCount*4);
+  const vocFinal=Math.max(0,Math.round(voc)-fillerPenalty);
+
   // Overall DET simulation 55–130
-  const composite=fl*0.35+voc*0.30+str*0.20+comp*0.15;
+  const composite=fl*0.35+vocFinal*0.30+str*0.20+comp*0.15;
   const overall=Math.round(55+(composite/100)*75);
 
   const grade=overall>=115?'A+':overall>=105?'A':overall>=95?'B+':overall>=85?'B':overall>=75?'C+':overall>=65?'C':'D';
@@ -2160,6 +2189,10 @@ function analyzeTranscript(text,targetSecs){
   else if(longWds/Math.max(wc,1)>0.12){tips.push({ok:'ok',t:'Excellent vocabulary ✓',es:'¡Excelente! Usaste vocabulario avanzado ✓'});}
   else{tips.push({ok:'ok',t:'Good vocabulary variety ✓',es:'Buen vocabulario variado ✓'});}
 
+  if(fillerCount>=4){tips.push({ok:'bad',t:`${fillerCount} filler words (um/uh) — pause silently instead`,es:`${fillerCount} muletillas "um/uh" detectadas. En el DET bajan el puntaje. Practica pausar en SILENCIO en lugar de decir "um"`});}
+  else if(fillerCount>=2){tips.push({ok:'mid',t:`${fillerCount} filler words — try reducing "um/uh"`,es:`${fillerCount} muletillas. Sigue practicando pausar sin decir "uh/um"`});}
+  else if(wc>15){tips.push({ok:'ok',t:'Clean delivery — no filler words ✓',es:'¡Entrega limpia! Cero muletillas detectadas ✓'});}
+
   if(usedM.length===0){tips.push({ok:'bad',t:'Missing connectors: "First…", "Because…", "Also…"',es:'Faltan conectores. Usa: "First" (Primero), "Because" (Porque), "Also" (También)'});}
   else if(usedM.length>=3){tips.push({ok:'ok',t:'Strong structure: used '+usedM.slice(0,3).join(', ')+' ✓',es:'¡Excelente estructura! Usaste buenos conectores ✓'});}
   else{tips.push({ok:'mid',t:'Good start — add more connectors',es:'Bien. Agrega más conectores: "However", "In addition", "For example"'});}
@@ -2168,7 +2201,7 @@ function analyzeTranscript(text,targetSecs){
   else if(comp>=80){tips.push({ok:'ok',t:wc+' words — excellent use of time ✓',es:wc+' palabras. ¡Excelente! Usaste bien el tiempo ✓'});}
   else{tips.push({ok:'mid',t:wc+' words — try speaking a bit longer',es:wc+' palabras. Bien, intenta hablar un poco más'});}
 
-  return{overall,grade,gradeColor,level,fluency:Math.round(fl),vocab:Math.round(voc),structure:Math.round(str),completion:comp,wpm,wc,tips};
+  return{overall,grade,gradeColor,level,fluency:Math.round(fl),vocab:vocFinal,structure:Math.round(str),completion:comp,wpm,wc,fillerCount,tips};
 }
 
 let _scoreNextCb=null;
@@ -2211,13 +2244,30 @@ function showScore(result,nextCb,nextLabel){
     btns.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="closeScore()">✕ Cerrar</button><button class="btn btn-b btn-sm" id="sc-next-btn">${nextLabel||'Siguiente →'}</button>`;
     document.getElementById('sc-next-btn').onclick=()=>{closeScore();_scoreNextCb&&_scoreNextCb();};
   }else{
-    btns.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="closeScore()">✕ Cerrar</button><button class="btn btn-g btn-sm" onclick="closeScore()">▶ Seguir Practicando</button>`;
+    const canRetry=['Speak About the Photo','Read Then Speak','Speaking Sample'].includes(lastQType);
+    btns.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="closeScore()">✕ Cerrar</button>${canRetry?`<button class="btn btn-sm" style="background:var(--yl);color:var(--yd);border:2px solid var(--y)" onclick="retryLastQuestion()">🔄 Repetir</button>`:''}<button class="btn btn-g btn-sm" onclick="closeScore()">▶ Continuar</button>`;
   }
   m.style.display='flex';
   m.style.alignItems='center';
   m.style.justifyContent='center';
+  // auto-trigger AI improvement if key is configured and there's enough transcript
+  const hasKey=getAIMode()==='claude'
+    ?!!(localStorage.getItem('claude_api_key')&&localStorage.getItem('claude_api_key').length>20)
+    :true;
+  if(hasKey&&lastTranscript&&lastTranscript.replace(/<[^>]+>/g,'').trim().length>=8){
+    setTimeout(()=>requestImprovement(),800);
+  }
 }
 function closeScore(){const m=document.getElementById('score-modal');if(m)m.style.display='none';}
+
+function retryLastQuestion(){
+  closeScore();
+  setTimeout(()=>{
+    if(lastQType==='Speak About the Photo'){resetPhoto();setTimeout(startPhotoTimer,180);}
+    else if(lastQType==='Read Then Speak'){resetRead();setTimeout(startReadTimer,180);}
+    else if(lastQType==='Speaking Sample'){resetSample();setTimeout(startSampleTimer,180);}
+  },120);
+}
 
 // ════════════ AI CONFIG ════════════
 function getAIMode(){return localStorage.getItem('ai_mode')||'claude';}
@@ -2347,6 +2397,19 @@ async function callLMStudio(messages){
 }
 
 // ════════════ AI IMPROVEMENT ════════════
+async function imageToBase64(src){
+  try{
+    const r=await fetch(src);
+    const blob=await r.blob();
+    return new Promise((res,rej)=>{
+      const reader=new FileReader();
+      reader.onloadend=()=>res({data:reader.result.split(',')[1],mediaType:blob.type||'image/jpeg'});
+      reader.onerror=rej;
+      reader.readAsDataURL(blob);
+    });
+  }catch(e){return null;}
+}
+
 async function requestImprovement(){
   const btn=document.getElementById('sc-ai-btn');
   const section=document.getElementById('sc-ai-section');
@@ -2366,30 +2429,49 @@ async function requestImprovement(){
 
   const cleanTxt=lastTranscript.replace(/<[^>]+>/g,'').trim();
 
-  const contextLine=lastHint?`Photo context: ${lastHint}`:`Topic: ${lastQuestion}`;
+  const isPhotoTask=lastQType==='Speak About the Photo';
 
-  const sysPrompt=`You are a DET (Duolingo English Test) speaking coach for a Spanish-speaking student. Your job is to rewrite their spoken response with better English while keeping their exact ideas — and naturally weave in 2–3 relevant vocabulary words or expressions that fit the topic/photo context.
+  const sysPrompt=isPhotoTask
+    ?`You are a DET (Duolingo English Test) speaking coach. A student described a photo in English. You can SEE the actual photo in this message. Your job:
+- Look carefully at what is ACTUALLY visible in the image
+- Rewrite the student's response with better English, keeping their core ideas but grounding details in what you actually see
+- Fix grammar: verb tenses, missing articles (a/an/the), wrong prepositions
+- Add natural DET connectors for photo descriptions: "In the foreground", "In the background", "The atmosphere appears", "This photo shows"
+- Add 2–3 specific vocabulary words that match what is actually visible in the photo
+- Sound like natural SPOKEN English
+- Wrap EVERY new or changed phrase/word in **double asterisks**
+- Return ONLY the improved response text — no labels, no explanations, no intro`
+    :`You are a DET (Duolingo English Test) speaking coach for a Spanish-speaking student. Your job is to rewrite their spoken response with better English while keeping their exact ideas — and naturally weave in 2–3 relevant vocabulary words or expressions that fit the topic context.
 
 Rules you MUST follow:
 - Keep ALL their original ideas and personal examples — do not invent new ones
 - Fix grammar: verb tenses, missing articles (a/an/the), wrong prepositions
 - Add natural DET connectors: "In my opinion", "First of all", "For example", "However", "In conclusion"
 - Replace repetitive or basic words with better vocabulary
-- Naturally incorporate 2–3 relevant words/expressions from the topic context (e.g. for a beach cleanup photo: "debris", "environmental awareness", "community effort") so the response feels richer and more on-topic
+- Naturally incorporate 2–3 relevant words/expressions from the topic context so the response feels richer
 - Sound like natural SPOKEN English, not written essays
 - Wrap EVERY new or changed phrase/word in **double asterisks** — including the new vocabulary additions
 - Return ONLY the improved response text — no labels, no explanations, no intro`;
 
-  const userPrompt=`Question: "${lastQuestion}"
-Task: ${lastQType}
-${contextLine}
+  const textPrompt=isPhotoTask
+    ?`A student was asked to describe this photo for the Duolingo English Test (DET). Look at the image carefully and rewrite their response with better English based on what you actually see.\n\nStudent's response:\n"${cleanTxt}"\n\nReturn ONLY the improved response with **double asterisks** around every new or changed phrase.`
+    :`Question: "${lastQuestion}"\nTask: ${lastQType}\n${lastHint?`Context: ${lastHint}`:''}\n\nStudent's response:\n"${cleanTxt}"\n\nRewrite it improved for DET, naturally adding 2–3 relevant vocabulary words from the context.`;
 
-Student's response:
-"${cleanTxt}"
+  // Build user message — include image for photo tasks when using Claude
+  let userContent=textPrompt;
+  if(isPhotoTask && lastPhotoSrc && getAIMode()==='claude'){
+    try{
+      const imgData=await imageToBase64(lastPhotoSrc);
+      if(imgData){
+        userContent=[
+          {type:'image',source:{type:'base64',media_type:imgData.mediaType,data:imgData.data}},
+          {type:'text',text:textPrompt}
+        ];
+      }
+    }catch(e){ /* fall back to text-only */ }
+  }
 
-Rewrite it improved for DET, naturally adding 2–3 relevant vocabulary words from the context.`;
-
-  const messages=[{role:'system',content:sysPrompt},{role:'user',content:userPrompt}];
+  const messages=[{role:'system',content:sysPrompt},{role:'user',content:userContent}];
   try{
     const raw=getAIMode()==='claude'
       ? await callClaudeAPI(messages)
@@ -2400,6 +2482,8 @@ Rewrite it improved for DET, naturally adding 2–3 relevant vocabulary words fr
     document.getElementById('sc-improved-txt').innerHTML=markupImproved(improvedText);
     resultEl.style.display='block';
     btn.textContent='✅ Mejorado';btn.style.background='var(--g)';btn.style.boxShadow='0 4px 0 var(--gd)';
+    const sm=document.getElementById('score-modal');
+    if(sm)setTimeout(()=>sm.scrollTo({top:sm.scrollHeight,behavior:'smooth'}),150);
   }catch(e){
     loading.style.display='none';
     errEl.textContent='❌ '+e.message;errEl.style.display='block';
