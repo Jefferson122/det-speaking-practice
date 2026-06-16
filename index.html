@@ -421,6 +421,34 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .lms-mode-btn{flex:1;padding:9px 12px;border-radius:10px;border:2px solid var(--br);background:var(--bg);font:.8rem/1 'Nunito',sans-serif;font-weight:800;cursor:pointer;color:var(--tm);transition:.2s;text-align:center}
 .lms-mode-btn.active{background:var(--b);border-color:var(--bd);color:#fff}
 .lms-mode-btn:hover:not(.active){border-color:var(--b);color:var(--b)}
+/* ─── PRONUNCIATION MODAL ─── */
+#pron-modal{position:fixed;inset:0;z-index:650;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%)}
+#pron-modal.open{display:flex}
+.pron-close{position:fixed;top:18px;right:18px;background:rgba(255,255,255,.12);border:none;border-radius:50%;width:38px;height:38px;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pron-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:24px;padding:28px 24px;max-width:420px;width:100%;text-align:center;color:#fff}
+.pron-progress{display:flex;gap:8px;justify-content:center;margin-bottom:22px}
+.pron-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s}
+.pron-dot.done{background:#58CC02}.pron-dot.active{background:#1CB0F6;box-shadow:0 0 8px #1CB0F6}
+.pron-word{font-size:2.5rem;font-weight:900;color:#fff;margin-bottom:4px;letter-spacing:1px}
+.pron-phonetic{font-size:1rem;font-weight:700;color:#1CB0F6;margin-bottom:12px;font-style:italic;letter-spacing:.5px}
+.pron-tip{background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.22);border-radius:10px;padding:10px 14px;font-size:.78rem;font-weight:600;color:#FFE08A;margin-bottom:20px;line-height:1.55;text-align:left}
+.pron-tip b{font-weight:900}
+.pron-hear-btn{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.18);border-radius:12px;padding:9px 20px;color:#fff;font:.82rem/1 'Nunito',sans-serif;font-weight:800;cursor:pointer;margin-bottom:16px;transition:.2s}
+.pron-hear-btn:hover{background:rgba(255,255,255,.18)}
+.pron-status{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.55);min-height:20px;margin-bottom:8px}
+.pron-result{font-size:1.3rem;font-weight:900;min-height:32px;margin-bottom:12px;transition:.3s}
+.pron-result.ok{color:#58CC02}.pron-result.fail{color:#FF4B4B}
+.pron-btn-row{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.pron-mic-btn{width:62px;height:62px;border-radius:50%;border:none;background:var(--g);color:#fff;font-size:1.5rem;cursor:pointer;transition:.2s;box-shadow:0 4px 0 var(--gd)}
+.pron-mic-btn.rec{background:var(--r);box-shadow:0 4px 0 #C03030;animation:pron-pulse 1s ease-in-out infinite}
+.pron-mic-btn:disabled{opacity:.35;cursor:not-allowed;animation:none}
+@keyframes pron-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,75,75,.4)}50%{box-shadow:0 0 0 14px rgba(255,75,75,0)}}
+.pron-next-btn{background:var(--b);border:none;border-radius:12px;padding:11px 22px;color:#fff;font:.86rem/1 'Nunito',sans-serif;font-weight:900;cursor:pointer;transition:.2s;display:none;box-shadow:0 4px 0 var(--bd)}
+.pron-next-btn:hover{background:var(--bd)}
+.pron-sentence{font-size:.88rem;font-weight:700;color:rgba(255,255,255,.9);line-height:1.75;text-align:left;background:rgba(255,255,255,.05);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.pron-sentence mark{background:rgba(88,204,2,.3);color:#fff;border-radius:3px;padding:0 2px}
+.pron-sentence .pw{background:rgba(255,75,75,.3);border-radius:3px;padding:0 2px}
+.btn-pron{background:var(--y);color:#5C3D00;box-shadow:0 4px 0 var(--yd)}.btn-pron:hover{background:var(--yd);color:#fff}
 /* ─── WELCOME SCREEN ─── */
 #welcome-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#58CC02 0%,#1CB0F6 100%)}
 #welcome-screen.hidden{display:none}
@@ -988,6 +1016,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         </div>
         <div class="improve-actions">
           <button class="btn btn-ghost btn-sm" onclick="hearImproved()">🔊 Escuchar mejorada</button>
+          <button class="btn btn-pron btn-sm" id="pron-btn" onclick="requestPronWords()">🎯 Pronunciar palabras</button>
           <button class="btn btn-b btn-sm" onclick="openShadowing()">🎙 Practicar esto →</button>
         </div>
       </div>
@@ -1061,6 +1090,43 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="btn-row" style="margin-top:14px">
       <button class="btn btn-ghost btn-sm" onclick="closeLMSModal()">Cancelar</button>
       <button class="btn btn-b" onclick="saveLMSSettings()">Guardar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PRONUNCIATION PRACTICE MODAL ═══ -->
+<div id="pron-modal">
+  <button class="pron-close" onclick="closePronModal()">✕</button>
+
+  <!-- Word-by-word phase -->
+  <div id="pron-word-phase">
+    <div class="pron-progress" id="pron-dots"></div>
+    <div class="pron-card">
+      <div class="pron-word" id="pron-word-display"></div>
+      <div class="pron-phonetic" id="pron-phonetic"></div>
+      <div class="pron-tip" id="pron-tip"></div>
+      <button class="pron-hear-btn" onclick="hearPronWord()">🔊 Escuchar pronunciación</button>
+      <div class="pron-status" id="pron-status">Escucha y luego grábate diciendo la palabra</div>
+      <div class="pron-result" id="pron-result"></div>
+      <div class="pron-btn-row">
+        <button class="pron-mic-btn" id="pron-mic" onclick="togglePronRec()">🎙️</button>
+        <button class="pron-next-btn" id="pron-next" onclick="nextPronWord()">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full sentence phase -->
+  <div id="pron-sentence-phase" style="display:none">
+    <div class="pron-card" style="max-width:500px">
+      <div style="font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-bottom:14px">¡Palabras dominadas! Ahora lee la oración completa</div>
+      <div class="pron-sentence" id="pron-full-sentence"></div>
+      <div class="pron-status" id="pron-full-status">Presiona Grabar y lee la oración en voz alta</div>
+      <div class="pron-result" id="pron-full-result"></div>
+      <div class="pron-btn-row" style="margin-top:8px">
+        <button class="pron-mic-btn" id="pron-full-mic" onclick="toggleFullRec()">🎙️</button>
+        <button class="pron-next-btn" id="pron-retry-btn" onclick="retryFullRec()" style="display:none">🔄 Intentar de nuevo</button>
+        <button class="pron-next-btn" id="pron-full-done" onclick="closePronModal()" style="display:none;background:var(--g);box-shadow:0 4px 0 var(--gd)">✅ ¡Listo!</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2386,6 +2452,233 @@ function showShadowCompare(){
 
 function toggleShadowRec(){
   if(shadowRecActive)stopShadowRec();else startShadowRec();
+}
+
+// ════════════ PRONUNCIATION PRACTICE ════════════
+let pronWords=[],pronIdx=0,pronRecActive=false,pronFullRecActive=false;
+
+async function requestPronWords(){
+  if(!improvedText)return;
+  const btn=document.getElementById('pron-btn');
+  btn.disabled=true;btn.textContent='⏳ Analizando…';
+  const plain=improvedText.replace(/\*\*/g,'');
+  const sysPrompt=`You are a pronunciation coach for a B1 English learner whose native language is Spanish. From the sentence below, pick 3–5 words that are phonetically tricky for Spanish speakers. Choose COMMON words a B1 learner would actually use — never obscure vocabulary.
+
+Return a JSON array only, no explanation:
+[{"word":"example","phonetic":"eg-ZAM-pl","tip":"La 'x' suena como 'gz', no como 'ks'"}]
+
+Rules for the tip field: max 12 words, written in Spanish, practical phonetic advice for Spanish speakers.`;
+  const userPrompt=`Sentence: "${plain}"`;
+  try{
+    const raw=getAIMode()==='claude'
+      ?await callClaudeAPI([{role:'system',content:sysPrompt},{role:'user',content:userPrompt}])
+      :await callLMStudio([{role:'system',content:sysPrompt},{role:'user',content:userPrompt}]);
+    const words=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    btn.textContent='🎯 Pronunciar palabras';btn.disabled=false;
+    openPronModal(words);
+  }catch(e){
+    btn.textContent='🎯 Pronunciar palabras';btn.disabled=false;
+    const errEl=document.getElementById('sc-ai-error');
+    if(errEl){errEl.textContent='❌ '+e.message;errEl.style.display='block';}
+  }
+}
+
+function openPronModal(words){
+  pronWords=words;pronIdx=0;pronRecActive=false;pronFullRecActive=false;
+  document.getElementById('pron-modal').classList.add('open');
+  document.getElementById('pron-word-phase').style.display='';
+  document.getElementById('pron-sentence-phase').style.display='none';
+  buildPronDots();
+  showPronWord(0);
+}
+
+function closePronModal(){
+  if(pronRecActive)stopPronRec(true);
+  if(pronFullRecActive)stopFullRec(true);
+  document.getElementById('pron-modal').classList.remove('open');
+}
+
+function buildPronDots(){
+  document.getElementById('pron-dots').innerHTML=
+    pronWords.map((_,i)=>`<div class="pron-dot${i===0?' active':''}" id="pd-${i}"></div>`).join('');
+}
+
+function showPronWord(idx){
+  pronIdx=idx;
+  const w=pronWords[idx];
+  document.getElementById('pron-word-display').textContent=w.word;
+  document.getElementById('pron-phonetic').textContent=w.phonetic;
+  document.getElementById('pron-tip').innerHTML='<b>💡 Tip:</b> '+w.tip;
+  document.getElementById('pron-status').textContent='Escucha y luego grábate diciendo la palabra';
+  document.getElementById('pron-result').textContent='';
+  document.getElementById('pron-result').className='pron-result';
+  const mic=document.getElementById('pron-mic');
+  mic.className='pron-mic-btn';mic.textContent='🎙️';
+  mic.disabled=!micGranted.val;
+  document.getElementById('pron-next').style.display='none';
+  pronWords.forEach((_,i)=>{
+    const d=document.getElementById('pd-'+i);
+    if(d)d.className='pron-dot'+(i<idx?' done':i===idx?' active':'');
+  });
+  speak(w.word,null);
+}
+
+function hearPronWord(){speak(pronWords[pronIdx]?.word||'',null);}
+
+function togglePronRec(){if(pronRecActive)stopPronRec();else startPronRec();}
+
+function startPronRec(){
+  if(!micGranted.val){askMic();return;}
+  pronRecActive=true;
+  const mic=document.getElementById('pron-mic');
+  mic.className='pron-mic-btn rec';mic.textContent='⏹';
+  document.getElementById('pron-status').textContent='🔴 Grabando… di la palabra ahora';
+  document.getElementById('pron-result').textContent='';
+  document.getElementById('pron-next').style.display='none';
+  if(!recognition)setupRecognition();
+  if(recognition){
+    recognition.transcript_final='';
+    recognition.onresult=e=>{
+      let fin='';
+      for(let i=e.resultIndex;i<e.results.length;i++)if(e.results[i].isFinal)fin+=e.results[i][0].transcript;
+      recognition.transcript_final=(recognition.transcript_final||'')+fin;
+    };
+    recognition.onend=()=>{if(pronRecActive)evalPronWord();};
+    try{recognition.start();recogActive=true;}catch(ex){}
+  }
+}
+
+function stopPronRec(silent){
+  if(recognition&&recogActive){
+    if(silent)recognition.onend=null;
+    try{recognition.stop();}catch(e){}
+    recogActive=false;
+  }else if(!silent){evalPronWord();}
+  if(silent){pronRecActive=false;const m=document.getElementById('pron-mic');if(m){m.className='pron-mic-btn';m.textContent='🎙️';}}
+}
+
+function evalPronWord(){
+  pronRecActive=false;
+  if(recognition)recognition.onend=null;
+  const mic=document.getElementById('pron-mic');
+  if(mic){mic.className='pron-mic-btn';mic.textContent='🎙️';}
+  const target=(pronWords[pronIdx]?.word||'').toLowerCase().replace(/[^a-z]/g,'');
+  const heard=((recognition?.transcript_final)||'').toLowerCase().replace(/[^a-z\s]/g,'').trim();
+  const heardWords=heard.split(/\s+/);
+  const ok=heardWords.some(h=>h===target||levenshtein(h,target)<=1);
+  const resEl=document.getElementById('pron-result');
+  if(ok){
+    resEl.textContent='✅ ¡Perfecto!';resEl.className='pron-result ok';
+    document.getElementById('pron-status').textContent='Excelente — tu pronunciación es buena';
+  }else if(heard){
+    resEl.textContent='❌ Se escuchó: "'+heard+'"';resEl.className='pron-result fail';
+    document.getElementById('pron-status').textContent='Inténtalo de nuevo o continúa';
+  }else{
+    resEl.textContent='❓ No se detectó voz';resEl.className='pron-result fail';
+    document.getElementById('pron-status').textContent='Habla más cerca del micrófono';
+  }
+  document.getElementById('pron-next').style.display='';
+  document.getElementById('pron-next').textContent=pronIdx<pronWords.length-1?'Siguiente →':'Ver oración completa →';
+}
+
+function nextPronWord(){
+  if(pronIdx<pronWords.length-1){
+    showPronWord(pronIdx+1);
+  }else{
+    const d=document.getElementById('pd-'+pronIdx);if(d)d.className='pron-dot done';
+    document.getElementById('pron-word-phase').style.display='none';
+    document.getElementById('pron-sentence-phase').style.display='';
+    const plain=improvedText.replace(/\*\*/g,'');
+    document.getElementById('pron-full-sentence').innerHTML=markupImproved(improvedText);
+    document.getElementById('pron-full-status').textContent='Presiona Grabar y lee la oración en voz alta';
+    document.getElementById('pron-full-result').textContent='';
+    document.getElementById('pron-full-result').className='pron-result';
+    document.getElementById('pron-retry-btn').style.display='none';
+    document.getElementById('pron-full-done').style.display='none';
+    const m=document.getElementById('pron-full-mic');m.className='pron-mic-btn';m.textContent='🎙️';
+    speak(plain,null);
+  }
+}
+
+function toggleFullRec(){if(pronFullRecActive)stopFullRec();else startFullRec();}
+
+function startFullRec(){
+  if(!micGranted.val){askMic();return;}
+  pronFullRecActive=true;
+  const mic=document.getElementById('pron-full-mic');
+  mic.className='pron-mic-btn rec';mic.textContent='⏹';
+  document.getElementById('pron-full-status').textContent='🔴 Grabando… lee la oración completa';
+  document.getElementById('pron-full-result').textContent='';
+  document.getElementById('pron-retry-btn').style.display='none';
+  document.getElementById('pron-full-done').style.display='none';
+  if(!recognition)setupRecognition();
+  if(recognition){
+    recognition.transcript_final='';
+    recognition.onresult=e=>{
+      let fin='',intr='';
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal)fin+=e.results[i][0].transcript;
+        else intr+=e.results[i][0].transcript;
+      }
+      recognition.transcript_final=(recognition.transcript_final||'')+fin;
+      document.getElementById('pron-full-status').textContent='Escuchando… '+(recognition.transcript_final||intr);
+    };
+    recognition.onend=()=>{if(pronFullRecActive)evalFullSentence();};
+    try{recognition.start();recogActive=true;}catch(ex){}
+  }
+}
+
+function stopFullRec(silent){
+  if(recognition&&recogActive){
+    if(silent)recognition.onend=null;
+    try{recognition.stop();}catch(e){}
+    recogActive=false;
+  }else if(!silent){evalFullSentence();}
+  if(silent){pronFullRecActive=false;const m=document.getElementById('pron-full-mic');if(m){m.className='pron-mic-btn';m.textContent='🎙️';}}
+}
+
+function evalFullSentence(){
+  pronFullRecActive=false;
+  if(recognition)recognition.onend=null;
+  const mic=document.getElementById('pron-full-mic');
+  if(mic){mic.className='pron-mic-btn';mic.textContent='🎙️';}
+  const heard=((recognition?.transcript_final)||'').toLowerCase().replace(/[^a-z\s]/g,'').trim().split(/\s+/);
+  const targetWords=improvedText.replace(/\*\*/g,'').toLowerCase().replace(/[^a-z\s]/g,'').trim().split(/\s+/);
+  let correct=0;
+  const html=targetWords.map(w=>{
+    const hit=heard.some(h=>h===w||levenshtein(h,w)<=1);
+    if(hit)correct++;
+    return hit?`<mark>${w}</mark>`:`<span class="pw">${w}</span>`;
+  }).join(' ');
+  const pct=Math.round(correct/targetWords.length*100);
+  document.getElementById('pron-full-sentence').innerHTML=html;
+  const resEl=document.getElementById('pron-full-result');
+  if(pct>=80){
+    resEl.textContent=`✅ ${pct}% — ¡Excelente pronunciación!`;resEl.className='pron-result ok';
+    document.getElementById('pron-full-status').textContent='Verde = correcto · rojo = sigue practicando';
+    document.getElementById('pron-full-done').style.display='';
+  }else{
+    resEl.textContent=`${pct}% — ¡Puedes mejorar!`;resEl.className='pron-result fail';
+    document.getElementById('pron-full-status').textContent='Verde = correcto · rojo = practica más · intenta de nuevo';
+    document.getElementById('pron-retry-btn').style.display='';
+    document.getElementById('pron-full-done').style.display='';
+  }
+}
+
+function retryFullRec(){
+  document.getElementById('pron-full-sentence').innerHTML=markupImproved(improvedText);
+  document.getElementById('pron-full-status').textContent='Presiona Grabar y lee la oración de nuevo';
+  document.getElementById('pron-full-result').textContent='';
+  document.getElementById('pron-full-result').className='pron-result';
+  document.getElementById('pron-retry-btn').style.display='none';
+  document.getElementById('pron-full-done').style.display='none';
+}
+
+function levenshtein(a,b){
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
 }
 
 // ════════════ XP SYSTEM ════════════
