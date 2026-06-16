@@ -573,28 +573,28 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <div class="card-title">Speak About the Photo</div>
       <div class="card-desc">Describe a photo in detail. Structure your answer from general to specific.</div>
       <span class="card-tag">20s prep · 90s response</span>
-      <div class="card-stat"><span>25</span> photos · <span>1</span> per exam</div>
+      <div class="card-stat" id="stat-photo-card"><span>25</span> photos · <span>1</span> per exam</div>
     </div>
     <div class="card" onclick="goTo('read')">
       <div class="card-ico">📖</div>
       <div class="card-title">Read, Then Speak</div>
       <div class="card-desc">Read a prompt, hear it spoken aloud, then give a structured response.</div>
       <span class="card-tag">20s prep · 90s response</span>
-      <div class="card-stat"><span>80+</span> questions · AI reads aloud</div>
+      <div class="card-stat" id="stat-read-card"><span>80+</span> questions · AI reads aloud</div>
     </div>
     <div class="card" onclick="goTo('sample')">
       <div class="card-ico">🎤</div>
       <div class="card-title">Speaking Sample</div>
       <div class="card-desc">Extended response viewed by universities. This is your interview.</div>
       <span class="card-tag">30s prep · up to 3 min</span>
-      <div class="card-stat"><span>60+</span> questions · 4 categories</div>
+      <div class="card-stat" id="stat-sample-card"><span>60+</span> questions · 4 categories</div>
     </div>
     <div class="card" onclick="goTo('interactive')">
       <div class="card-ico">🤖</div>
       <div class="card-title">Interactive Speaking</div>
       <div class="card-desc">6 questions on 2 topics. AI avatar speaks each question to you naturally.</div>
       <span class="card-tag new">NEW 2025 · 35s each</span>
-      <div class="card-stat"><span>20</span> sets · <span>120+</span> questions</div>
+      <div class="card-stat" id="stat-is-card"><span>20</span> sets · <span>120+</span> questions</div>
     </div>
     <div class="card drill-card" onclick="goTo('drill')">
       <div class="card-ico">⚡</div>
@@ -1479,7 +1479,7 @@ let phIv=null,phPhase='idle',phLeft=20,phCount=0,phRecording=false;
 function newPhoto(){
   clearInterval(phIv);phIv=null;stopRec();stopWaveform();stopSpeak();
   phPhase='idle';phRecording=false;
-  const p=PHOTOS[Math.floor(Math.random()*PHOTOS.length)];
+  const p=pickNext('det_seen_photo',PHOTOS).item;
   const img=document.getElementById('ph-img'),ph=document.getElementById('ph-placeholder');
   img.style.opacity='0';ph.style.display='flex';
   img.src=p.img;
@@ -1533,7 +1533,7 @@ function finishEarly(mod){
     phCount++;document.getElementById('ph-count').textContent=phCount;
     setBanner('ph-banner','idle','✅','Done! Good job.','—');
     setBar('ph-bar',0,1,'');setTB(null,'');
-    addXP(10);
+    addXP(10);bumpTotal('photos');
     const txt=document.getElementById('ph-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
@@ -1545,7 +1545,7 @@ function finishEarly(mod){
     rdCount++;document.getElementById('rd-count').textContent=rdCount;
     setBanner('rd-banner','idle','✅','Done! Good job.','—');
     setBar('rd-bar',0,1,'');setTB(null,'');
-    addXP(10);
+    addXP(10);bumpTotal('read');
     const txt=document.getElementById('rd-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';lastHint='';
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
@@ -1556,7 +1556,7 @@ function finishEarly(mod){
     showDoneBtn('sample',false);
     setBanner('sp-banner','idle','✅','Done! Well done.','—');
     setBar('sp-bar',0,1,'');setTB(null,'');
-    addXP(15);
+    addXP(15);bumpTotal('sample');
     const txt=document.getElementById('sp-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('sp-q').textContent;lastQType='Speaking Sample';lastHint='';
     setTimeout(()=>showScore(analyzeTranscript(txt,180)),500);
@@ -1572,7 +1572,7 @@ function finishEarly(mod){
     showDoneBtn('interactive',false);
     const isLast=curQ>=curSet.qs.length-1;
     lastTranscript=_isTxt;lastQuestion=curSet.qs[curQ].q;lastQType='Interactive Speaking';lastHint='';
-    addXP(5);hidePrepOverlay();
+    addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();
     if(isLast){
       setBanner('is-banner','idle','🏁','Set complete!','—');
       setBar('is-bar',0,1,'');setTB(null,'');
@@ -1610,7 +1610,7 @@ function startPhotoTimer(){
       phCount++;document.getElementById('ph-count').textContent=phCount;
       setBanner('ph-banner','idle','✅','Time\'s up! Great job.','—');
       setBar('ph-bar',0,1,'');setTB(null,'');
-      addXP(10);
+      addXP(10);bumpTotal('photos');
       const _phTxt=document.getElementById('ph-transcript').textContent;
       lastTranscript=_phTxt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
       setTimeout(()=>showScore(analyzeTranscript(_phTxt,90)),700);
@@ -1721,7 +1721,7 @@ let rdIv=null,rdPhase='idle',rdLeft=20,rdCount=0,rdRecording=false;
 function newReadQ(){
   clearInterval(rdIv);rdIv=null;stopRec();stopWaveform();stopSpeak();
   rdPhase='idle';rdRecording=false;rdLeft=20;
-  const q=READ_QS[Math.floor(Math.random()*READ_QS.length)];
+  const q=pickNext('det_seen_read',READ_QS).item;
   document.getElementById('rd-q').textContent=q;
   document.getElementById('rd-transcript').classList.remove('active');
   document.getElementById('rd-playback').classList.remove('show');
@@ -1786,7 +1786,7 @@ function startReadTimer(){
       rdCount++;document.getElementById('rd-count').textContent=rdCount;
       setBanner('rd-banner','idle','✅','Done! Great response.','—');
       setBar('rd-bar',0,1,'');setTB(null,'');
-      addXP(10);
+      addXP(10);bumpTotal('read');
       const _rdTxt=document.getElementById('rd-transcript').textContent;
       lastTranscript=_rdTxt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';
       setTimeout(()=>showScore(analyzeTranscript(_rdTxt,90)),700);
@@ -1870,9 +1870,8 @@ function filterSample(type,el){
 function newSampleQ(){
   clearInterval(spIv);spIv=null;stopRec();stopWaveform();stopSpeak();
   spPhase='idle';spRecording=false;spLeft=30;
-  let pool=spFilter==='all'?SAMPLE_QS:SAMPLE_QS.filter(q=>q.type===spFilter);
-  if(!pool.length)pool=SAMPLE_QS;
-  const q=pool[Math.floor(Math.random()*pool.length)];
+  const _pidx=spFilter==='all'?SAMPLE_QS.map((_,i)=>i):SAMPLE_QS.map((q,i)=>q.type===spFilter?i:-1).filter(i=>i>=0);
+  const q=pickNextFiltered('det_seen_sample',SAMPLE_QS,_pidx).item;
   document.getElementById('sp-q').textContent=q.text;
   const badge=document.getElementById('sp-badge');badge.textContent=q.label;badge.className='q-badge '+q.type;
   document.getElementById('sp-transcript').classList.remove('active');
@@ -1931,7 +1930,7 @@ function startSampleTimer(){
       showDoneBtn('sample',false);
       setBanner('sp-banner','idle','✅','Time\'s up! Well done.','—');
       setBar('sp-bar',0,1,'');setTB(null,'');
-      addXP(15);
+      addXP(15);bumpTotal('sample');
       const _spTxt=document.getElementById('sp-transcript').textContent;
       lastTranscript=_spTxt;lastQuestion=document.getElementById('sp-q').textContent;lastQType='Speaking Sample';
       setTimeout(()=>showScore(analyzeTranscript(_spTxt,180)),700);
@@ -1991,7 +1990,7 @@ function buildISProg(total,cur,t2s){
 
 function newISSet(){
   clearInterval(isIv);isIv=null;stopRec();stopWaveform();stopSpeak();
-  curSet=IS_SETS[Math.floor(Math.random()*IS_SETS.length)];
+  curSet=pickNext('det_seen_is',IS_SETS).item;
   curQ=0;isRec=false;isPhase='idle';
   document.getElementById('is-set-label').textContent=curSet.t1+' & '+curSet.t2;
   document.getElementById('is-next').style.display='none';
@@ -2068,7 +2067,7 @@ function startISTimer(){
       }
       const isLast=curQ>=curSet.qs.length-1;
       lastTranscript=_isTxt;lastQuestion=curSet.qs[curQ].q;lastQType='Interactive Speaking';lastHint='';
-      addXP(5);hidePrepOverlay();
+      addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();
       if(isLast){
         setBanner('is-banner','idle','🏁','Set complete! ¡Excelente!','—');
         setBar('is-bar',0,1,'');setTB(null,'');
@@ -2178,6 +2177,7 @@ function showScore(result,nextCb,nextLabel){
   const m=document.getElementById('score-modal');
   if(!m)return;
   if(!result){if(nextCb)nextCb();return;}
+  saveScoreRecord(result,lastQType);
   // reset AI section for each new score
   improvedText='';
   const aiBtn=document.getElementById('sc-ai-btn');
@@ -2930,6 +2930,59 @@ function levenshtein(a,b){
   return dp[m][n];
 }
 
+// ════════════ QUESTION ROTATION — no repeats ════════════
+function pickNext(poolKey,pool){
+  let seen=JSON.parse(localStorage.getItem(poolKey)||'[]');
+  let avail=pool.map((_,i)=>i).filter(i=>!seen.includes(i));
+  if(!avail.length){seen=[];avail=pool.map((_,i)=>i);}
+  const idx=avail[Math.floor(Math.random()*avail.length)];
+  seen.push(idx);
+  localStorage.setItem(poolKey,JSON.stringify(seen));
+  return{item:pool[idx],idx,remaining:avail.length-1,total:pool.length};
+}
+function pickNextFiltered(poolKey,fullPool,indices){
+  let seen=JSON.parse(localStorage.getItem(poolKey)||'[]');
+  let avail=indices.filter(i=>!seen.includes(i));
+  if(!avail.length){seen=seen.filter(i=>!indices.includes(i));avail=[...indices];}
+  const idx=avail[Math.floor(Math.random()*avail.length)];
+  seen.push(idx);
+  localStorage.setItem(poolKey,JSON.stringify(seen));
+  return{item:fullPool[idx],idx,remaining:avail.length-1,total:indices.length};
+}
+function seenCount(key){return JSON.parse(localStorage.getItem(key)||'[]').length;}
+
+// ════════════ PERSISTENT PROGRESS ════════════
+function getTotals(){return JSON.parse(localStorage.getItem('det_totals')||'{"photos":0,"read":0,"sample":0,"is":0,"totalXP":0,"bestScores":{}}');}
+function saveTotals(d){localStorage.setItem('det_totals',JSON.stringify(d));}
+function bumpTotal(key){
+  const d=getTotals();d[key]=(d[key]||0)+1;saveTotals(d);updateHomeStats();
+}
+function saveScoreRecord(result,qtype){
+  if(!result||!qtype)return;
+  const d=getTotals();
+  if(!d.bestScores)d.bestScores={};
+  if(!d.bestScores[qtype]||result.overall>d.bestScores[qtype].overall)
+    d.bestScores[qtype]={overall:result.overall,grade:result.grade};
+  saveTotals(d);
+  const hist=JSON.parse(localStorage.getItem('det_score_hist')||'[]');
+  hist.unshift({type:qtype,overall:result.overall,grade:result.grade,date:new Date().toLocaleDateString('es-CO')});
+  if(hist.length>50)hist.length=50;
+  localStorage.setItem('det_score_hist',JSON.stringify(hist));
+}
+function updateHomeStats(){
+  const d=getTotals();
+  const bs=d.bestScores||{};
+  const best=(k)=>bs[k]?` · 🏆 <span>${bs[k].grade} (${bs[k].overall})</span>`:'';
+  const el1=document.getElementById('stat-photo-card');
+  if(el1)el1.innerHTML=`<span>${d.photos||0}</span> hechas · ${seenCount('det_seen_photo')}/25 vistas${best('Speak About the Photo')}`;
+  const el2=document.getElementById('stat-read-card');
+  if(el2)el2.innerHTML=`<span>${d.read||0}</span> hechas · ${seenCount('det_seen_read')}/${READ_QS.length} vistas${best('Read Then Speak')}`;
+  const el3=document.getElementById('stat-sample-card');
+  if(el3)el3.innerHTML=`<span>${d.sample||0}</span> hechas · ${seenCount('det_seen_sample')}/${SAMPLE_QS.length} vistas${best('Speaking Sample')}`;
+  const el4=document.getElementById('stat-is-card');
+  if(el4)el4.innerHTML=`<span>${d.is||0}</span> sets · ${seenCount('det_seen_is')}/${IS_SETS.length} vistos${best('Interactive Speaking')}`;
+}
+
 // ════════════ XP SYSTEM ════════════
 function getTodayKey(){return new Date().toDateString();}
 function getRawProgress(){return JSON.parse(localStorage.getItem('det_progress')||'{"streak":0,"lastDay":""}');}
@@ -2949,6 +3002,7 @@ function addXP(amount){
   else if(d.lastDay!==today)d.streak=1;
   d.lastDay=today;
   saveRawProgress(d);
+  const _td=getTotals();_td.totalXP=(_td.totalXP||0)+amount;saveTotals(_td);
   updateXPUI();
   showXPPop('+'+amount+' XP');
 }
@@ -3159,6 +3213,7 @@ window.addEventListener('load',()=>{
     document.getElementById('welcome-screen').classList.add('hidden');
   }
   updateXPUI();
+  updateHomeStats();
   pingLMSStatus();
   // try silent mic request
   navigator.mediaDevices&&navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{
