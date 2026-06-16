@@ -2342,8 +2342,8 @@ function startShadowRec(){
   document.getElementById('shadow-mic').className='mic-btn rec';
   document.getElementById('shadow-pulse').classList.add('active');
   const tb=document.getElementById('shadow-transcript');tb.textContent='';
-  // hijack recognition for shadow box
-  if(!recognition)setupRecognition();
+  startRec('ph-audio',null);
+  // Override the generic handler set by startRec with shadow-specific one
   if(recognition){
     recognition.transcript_final='';
     recognition.onresult=e=>{
@@ -2355,13 +2355,15 @@ function startShadowRec(){
       recognition.transcript_final=(recognition.transcript_final||'')+fin;
       tb.textContent=recognition.transcript_final+(intr?' '+intr:'');
     };
-    try{recognition.start();recogActive=true;}catch(ex){}
+    recognition.onend=()=>{
+      if(shadowRecActive){try{recognition.start();}catch(ex){}}
+    };
   }
-  startRec('ph-audio',null);
   shadowRecActive=true;
 }
 
 function stopShadowRec(){
+  if(recognition)recognition.onend=null;
   stopRec();stopRecognition();shadowRecActive=false;
   document.getElementById('shadow-mic').className='mic-btn disabled';
   document.getElementById('shadow-pulse').classList.remove('active');
