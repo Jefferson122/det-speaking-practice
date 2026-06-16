@@ -217,9 +217,9 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 @keyframes tts-bounce{from{transform:translateY(0)}to{transform:translateY(-8px)}}
 
 /* ─── SCORE MODAL ─── */
-#score-modal{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+#score-modal{position:fixed;inset:0;z-index:500;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #score-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px)}
-#score-card{position:relative;z-index:1;background:var(--w);border-radius:24px;padding:26px 26px 20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:sc-pop .35s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#score-card{position:relative;z-index:1;background:var(--w);border-radius:24px;padding:26px 26px 20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:sc-pop .35s cubic-bezier(.34,1.56,.64,1);margin:auto 0}
 @keyframes sc-pop{from{transform:scale(.82);opacity:0}to{transform:scale(1);opacity:1}}
 .sc-header{display:flex;align-items:center;gap:18px;margin-bottom:20px}
 .sc-circle{width:90px;height:90px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative;transition:.5s}
@@ -435,9 +435,9 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 #lms-cfg-btn{background:none;border:1.5px solid var(--br);color:var(--tm);padding:5px 10px;border-radius:20px;font:.72rem/1 'Nunito',sans-serif;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.2s}
 #lms-cfg-btn:hover{border-color:var(--b);color:var(--b)}
 /* ─── LM STUDIO MODAL ─── */
-#lms-modal{position:fixed;inset:0;z-index:700;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)}
+#lms-modal{position:fixed;inset:0;z-index:700;display:none;align-items:flex-start;justify-content:center;padding:20px;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 #lms-modal.open{display:flex}
-.lms-card{background:var(--w);border-radius:20px;padding:26px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.lms-card{background:var(--w);border-radius:20px;padding:26px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);margin:auto 0}
 .lms-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .lms-card-hdr h3{font-size:1.05rem;font-weight:900}
 .lms-close{background:none;border:none;font-size:1.1rem;cursor:pointer;color:var(--tm);padding:2px 6px;border-radius:6px}
@@ -456,9 +456,9 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .lms-mode-btn.active{background:var(--b);border-color:var(--bd);color:#fff}
 .lms-mode-btn:hover:not(.active){border-color:var(--b);color:var(--b)}
 /* ─── PRONUNCIATION MODAL ─── */
-#pron-modal{position:fixed;inset:0;z-index:650;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;background:linear-gradient(160deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%)}
+#pron-modal{position:fixed;inset:0;z-index:650;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;background:linear-gradient(160deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);overflow-y:auto;-webkit-overflow-scrolling:touch}
 #pron-modal.open{display:flex}
-.pron-close{position:fixed;top:18px;right:18px;background:rgba(255,255,255,.12);border:none;border-radius:50%;width:38px;height:38px;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pron-close{position:sticky;top:0;align-self:flex-end;background:rgba(255,255,255,.12);border:none;border-radius:50%;width:38px;height:38px;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-bottom:10px;z-index:2}
 .pron-card{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:24px;padding:28px 24px;max-width:420px;width:100%;text-align:center;color:#fff}
 .pron-progress{display:flex;gap:8px;justify-content:center;margin-bottom:22px}
 .pron-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.2);transition:.3s}
