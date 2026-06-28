@@ -249,32 +249,30 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .sc-btns{display:flex;gap:8px;justify-content:center;margin-top:4px}
 
 /* ─── TEMPLATES (always visible) ─── */
-/* ─── BANCO DE ESTRUCTURAS ─── */
-.sb-panel{background:var(--w);border:2px solid var(--br);border-radius:16px;margin-top:14px;overflow:hidden;box-shadow:var(--sh0)}
-.sb-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;background:linear-gradient(135deg,#FFF8E0,#FFF0F5);border-bottom:1.5px solid var(--br);gap:8px;flex-wrap:wrap}
-.sb-hdr-left{display:flex;align-items:center;gap:8px;flex:1}
-.sb-title{font-size:.85rem;font-weight:900;color:var(--t)}
-.sb-count{font-size:.65rem;font-weight:900;background:var(--y);color:#5C3D00;border-radius:20px;padding:1px 8px}
-.sb-body{padding:12px 14px 14px}
-.sb-chips{display:flex;flex-wrap:wrap;gap:8px;min-height:36px;margin-bottom:10px}
-.sb-chip{display:flex;align-items:center;gap:6px;background:var(--bg);border:1.5px solid var(--br);border-radius:20px;padding:5px 12px;font-size:.76rem;font-weight:700;color:var(--t);cursor:default;transition:.2s}
-.sb-chip:hover{border-color:var(--b);background:var(--bl)}
-.sb-chip .sb-chip-del{background:none;border:none;cursor:pointer;color:var(--tl);font-size:.7rem;padding:0;margin-left:2px;line-height:1}
-.sb-chip .sb-chip-del:hover{color:var(--r)}
-.sb-chip.ai-chip{border-color:var(--g);background:linear-gradient(135deg,#F0FFF4,#E8F5FF)}
-.sb-chip.ai-chip::before{content:"✨";font-size:.65rem}
-.sb-pending{background:linear-gradient(135deg,#FFFDE4,#FFF0F5);border:1.5px dashed var(--yd);border-radius:12px;padding:10px 12px;margin-bottom:8px;display:none}
-.sb-pending-lbl{font-size:.68rem;font-weight:900;color:var(--yd);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
-.sb-pending-row{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
-.sb-pending-text{flex:1;font-size:.78rem;font-weight:700;color:var(--t);line-height:1.5}
-.sb-pending-btns{display:flex;gap:6px;flex-shrink:0}
-.sb-pending-add{background:var(--g);border:none;border-radius:10px;padding:5px 13px;color:#fff;font:.75rem/1 'Nunito',sans-serif;font-weight:900;cursor:pointer}
-.sb-pending-skip{background:var(--bg);border:1.5px solid var(--br);border-radius:10px;padding:5px 10px;color:var(--tl);font:.75rem/1 'Nunito',sans-serif;font-weight:700;cursor:pointer}
-.sb-add-row{display:flex;gap:8px;margin-top:6px}
-.sb-add-input{flex:1;border:1.5px solid var(--br);border-radius:10px;padding:7px 12px;font:.79rem/1 'Nunito',sans-serif;font-weight:700;color:var(--t);background:var(--bg);outline:none}
-.sb-add-input:focus{border-color:var(--b)}
-.sb-add-btn{background:var(--b);border:none;border-radius:10px;padding:7px 14px;color:#fff;font:.79rem/1 'Nunito',sans-serif;font-weight:900;cursor:pointer;white-space:nowrap}
-.sb-empty{font-size:.78rem;font-weight:600;color:var(--tl);font-style:italic;padding:6px 0}
+/* ─── SIDEBAR LAYOUT (desktop) ─── */
+@media(min-width:820px){
+  .screen{max-width:980px}
+  #screen-photo,#screen-read,#screen-sample,#screen-interactive{display:grid;grid-template-columns:1fr 268px;column-gap:22px;align-items:start}
+  #screen-photo>*,#screen-read>*,#screen-sample>*,#screen-interactive>*{grid-column:1}
+  #screen-photo>.tpl-card,#screen-read>.tpl-card,#screen-sample>.tpl-card,#screen-interactive>.tpl-card{grid-column:2;grid-row:1/99;position:sticky;top:16px;margin-top:0;max-height:calc(100vh - 40px);overflow-y:auto}
+}
+/* ─── VOCAB POR PASO ─── */
+.sv{margin-top:5px;padding-top:5px;border-top:1px dashed var(--br)}
+.sv-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px;min-height:0}
+.sv-chip{display:inline-flex;align-items:center;gap:3px;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:12px;background:var(--bl);color:var(--bd);border:1.5px solid var(--b);white-space:nowrap}
+.sv-chip.sv-ai{background:linear-gradient(135deg,#FFF8E0,#FFF0F5);color:#9B4E00;border-color:var(--y)}
+.sv-chip.sv-ai::before{content:"✨";font-size:.58rem}
+.sv-chip.sv-pending{background:#FFFDE4;border:1.5px dashed var(--yd);color:#856404;animation:sv-pulse .9s ease-in-out infinite}
+@keyframes sv-pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.sv-del{background:none;border:none;cursor:pointer;color:inherit;opacity:.45;padding:0;margin-left:1px;font-size:.65rem;line-height:1}
+.sv-del:hover{opacity:1;color:var(--r)}
+.sv-ok{background:var(--g);border:none;border-radius:6px;padding:2px 6px;color:#fff;font:.62rem/1 'Nunito',sans-serif;font-weight:900;cursor:pointer;margin-left:2px}
+.sv-no{background:none;border:none;cursor:pointer;color:var(--tl);font:.62rem/1 'Nunito',sans-serif;font-weight:700;padding:0 3px}
+.sv-add-row{display:flex;gap:4px;margin-top:4px}
+.sv-inp{flex:1;font:.68rem/1 'Nunito',sans-serif;font-weight:700;border:1.5px solid var(--br);border-radius:7px;padding:3px 7px;color:var(--t);background:var(--bg);outline:none;min-width:0;transition:.15s}
+.sv-inp:focus{border-color:var(--b)}
+.sv-inp-btn{background:var(--bg);border:1.5px solid var(--br);border-radius:7px;padding:3px 7px;font:.68rem/1 'Nunito',sans-serif;font-weight:900;color:var(--b);cursor:pointer;flex-shrink:0}
+.sv-inp-btn:hover{background:var(--bl)}
 .tpl-card{background:var(--w);border:2px solid var(--br);border-radius:16px;overflow:hidden;margin-top:14px;box-shadow:var(--sh0)}
 .tpl-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:linear-gradient(135deg,#F0FFF4,#EBF8FF);border-bottom:1.5px solid var(--br)}
 .tpl-hdr h4{font-size:.88rem;font-weight:900;color:var(--t)}
@@ -743,30 +741,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new photo · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="sb-panel" id="sb-panel-photo">
-    <div class="sb-hdr">
-      <div class="sb-hdr-left"><span>🎽</span><span class="sb-title">Mi Banco de Estructuras</span><span class="sb-count" id="sb-count-photo">0</span></div>
-      <span style="font-size:.68rem;font-weight:700;color:var(--tl)">Foto · crece con tu práctica</span>
-    </div>
-    <div class="sb-body">
-      <div class="sb-pending" id="sb-pending-photo">
-        <div class="sb-pending-lbl">✨ IA sugiere agregar:</div>
-        <div class="sb-pending-row">
-          <div class="sb-pending-text" id="sb-pending-text-photo"></div>
-          <div class="sb-pending-btns">
-            <button class="sb-pending-add" onclick="sbAccept('photo')">+ Agregar</button>
-            <button class="sb-pending-skip" onclick="sbSkip('photo')">Ignorar</button>
-          </div>
-        </div>
-      </div>
-      <div class="sb-chips" id="sb-chips-photo"><span class="sb-empty">Practica y habla — la IA irá añadiendo estructuras aquí 💡</span></div>
-      <div class="sb-add-row">
-        <input class="sb-add-input" id="sb-input-photo" placeholder="Añade tu propia estructura o vocabulario…" onkeydown="if(event.key==='Enter')sbManualAdd('photo')">
-        <button class="sb-add-btn" onclick="sbManualAdd('photo')">+ Añadir</button>
-      </div>
-    </div>
-  </div>
-
   <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Estructura — Foto (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
@@ -775,30 +749,35 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="tpl-phrase">"This photo shows…" / "The main focus is…"</div>
         <span class="tpl-pron">🔊 "DIS foh-toh shohs…" / "De MEIN fo-kus is…"</span>
         <span class="tpl-es">🇪🇸 "Esta foto muestra…" / "El foco principal es…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-photo-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',1)"><button class="sv-inp-btn" onclick="svManualAdd('photo',1)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Primer plano / Personas</span><span class="tpl-time">15–40s</span><button class="tpl-hear" onclick="hearPhrase('In the foreground I can see... A person who appears to be...')">🔊</button></div>
         <div class="tpl-phrase">"In the foreground I can see…" / "A person who appears to be [verbo]-ing…"</div>
         <span class="tpl-pron">🔊 "In de FOR-graund ai ken sii…" / "A PER-son hu a-PIERS to bi…"</span>
         <span class="tpl-es">🇪🇸 "En el primer plano puedo ver…" / "Una persona que parece estar…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-photo-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',2)"><button class="sv-inp-btn" onclick="svManualAdd('photo',2)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Fondo / Lugar</span><span class="tpl-time">40–60s</span><button class="tpl-hear" onclick="hearPhrase('In the background I notice... The setting appears to be...')">🔊</button></div>
         <div class="tpl-phrase">"In the background I notice…" / "The setting appears to be…"</div>
         <span class="tpl-pron">🔊 "In de BAK-graund ai NOH-tis…" / "De SE-ting a-PIERS to bi…"</span>
         <span class="tpl-es">🇪🇸 "En el fondo noto…" / "El lugar parece ser…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-photo-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',3)"><button class="sv-inp-btn" onclick="svManualAdd('photo',3)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">4</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Ambiente / Emoción</span><span class="tpl-time">60–80s</span><button class="tpl-hear" onclick="hearPhrase('The atmosphere of this photo is... I think the person feels...')">🔊</button></div>
         <div class="tpl-phrase">"The atmosphere is…" / "I think the person feels…"</div>
         <span class="tpl-pron">🔊 "De AT-mos-fier is…" / "AI zink de PER-son fiils…"</span>
         <span class="tpl-es">🇪🇸 "La atmósfera es…" / "Creo que la persona siente…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-photo-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',4)"><button class="sv-inp-btn" onclick="svManualAdd('photo',4)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">5</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Conclusión</span><span class="tpl-time">80–90s</span><button class="tpl-hear" onclick="hearPhrase('This reminds me of... In my country, people often...')">🔊</button></div>
         <div class="tpl-phrase">"This reminds me of…" / "In my country, people often…"</div>
         <span class="tpl-pron">🔊 "DIS ri-MAIINDS mi of…" / "In mai CAN-tri PII-pul OF-en…"</span>
         <span class="tpl-es">🇪🇸 "Esto me recuerda a…" / "En mi país, la gente a menudo…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-photo-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',5)"><button class="sv-inp-btn" onclick="svManualAdd('photo',5)">+</button></div></div>
       </div></div>
       <div class="tips-bx"><h5>🇪🇸 Consejos clave</h5><ul>
         <li><b>foreground</b> = primer plano · <b>background</b> = fondo · <b>left/right</b> = izquierda/derecha</li>
@@ -847,30 +826,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new question · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="sb-panel" id="sb-panel-read">
-    <div class="sb-hdr">
-      <div class="sb-hdr-left"><span>🎽</span><span class="sb-title">Mi Banco de Estructuras</span><span class="sb-count" id="sb-count-read">0</span></div>
-      <span style="font-size:.68rem;font-weight:700;color:var(--tl)">Leer y Hablar · crece con tu práctica</span>
-    </div>
-    <div class="sb-body">
-      <div class="sb-pending" id="sb-pending-read">
-        <div class="sb-pending-lbl">✨ IA sugiere agregar:</div>
-        <div class="sb-pending-row">
-          <div class="sb-pending-text" id="sb-pending-text-read"></div>
-          <div class="sb-pending-btns">
-            <button class="sb-pending-add" onclick="sbAccept('read')">+ Agregar</button>
-            <button class="sb-pending-skip" onclick="sbSkip('read')">Ignorar</button>
-          </div>
-        </div>
-      </div>
-      <div class="sb-chips" id="sb-chips-read"><span class="sb-empty">Practica y habla — la IA irá añadiendo estructuras aquí 💡</span></div>
-      <div class="sb-add-row">
-        <input class="sb-add-input" id="sb-input-read" placeholder="Añade tu propia estructura o vocabulario…" onkeydown="if(event.key==='Enter')sbManualAdd('read')">
-        <button class="sb-add-btn" onclick="sbManualAdd('read')">+ Añadir</button>
-      </div>
-    </div>
-  </div>
-
   <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Estructura — Leer y Hablar (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
@@ -879,30 +834,35 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="tpl-phrase">"In my opinion,…" / "I think that…" / "I believe…"</div>
         <span class="tpl-pron">🔊 "In mai o-PIN-ion…" / "AI zink dat…" / "AI bi-LIIV…"</span>
         <span class="tpl-es">🇪🇸 "En mi opinión…" / "Yo creo que…" / "Yo pienso…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button class="sv-inp-btn" onclick="svManualAdd('read',1)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Primer punto + razón</span><span class="tpl-time">12–38s</span><button class="tpl-hear" onclick="hearPhrase('First of all... One reason is... For example...')">🔊</button></div>
         <div class="tpl-phrase">"First of all,…" / "One reason is…" / "For example,…"</div>
         <span class="tpl-pron">🔊 "FERST of ol…" / "UAN RI-son is…" / "For eg-ZAM-pul…"</span>
         <span class="tpl-es">🇪🇸 "En primer lugar…" / "Una razón es…" / "Por ejemplo…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button class="sv-inp-btn" onclick="svManualAdd('read',2)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Segundo punto</span><span class="tpl-time">38–62s</span><button class="tpl-hear" onclick="hearPhrase('Also... Another reason is... In addition...')">🔊</button></div>
         <div class="tpl-phrase">"Also,…" / "Another reason is…" / "In addition,…"</div>
         <span class="tpl-pron">🔊 "OL-so…" / "a-NO-der RI-son is…" / "In a-DI-shon…"</span>
         <span class="tpl-es">🇪🇸 "También…" / "Otra razón es…" / "Además…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-read-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',3)"><button class="sv-inp-btn" onclick="svManualAdd('read',3)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">4</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Contrapunto (opcional)</span><span class="tpl-time">62–78s</span><button class="tpl-hear" onclick="hearPhrase('However, I still believe... Some people think differently, but I think...')">🔊</button></div>
         <div class="tpl-phrase">"However,…" / "Some people think… but I believe…"</div>
         <span class="tpl-pron">🔊 "Jau-E-ver…" / "SOM PII-pul zink… bat AI bi-LIIV…"</span>
         <span class="tpl-es">🇪🇸 "Sin embargo…" / "Algunas personas piensan… pero yo creo…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-read-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',4)"><button class="sv-inp-btn" onclick="svManualAdd('read',4)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">5</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Conclusión</span><span class="tpl-time">78–90s</span><button class="tpl-hear" onclick="hearPhrase('In conclusion, I believe... That is why I think...')">🔊</button></div>
         <div class="tpl-phrase">"In conclusion,…" / "That is why I think…"</div>
         <span class="tpl-pron">🔊 "In con-CLU-shon…" / "Dat is uai AI zink…"</span>
         <span class="tpl-es">🇪🇸 "En conclusión…" / "Por eso creo que…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-read-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',5)"><button class="sv-inp-btn" onclick="svManualAdd('read',5)">+</button></div></div>
       </div></div>
       <div class="tips-bx"><h5>🇪🇸 Consejos clave</h5><ul>
         <li>Solo UNA grabación — sin pausa ni repetición</li>
@@ -957,30 +917,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="sb-panel" id="sb-panel-sample">
-    <div class="sb-hdr">
-      <div class="sb-hdr-left"><span>🎽</span><span class="sb-title">Mi Banco de Estructuras</span><span class="sb-count" id="sb-count-sample">0</span></div>
-      <span style="font-size:.68rem;font-weight:700;color:var(--tl)">Speaking Sample · crece con tu práctica</span>
-    </div>
-    <div class="sb-body">
-      <div class="sb-pending" id="sb-pending-sample">
-        <div class="sb-pending-lbl">✨ IA sugiere agregar:</div>
-        <div class="sb-pending-row">
-          <div class="sb-pending-text" id="sb-pending-text-sample"></div>
-          <div class="sb-pending-btns">
-            <button class="sb-pending-add" onclick="sbAccept('sample')">+ Agregar</button>
-            <button class="sb-pending-skip" onclick="sbSkip('sample')">Ignorar</button>
-          </div>
-        </div>
-      </div>
-      <div class="sb-chips" id="sb-chips-sample"><span class="sb-empty">Practica y habla — la IA irá añadiendo estructuras aquí 💡</span></div>
-      <div class="sb-add-row">
-        <input class="sb-add-input" id="sb-input-sample" placeholder="Añade tu propia estructura o vocabulario…" onkeydown="if(event.key==='Enter')sbManualAdd('sample')">
-        <button class="sb-add-btn" onclick="sbManualAdd('sample')">+ Añadir</button>
-      </div>
-    </div>
-  </div>
-
   <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Marco I-LAST — Speaking Sample (1–3 min)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
@@ -989,30 +925,35 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="tpl-phrase">"This is an interesting question. I'd like to talk about…"</div>
         <span class="tpl-pron">🔊 "DIS is en in-TER-es-ting QUES-chen. Aid laik to tok a-BAUT…"</span>
         <span class="tpl-es">🇪🇸 "Esta es una pregunta interesante. Me gustaría hablar sobre…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-sample-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-sample-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('sample',1)"><button class="sv-inp-btn" onclick="svManualAdd('sample',1)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n b">L</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Experiencia personal</span><span class="tpl-time">15–55s</span><button class="tpl-hear" onclick="hearPhrase('In my experience... When I was young, I noticed that... I remember that...')">🔊</button></div>
         <div class="tpl-phrase">"In my experience,…" / "When I was young,…" / "I remember that…"</div>
         <span class="tpl-pron">🔊 "In mai ex-PIER-ens…" / "Uen ai uos yong…" / "AI ri-MEM-ber dat…"</span>
         <span class="tpl-es">🇪🇸 "En mi experiencia…" / "Cuando era joven…" / "Recuerdo que…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-sample-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-sample-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('sample',2)"><button class="sv-inp-btn" onclick="svManualAdd('sample',2)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n b">A</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Vocabulario avanzado</span><span class="tpl-time">en todo momento</span><button class="tpl-hear" onclick="hearPhrase('This has a significant impact. It is important because. As a result...')">🔊</button></div>
         <div class="tpl-phrase">"important" / "because of this" / "as a result" / "in my view"</div>
         <span class="tpl-pron">🔊 "im-POR-tant" / "bi-COS of DIS" / "az a ri-ZALT" / "in mai viu"</span>
         <span class="tpl-es">🇪🇸 "importante" / "por esto" / "como resultado" / "en mi opinión"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-sample-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-sample-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('sample',3)"><button class="sv-inp-btn" onclick="svManualAdd('sample',3)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n b">S</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Detalle específico</span><span class="tpl-time">55–120s</span><button class="tpl-hear" onclick="hearPhrase('For example... For instance... A good example is...')">🔊</button></div>
         <div class="tpl-phrase">"For example,…" / "For instance,…" / "A good example is…"</div>
         <span class="tpl-pron">🔊 "For eg-ZAM-pul…" / "For IN-stens…" / "A gud eg-ZAM-pul is…"</span>
         <span class="tpl-es">🇪🇸 "Por ejemplo…" / "Por ejemplo (formal)…" / "Un buen ejemplo es…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-sample-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-sample-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('sample',4)"><button class="sv-inp-btn" onclick="svManualAdd('sample',4)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n b">T</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">Conclusión</span><span class="tpl-time">últimos 30s</span><button class="tpl-hear" onclick="hearPhrase('In conclusion, I believe that... To summarize...')">🔊</button></div>
         <div class="tpl-phrase">"In conclusion,…" / "To summarize,…" / "I believe that…"</div>
         <span class="tpl-pron">🔊 "In con-CLU-shon…" / "Tu SUM-a-raiz…" / "AI bi-LIIV dat…"</span>
         <span class="tpl-es">🇪🇸 "En conclusión…" / "Para resumir…" / "Creo que…"</span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-sample-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-sample-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('sample',5)"><button class="sv-inp-btn" onclick="svManualAdd('sample',5)">+</button></div></div>
       </div></div>
       <div class="tips-bx"><h5>🇪🇸 Consejos clave</h5><ul>
         <li>Las universidades ven esta sección — habla natural, mira a la cámara</li>
@@ -1066,30 +1007,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint">Set: <strong id="is-set-label">—</strong> · <kbd>Space</kbd> answer · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="sb-panel" id="sb-panel-interactive">
-    <div class="sb-hdr">
-      <div class="sb-hdr-left"><span>🎽</span><span class="sb-title">Mi Banco de Estructuras</span><span class="sb-count" id="sb-count-interactive">0</span></div>
-      <span style="font-size:.68rem;font-weight:700;color:var(--tl)">Interactive · crece con tu práctica</span>
-    </div>
-    <div class="sb-body">
-      <div class="sb-pending" id="sb-pending-interactive">
-        <div class="sb-pending-lbl">✨ IA sugiere agregar:</div>
-        <div class="sb-pending-row">
-          <div class="sb-pending-text" id="sb-pending-text-interactive"></div>
-          <div class="sb-pending-btns">
-            <button class="sb-pending-add" onclick="sbAccept('interactive')">+ Agregar</button>
-            <button class="sb-pending-skip" onclick="sbSkip('interactive')">Ignorar</button>
-          </div>
-        </div>
-      </div>
-      <div class="sb-chips" id="sb-chips-interactive"><span class="sb-empty">Practica y habla — la IA irá añadiendo estructuras aquí 💡</span></div>
-      <div class="sb-add-row">
-        <input class="sb-add-input" id="sb-input-interactive" placeholder="Añade tu propia estructura o vocabulario…" onkeydown="if(event.key==='Enter')sbManualAdd('interactive')">
-        <button class="sb-add-btn" onclick="sbManualAdd('interactive')">+ Añadir</button>
-      </div>
-    </div>
-  </div>
-
   <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Estructura Básica — 35 segundos</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
@@ -1098,18 +1015,21 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="tpl-phrase">"I think [tu opinión]." / "I like [tema]." / "Yes, I agree."</div>
         <span class="tpl-pron">🔊 "AI zink…" / "AI laik…" / "YES, ai a-GRII"</span>
         <span class="tpl-es">🇪🇸 "Yo creo…" / "Me gusta…" / "Sí, estoy de acuerdo"<br><b>💡 Di tu opinión DE INMEDIATO. Sin introducciones largas.</b></span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',1)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">💬 Razón / Por qué</span><span class="tpl-time">8–20s</span><button class="tpl-hear" onclick="hearPhrase('Because... The reason is... I say this because...')">🔊</button></div>
         <div class="tpl-phrase">"Because [razón]." / "The reason is [explicación]."</div>
         <span class="tpl-pron">🔊 "bi-COS…" / "De RI-son is…"</span>
         <span class="tpl-es">🇪🇸 "Porque…" / "La razón es…"<br><b>💡 "Because" = Porque. Una oración corta es suficiente.</b></span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',2)">+</button></div></div>
       </div></div>
       <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
         <div class="tpl-step-title"><span class="tpl-step-name">📌 Ejemplo personal</span><span class="tpl-time">20–35s</span><button class="tpl-hear" onclick="hearPhrase('For example... In my country... Where I am from...')">🔊</button></div>
         <div class="tpl-phrase">"For example, [tu ejemplo]." / "In my country, [dato]."</div>
         <span class="tpl-pron">🔊 "For eg-ZAM-pul…" / "In mai CAN-tri…"</span>
         <span class="tpl-es">🇪🇸 "Por ejemplo…" / "En mi país…"<br><b>💡 Usa tu propia vida. Es lo más fácil de recordar.</b></span>
+        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',3)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',3)">+</button></div></div>
       </div></div>
       <div class="tips-bx" style="background:#FFF0F5;border-radius:10px;padding:11px 15px;margin-top:12px"><h5 style="color:#C0392B">🇪🇸 Pronunciación — Sonidos difíciles</h5><ul>
         <li><b>"th"</b> → lengua ENTRE los dientes: "think" = "zink" · "the" = "de"</li>
@@ -2737,8 +2657,8 @@ Rules you MUST follow:
     btn.textContent='✅ Mejorado';btn.style.background='var(--g)';btn.style.boxShadow='0 4px 0 var(--gd)';
     const sm=document.getElementById('score-modal');
     if(sm)setTimeout(()=>sm.scrollTo({top:sm.scrollHeight,behavior:'smooth'}),150);
-    // Disparar sugerencia para el banco de estructuras (no bloquea UI)
-    sbSuggestFromTranscript(cleanTxt,lastQType);
+    // Sugerir vocabulario por paso (no bloquea UI)
+    svSuggestFromTranscript(cleanTxt,lastQType);
   }catch(e){
     loading.style.display='none';
     errEl.textContent='❌ '+e.message;errEl.style.display='block';
@@ -3869,116 +3789,110 @@ function c1Repeat(){
   c1RenderDots();c1RenderCard();
 }
 
-// ════════════ BANCO DE ESTRUCTURAS ════════════
-const SB_SECTION_MAP={
-  'Speak About the Photo':'photo',
-  'Read Then Speak':'read',
-  'Speaking Sample':'sample',
-  'Interactive Speaking':'interactive'
-};
+// ════════════ VOCABULARIO POR PASO ════════════
+const SV_SEC_MAP={'Speak About the Photo':'photo','Read Then Speak':'read','Speaking Sample':'sample','Interactive Speaking':'interactive'};
+const SV_STEPS={photo:5,read:5,sample:5,interactive:3};
 
-function sbGetBank(){
-  try{return JSON.parse(localStorage.getItem('structure_bank')||'{"photo":[],"read":[],"sample":[],"interactive":[]}');}
-  catch(e){return {photo:[],read:[],sample:[],interactive:[]};}
+function svGetBank(){
+  try{return JSON.parse(localStorage.getItem('sv_bank')||'{}');}
+  catch(e){return {};}
 }
-function sbSaveBank(bank){
-  localStorage.setItem('structure_bank',JSON.stringify(bank));
-}
+function svSaveBank(bank){localStorage.setItem('sv_bank',JSON.stringify(bank));}
 
-function sbRender(sec){
-  const bank=sbGetBank();
-  const items=bank[sec]||[];
-  const chipsEl=document.getElementById('sb-chips-'+sec);
-  const countEl=document.getElementById('sb-count-'+sec);
-  if(!chipsEl)return;
-  countEl.textContent=items.length;
-  if(items.length===0){
-    chipsEl.innerHTML='<span class="sb-empty">Practica y habla — la IA irá añadiendo estructuras aquí 💡</span>';
-    return;
-  }
-  chipsEl.innerHTML=items.map((item,i)=>`
-    <span class="sb-chip${item.ai?' ai-chip':''}" title="${(item.example||'').replace(/"/g,"'")}" >
+function svRender(sec){
+  const bank=svGetBank();
+  const steps=SV_STEPS[sec]||5;
+  for(let n=1;n<=steps;n++){
+    const el=document.getElementById('sv-chips-'+sec+'-'+n);
+    if(!el)continue;
+    const items=(bank[sec]&&bank[sec][n])||[];
+    el.innerHTML=items.map((item,i)=>`<span class="sv-chip${item.ai?' sv-ai':''}">
       ${item.text}
-      <button class="sb-chip-del" onclick="sbDelete('${sec}',${i})" title="Eliminar">×</button>
+      <button class="sv-del" onclick="svDelete('${sec}',${n},${i})" title="Eliminar">×</button>
     </span>`).join('');
-}
-
-function sbDelete(sec,idx){
-  const bank=sbGetBank();
-  if(!bank[sec])return;
-  bank[sec].splice(idx,1);
-  sbSaveBank(bank);
-  sbRender(sec);
-}
-
-function sbManualAdd(sec){
-  const input=document.getElementById('sb-input-'+sec);
-  const text=(input.value||'').trim();
-  if(!text)return;
-  const bank=sbGetBank();
-  if(!bank[sec])bank[sec]=[];
-  bank[sec].unshift({text,ai:false,addedAt:Date.now()});
-  sbSaveBank(bank);
-  sbRender(sec);
-  input.value='';
-}
-
-// Pending suggestion state
-const _sbPending={};
-
-function sbShowSuggestion(sec,text){
-  if(!text)return;
-  _sbPending[sec]=text;
-  const pendingEl=document.getElementById('sb-pending-'+sec);
-  const textEl=document.getElementById('sb-pending-text-'+sec);
-  if(!pendingEl||!textEl)return;
-  textEl.textContent=text;
-  pendingEl.style.display='block';
-}
-
-function sbAccept(sec){
-  const text=_sbPending[sec];
-  if(!text)return;
-  const bank=sbGetBank();
-  if(!bank[sec])bank[sec]=[];
-  if(!bank[sec].find(i=>i.text===text)){
-    bank[sec].unshift({text,ai:true,addedAt:Date.now()});
-    sbSaveBank(bank);
-    sbRender(sec);
   }
-  sbSkip(sec);
 }
 
-function sbSkip(sec){
-  delete _sbPending[sec];
-  const pendingEl=document.getElementById('sb-pending-'+sec);
-  if(pendingEl)pendingEl.style.display='none';
+function svDelete(sec,step,idx){
+  const bank=svGetBank();
+  if(!bank[sec]||!bank[sec][step])return;
+  bank[sec][step].splice(idx,1);
+  svSaveBank(bank);
+  svRender(sec);
 }
 
-async function sbSuggestFromTranscript(transcript,qType){
-  const sec=SB_SECTION_MAP[qType];
+function svManualAdd(sec,step){
+  const inp=document.getElementById('sv-inp-'+sec+'-'+step);
+  const text=(inp&&inp.value||'').trim();
+  if(!text)return;
+  const bank=svGetBank();
+  if(!bank[sec])bank[sec]={};
+  if(!bank[sec][step])bank[sec][step]=[];
+  bank[sec][step].unshift({text,ai:false,addedAt:Date.now()});
+  svSaveBank(bank);
+  svRender(sec);
+  inp.value='';
+}
+
+const _svPending={};
+
+function svShowPending(sec,step,text){
+  if(!text||!step)return;
+  _svPending[sec]={step,text};
+  const el=document.getElementById('sv-chips-'+sec+'-'+step);
+  if(!el)return;
+  // Remove existing pending chip if any
+  const old=el.querySelector('.sv-pending');if(old)old.remove();
+  const chip=document.createElement('span');
+  chip.className='sv-chip sv-pending';
+  chip.innerHTML=`✨ ${text}
+    <button class="sv-ok" onclick="svAccept('${sec}')">✓</button>
+    <button class="sv-no" onclick="svSkip('${sec}')">✕</button>`;
+  el.prepend(chip);
+}
+
+function svAccept(sec){
+  const p=_svPending[sec];if(!p)return;
+  const bank=svGetBank();
+  if(!bank[sec])bank[sec]={};
+  if(!bank[sec][p.step])bank[sec][p.step]=[];
+  if(!bank[sec][p.step].find(i=>i.text===p.text)){
+    bank[sec][p.step].unshift({text:p.text,ai:true,addedAt:Date.now()});
+    svSaveBank(bank);
+  }
+  delete _svPending[sec];
+  svRender(sec);
+}
+
+function svSkip(sec){
+  const p=_svPending[sec];if(!p)return;
+  const el=document.getElementById('sv-chips-'+sec+'-'+p.step);
+  if(el){const chip=el.querySelector('.sv-pending');if(chip)chip.remove();}
+  delete _svPending[sec];
+}
+
+async function svSuggestFromTranscript(transcript,qType){
+  const sec=SV_SEC_MAP[qType];
   if(!sec||!transcript||transcript.length<15)return;
   const key=localStorage.getItem('claude_api_key');
   if(!key||key.length<20)return;
   try{
-    const sys=`Eres un coach de inglés DET. Basándote en lo que dijo el estudiante, sugiere UNA sola estructura, conector o expresión de vocabulario C1 que le ayudaría a mejorar su respuesta. Responde SOLO en este formato exacto: "estructura" — ejemplo breve en inglés. Nada más. Máximo 20 palabras total.`;
-    const usr=`El estudiante dijo (tarea: ${qType}):\n"${transcript.slice(0,400)}"\n\nSugiere UNA estructura o vocabulario clave que le faltó o que podría mejorar. Formato: "estructura" — ejemplo breve.`;
-    const body={model:'claude-haiku-4-5-20251001',max_tokens:80,system:sys,messages:[{role:'user',content:usr}]};
-    const r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify(body),signal:AbortSignal.timeout(15000)
-    });
+    const stepsCtx={photo:'1=Visión general,2=Primer plano,3=Fondo/Lugar,4=Ambiente,5=Conclusión',read:'1=Tu opinión,2=Primer punto,3=Segundo punto,4=Contrapunto,5=Conclusión',sample:'1=Introducción,2=Experiencia personal,3=Vocabulario avanzado,4=Detalle específico,5=Conclusión',interactive:'1=Respuesta directa,2=Razón,3=Ejemplo personal'}[sec];
+    const sys=`Eres un coach de inglés DET. Analiza lo que dijo el estudiante e identifica en qué paso de su respuesta podría añadir una palabra o conector para mejorar. Responde SOLO con JSON compacto: {"step":N,"text":"frase o palabra corta en inglés"}. N debe ser el número de paso más relevante. La frase debe ser concisa (máximo 6 palabras). Sin explicaciones.`;
+    const usr=`Tarea: ${qType}\nPasos: ${stepsCtx}\n\nEl estudiante dijo:\n"${transcript.slice(0,500)}"\n\nJSON:`;
+    const body={model:'claude-haiku-4-5-20251001',max_tokens:60,system:sys,messages:[{role:'user',content:usr}]};
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
     if(!r.ok)return;
     const d=await r.json();
-    const suggestion=(d.content&&d.content[0]&&d.content[0].text||'').trim();
-    if(suggestion&&suggestion.length>4)sbShowSuggestion(sec,suggestion);
+    const raw=(d.content&&d.content[0]&&d.content[0].text||'').trim();
+    let result;
+    try{result=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){return;}
+    if(result&&result.step&&result.text)svShowPending(sec,result.step,result.text);
   }catch(e){}
 }
 
-// Init all banks on load
-function sbInitAll(){
-  ['photo','read','sample','interactive'].forEach(sec=>sbRender(sec));
+function svInitAll(){
+  ['photo','read','sample','interactive'].forEach(sec=>svRender(sec));
 }
 
 // ─── WELCOME SCREEN ───
@@ -4002,7 +3916,7 @@ window.addEventListener('load',()=>{
   }
   updateXPUI();
   updateHomeStats();
-  sbInitAll();
+  svInitAll();
   pingLMSStatus();
   // try silent mic request
   navigator.mediaDevices&&navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{
