@@ -1381,10 +1381,12 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <button class="tab" onclick="selectDrillType('c1',this)" style="background:linear-gradient(135deg,#EDE0FF,#DDF4FF);border-color:#C5A9F5;color:#7B2FBE">⭐ C1 Estructuras</button>
   </div>
 
-  <div class="drill-progress-wrap">
+  <div class="drill-progress-wrap" id="drill-progress-wrap">
     <div class="drill-dots" id="drill-dots"></div>
     <span id="drill-xp">+0 XP esta sesión</span>
   </div>
+
+  <div id="drill-tpl-view" style="display:none"></div>
 
   <div id="drill-card-wrap">
     <div class="phrase-big-card">
@@ -2134,13 +2136,7 @@ function goTo(mod){
   if(mod==='sample')newSampleQ();
   if(mod==='interactive')newISSet();
   if(mod==='drill'){
-    drillType='photo';drillIdx=0;drillResults=[];drillSessionXP=0;
-    clearInterval(drillIv);drillIv=null;
-    document.querySelectorAll('#drill-type-tabs .tab').forEach((t,i)=>t.classList.toggle('active',i===0));
-    document.getElementById('drill-complete-wrap').style.display='none';
-    document.getElementById('c1-drill-wrap').style.display='none';
-    document.getElementById('drill-card-wrap').style.display='block';
-    renderDrillCard();renderDrillDots();updateDrillXPLabel();
+    selectDrillType('photo', document.querySelector('#drill-type-tabs .tab'));
   }
 }
 function goHome(){
@@ -4250,11 +4246,18 @@ function selectDrillType(type,el){
   if(el)el.classList.add('active');
   const isC1=type==='c1';
   document.getElementById('c1-drill-wrap').style.display=isC1?'block':'none';
-  document.getElementById('drill-card-wrap').style.display=isC1?'none':'block';
+  document.getElementById('drill-card-wrap').style.display='none';
   document.getElementById('drill-complete-wrap').style.display='none';
+  document.getElementById('drill-progress-wrap').style.display=isC1?'':'none';
+  const tplView=document.getElementById('drill-tpl-view');
+  tplView.style.display=isC1?'none':'block';
   if(isC1){c1Init();return;}
-  renderDrillCard();renderDrillDots();updateDrillXPLabel();
-  document.getElementById('drill-next-btn').style.display='none';
+  const panelId='tpl-panel-'+(type==='interactive'?'is':type);
+  const panel=document.getElementById(panelId);
+  if(panel){
+    tplView.innerHTML=panel.innerHTML;
+    tplView.querySelectorAll('.btn.btn-ghost.btn-sm').forEach(b=>{if(b.textContent.includes('Volver'))b.remove();});
+  }
 }
 function renderDrillCard(){
   const data=DRILL_DATA[drillType];if(!data)return;
