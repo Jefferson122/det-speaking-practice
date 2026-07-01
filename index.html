@@ -403,6 +403,31 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .htpl-phrase b{color:#4B22CC}
 .htpl-ext{background:#E8F4FF;border:1px dashed #6699EE;border-radius:6px;padding:5px 8px;font-size:.63rem;font-weight:700;color:#1A3D8F;line-height:1.55}
 .htpl-ext b{color:#1A6FA8}
+/* ─── PHRASE BANK ─── */
+.phrase-bank{padding:8px 10px 10px;display:flex;flex-direction:column;gap:7px}
+.pb-section{display:flex;flex-direction:column;gap:4px}
+.pb-lbl{font-size:.63rem;font-weight:900;display:flex;align-items:center;gap:5px;margin-bottom:1px}
+.pb-t{border-radius:4px;padding:1px 5px;font-size:.57rem;font-weight:800;white-space:nowrap}
+.pb-t-green{background:#D4F5E0;color:#1A5C3D}
+.pb-t-red{background:#FFE0E0;color:#8B1A1A}
+.pb-t-blue{background:#D4E8FF;color:#1A3D8F}
+.pb-t-purple{background:#EDE0FF;color:#6B44E0}
+.pb-chips{display:flex;flex-wrap:wrap;gap:4px}
+.pb-chip{background:#F8F5FF;border:1.5px solid #C5A9F5;border-radius:8px;padding:3px 9px;font-size:.66rem;font-weight:700;color:#4B22CC;cursor:pointer;transition:.15s;font-family:'Nunito',sans-serif;white-space:nowrap}
+.pb-chip:hover,.pb-chip:active{background:#EDE0FF;border-color:#9B59B6;transform:scale(1.03)}
+.pb-upgrade{display:flex;flex-wrap:wrap;gap:4px;align-items:center;background:#FFFBF0;border-radius:8px;padding:5px 8px;border:1.5px dashed #F5A623}
+.pb-upg-lbl{font-size:.60rem;font-weight:900;color:#7A5F00;white-space:nowrap;margin-right:2px}
+.pb-upg-item{font-size:.63rem;font-weight:700;color:#444;cursor:pointer;padding:2px 7px;background:#fff;border-radius:5px;border:1px solid #F5A623;transition:.15s}
+.pb-upg-item:hover{background:#FFFBF0}
+.pb-upg-item del{color:#AAA;text-decoration-color:#C0392B}
+.pb-upg-item b{color:#4B22CC}
+.pb-avoid{background:#FFF0F0;border-radius:7px;padding:5px 9px;font-size:.63rem;font-weight:700;color:#C0392B;border:1.5px dashed #F5A623;line-height:1.6}
+.pb-avoid b{color:#4B22CC}
+/* AI script output */
+.ag-script-line{display:flex;align-items:flex-start;gap:7px;padding:5px 0;border-bottom:1px dashed #EEE8FF}
+.ag-script-line:last-child{border-bottom:none}
+.ag-script-n{min-width:18px;height:18px;background:#6B44E0;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;margin-top:2px}
+.ag-script-phrase{font-size:.73rem;font-weight:700;line-height:1.5;color:#1A0A3D;font-style:italic}
 .ag-mode-toggle{display:flex;gap:0;border:1.5px solid var(--br);border-radius:8px;overflow:hidden;margin-left:auto}
 .ag-mode-btn{background:var(--bg);border:none;padding:3px 8px;font:.62rem/1 'Nunito',sans-serif;font-weight:800;color:var(--tm);cursor:pointer;transition:.15s;white-space:nowrap}
 .ag-mode-btn.on{background:#6B44E0;color:#fff}
@@ -1493,117 +1518,64 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-goal">Meta: 120–160 palabras</span>
       <span class="ag-wt-hint">~125 palabras/min ideal</span>
     </div>
-    <div class="hispano-tpl">
-      <div class="htpl-hdr">🇪🇸 Fórmula I·P·C — Hispanohablantes · 90s</div>
-      <div class="htpl-body">
-        <div class="htpl-avoid">❌ <b>Evita</b>: "Ehh…" · "Este…" · respuesta corta · traducir el texto<br>✅ <b>Meta</b>: 120–160 palabras · da TU opinión · usa conectores</div>
-        <div class="htpl-row">
-          <span class="htpl-n">I</span>
-          <div><div class="htpl-lbl">Intro + posición <span class="htpl-t">0–12s</span></div>
-          <div class="htpl-phrase"><b>"I think [tema]…"</b> · <b>"I truly believe…"</b> · <b>"From my perspective,…"</b></div></div>
-        </div>
-        <div class="htpl-row">
-          <span class="htpl-n">P</span>
-          <div><div class="htpl-lbl">Puntos + ejemplo + contraste <span class="htpl-t">12–68s</span></div>
-          <div class="htpl-phrase"><b>"First of all,…"</b> · <b>"For example,…"</b> · <b>"Furthermore,…"</b> · <b>"However,…"</b></div></div>
-        </div>
-        <div class="htpl-row">
-          <span class="htpl-n">C</span>
-          <div><div class="htpl-lbl">Conclusión clara <span class="htpl-t">68–85s</span></div>
-          <div class="htpl-phrase"><b>"In conclusion,…"</b> · <b>"All things considered,…"</b> · <b>"Ultimately,…"</b></div></div>
-        </div>
-        <div class="htpl-ext">🇪🇸 Errores comunes: "I have 25 years" ❌ → <b>"I am 25 years old"</b> ✅ · "make me a question" ❌ → <b>"ask me"</b> ✅</div>
-      </div>
-    </div>
     <div class="ag-steps" id="ag-steps-read">
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">1</span><span class="ag-sname">Tu opinión</span><span class="ag-time">0–12s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In my opinion... I think that... I believe...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In my opinion,…" / "I think that…" / "I believe…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Personally,')">Personally,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('As I see it,')">As I see it,</span>
+      <div class="phrase-bank">
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#1A5C3D"><span class="pb-t pb-t-green">0–12s</span> 🚀 Abre con tu posición — directo</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('I truly believe that')">I truly believe that</span>
+            <span class="pb-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span>
+            <span class="pb-chip" onclick="hearPhrase('I strongly think that')">I strongly think that</span>
+            <span class="pb-chip" onclick="hearPhrase('As I see it,')">As I see it,</span>
+            <span class="pb-chip" onclick="hearPhrase('I firmly believe')">I firmly believe</span>
+            <span class="pb-chip" onclick="hearPhrase('In my view,')">In my view,</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button class="sv-inp-btn" onclick="svManualAdd('read',1)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">2</span><span class="ag-sname">Primer punto + razón</span><span class="ag-time">12–38s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('First of all... One reason is... For example...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"First of all,…" / "One reason is…" / "For example,…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('First of all,')">First of all,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('To begin with,')">To begin with,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('One key reason is')">One key reason is</span>
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#6B44E0"><span class="pb-t pb-t-purple">12–65s</span> 📋 Desarrolla — encadena con conectores</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('First of all,')">First of all,</span>
+            <span class="pb-chip" onclick="hearPhrase('Furthermore,')">Furthermore,</span>
+            <span class="pb-chip" onclick="hearPhrase('What is more,')">What is more,</span>
+            <span class="pb-chip" onclick="hearPhrase('For example,')">For example,</span>
+            <span class="pb-chip" onclick="hearPhrase('To illustrate this,')">To illustrate this,</span>
+            <span class="pb-chip" onclick="hearPhrase('However,')">However,</span>
+            <span class="pb-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span>
+            <span class="pb-chip" onclick="hearPhrase('This clearly shows that')">This clearly shows that</span>
+            <span class="pb-chip" onclick="hearPhrase('In my experience,')">In my experience,</span>
+            <span class="pb-chip" onclick="hearPhrase('It is worth noting that')">It is worth noting that</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button class="sv-inp-btn" onclick="svManualAdd('read',2)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">3</span><span class="ag-sname">Segundo punto</span><span class="ag-time">38–62s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Also... Another reason is... In addition...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"Also,…" / "Another reason is…" / "In addition,…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Furthermore,')">Furthermore,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('What is more,')">What's more,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('In addition,')">In addition,</span>
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#1A3D8F"><span class="pb-t pb-t-blue">65–85s</span> 🏁 Cierra fuerte — deja impresión</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('In conclusion,')">In conclusion,</span>
+            <span class="pb-chip" onclick="hearPhrase('Ultimately,')">Ultimately,</span>
+            <span class="pb-chip" onclick="hearPhrase('All things considered,')">All things considered,</span>
+            <span class="pb-chip" onclick="hearPhrase('That is why I believe')">That is why I believe</span>
+            <span class="pb-chip" onclick="hearPhrase('To sum up,')">To sum up,</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-read-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',3)"><button class="sv-inp-btn" onclick="svManualAdd('read',3)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">4</span><span class="ag-sname">Contrapunto (opcional)</span><span class="ag-time">62–78s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('However, I still believe... Some people think differently, but I think...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
+        <div class="pb-upgrade">
+          <span class="pb-upg-lbl">⬆ C1</span>
+          <span class="pb-upg-item" onclick="hearPhrase('I truly believe')"><del>I think</del> → <b>I truly believe</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('Furthermore,')"><del>also</del> → <b>Furthermore</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('However,')"><del>but</del> → <b>However</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('significant')"><del>good</del> → <b>significant</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('I am 25 years old')"><del>I have 25 years</del> → <b>I am 25</b></span>
         </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"However,…" / "Some people think… but I believe…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('However,')">However,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('That said,')">That said,</span>
-          </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-read-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',4)"><button class="sv-inp-btn" onclick="svManualAdd('read',4)">+</button></div></div>
-        </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">5</span><span class="ag-sname">Conclusión</span><span class="ag-time">78–90s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In conclusion, I believe... That is why I think...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In conclusion,…" / "That is why I think…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('In conclusion,')">In conclusion,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('To sum up,')">To sum up,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('All in all,')">All in all,</span>
-          </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-read-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',5)"><button class="sv-inp-btn" onclick="svManualAdd('read',5)">+</button></div></div>
+        <div class="pb-avoid">❌ Hablar &lt; 65s · sin conectores · "Ehh…" · "O sea…" · traducir el texto sin dar tu opinión</div>
+        <div style="display:none">
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><input class="sv-inp" id="sv-inp-read-1" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button onclick="svManualAdd('read',1)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><input class="sv-inp" id="sv-inp-read-2" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button onclick="svManualAdd('read',2)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-3"></div><input class="sv-inp" id="sv-inp-read-3" onkeydown="if(event.key==='Enter')svManualAdd('read',3)"><button onclick="svManualAdd('read',3)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-4"></div><input class="sv-inp" id="sv-inp-read-4" onkeydown="if(event.key==='Enter')svManualAdd('read',4)"><button onclick="svManualAdd('read',4)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-5"></div><input class="sv-inp" id="sv-inp-read-5" onkeydown="if(event.key==='Enter')svManualAdd('read',5)"><button onclick="svManualAdd('read',5)">+</button></div>
         </div>
       </div>
     </div>
     <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Qué decir — I·P·C para esta pregunta</div>
+      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Script IA — frases para decir literalmente</div>
       <div id="ag-body-read"><div class="ag-empty">Carga una pregunta para recibir guía IA</div></div>
       <div class="ag-retry-hint" id="ag-retry-read">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
@@ -1776,73 +1748,60 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-goal">Meta: 50–70 palabras</span>
       <span class="ag-wt-hint">responde directo, sin intro</span>
     </div>
-    <div style="padding:5px 10px 4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;border-bottom:1px dashed #DDD4FF">
-      <span style="font-size:.62rem;font-weight:900;color:#3D1A6B;white-space:nowrap">🇪🇸 Fórmula P·R·E</span>
-      <span style="background:#6B44E0;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">P</span><span style="font-size:.61rem;font-weight:700;color:#444">Punto</span>
-      <span style="color:#CCC;font-size:.7rem">→</span>
-      <span style="background:#C0392B;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">R</span><span style="font-size:.61rem;font-weight:700;color:#444">Razón</span>
-      <span style="color:#CCC;font-size:.7rem">→</span>
-      <span style="background:#1A6FA8;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">E</span><span style="font-size:.61rem;font-weight:700;color:#444">Ejemplo</span>
-      <span style="margin-left:auto;font-size:.59rem;font-weight:700;color:#7A5F00">⏸ freeze→ <b>"Well, I think…"</b></span>
-    </div>
     <div class="ag-steps" id="ag-steps-interactive">
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">1</span><span class="ag-sname">🎯 Respuesta directa</span><span class="ag-time">0–8s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('I think... I like... Yes, I agree...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"I think [tu opinión]." / "I like [tema]." / "Yes, I agree."</div>
-          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 Di tu opinión DE INMEDIATO. Sin introducciones largas.</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Definitely,')">Definitely,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('Absolutely,')">Absolutely,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('Without a doubt,')">Without a doubt,</span>
+      <div class="phrase-bank">
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#1A5C3D"><span class="pb-t pb-t-green">0–8s</span> 🚀 Di tu opinión YA — sin intro</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('I think')">I think</span>
+            <span class="pb-chip" onclick="hearPhrase('I believe')">I believe</span>
+            <span class="pb-chip" onclick="hearPhrase('Personally,')">Personally,</span>
+            <span class="pb-chip" onclick="hearPhrase('Definitely,')">Definitely,</span>
+            <span class="pb-chip" onclick="hearPhrase('I strongly feel that')">I strongly feel that</span>
+            <span class="pb-chip" onclick="hearPhrase('Without a doubt,')">Without a doubt,</span>
+            <span class="pb-chip" onclick="hearPhrase('Absolutely,')">Absolutely,</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',1)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">2</span><span class="ag-sname">💬 Razón / Por qué</span><span class="ag-time">8–20s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Because... The reason is... I say this because...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"Because [razón]." / "The reason is [explicación]."</div>
-          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 "Because" = Porque. Una oración corta es suficiente.</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('This is because')">This is because</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('The main reason is')">The main reason is</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('I say this because')">I say this because</span>
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#8B1A1A"><span class="pb-t pb-t-red">8–20s</span> 🔗 Razón — nunca digas "also"</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('because')">because</span>
+            <span class="pb-chip" onclick="hearPhrase('The main reason is')">The main reason is</span>
+            <span class="pb-chip" onclick="hearPhrase('This is because')">This is because</span>
+            <span class="pb-chip" onclick="hearPhrase('I say this because')">I say this because</span>
+            <span class="pb-chip" onclick="hearPhrase('since')">since</span>
+            <span class="pb-chip" onclick="hearPhrase('The reason I feel this way is')">The reason I feel this way is</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',2)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">3</span><span class="ag-sname">📌 Ejemplo personal</span><span class="ag-time">20–35s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('For example... In my country... Where I am from...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"For example, [tu ejemplo]." / "In my country, [dato]."</div>
-          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 Usa tu propia vida. Es lo más fácil de recordar.</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('For example,')">For example,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('In my case,')">In my case,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('To give you an idea,')">To give you an idea,</span>
+        <div class="pb-section">
+          <div class="pb-lbl" style="color:#1A3D8F"><span class="pb-t pb-t-blue">20–32s</span> 💡 Ejemplo — usa tu propia vida</div>
+          <div class="pb-chips">
+            <span class="pb-chip" onclick="hearPhrase('For example, in my case')">For example, in my case</span>
+            <span class="pb-chip" onclick="hearPhrase('In my experience,')">In my experience,</span>
+            <span class="pb-chip" onclick="hearPhrase('When I was young,')">When I was young,</span>
+            <span class="pb-chip" onclick="hearPhrase('To give you an idea,')">To give you an idea,</span>
+            <span class="pb-chip" onclick="hearPhrase('In my country,')">In my country,</span>
+            <span class="pb-chip" onclick="hearPhrase('For instance,')">For instance,</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',3)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',3)">+</button></div></div>
+        </div>
+        <div class="pb-upgrade">
+          <span class="pb-upg-lbl">⬆ C1</span>
+          <span class="pb-upg-item" onclick="hearPhrase('I truly believe')"><del>I think</del> → <b>I truly believe</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('particularly')"><del>very</del> → <b>particularly</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('significant')"><del>good</del> → <b>significant</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('nevertheless')"><del>but</del> → <b>nevertheless</b></span>
+          <span class="pb-upg-item" onclick="hearPhrase('I am 25 years old')"><del>I have 25 years</del> → <b>I am 25</b></span>
+        </div>
+        <div class="pb-avoid">❌ "Ehh…" · "O sea…" · "Mmm…" · "This is a good question…" → tiempo muerto ⏳<br>⏸ Te congelas → <b>"Well, I think…"</b> te da 2 segundos · Meta: 28–32s de los 35s</div>
+        <div style="display:none">
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><input class="sv-inp" id="sv-inp-interactive-1" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button onclick="svManualAdd('interactive',1)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><input class="sv-inp" id="sv-inp-interactive-2" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button onclick="svManualAdd('interactive',2)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-3"></div><input class="sv-inp" id="sv-inp-interactive-3" onkeydown="if(event.key==='Enter')svManualAdd('interactive',3)"><button onclick="svManualAdd('interactive',3)">+</button></div>
         </div>
       </div>
     </div>
     <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-interactive">✨ Qué decir — P·R·E para esta pregunta</div>
+      <div class="ag-tips-lbl" id="ag-tips-lbl-interactive">✨ Script IA — frases para decir literalmente</div>
       <div id="ag-body-interactive"><div class="ag-empty">Inicia un set para recibir guía IA</div></div>
       <div class="ag-retry-hint" id="ag-retry-interactive">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
@@ -3444,8 +3403,8 @@ async function genGuide(taskType) {
 
   const prompts = {
     photo: `Eres un coach del DET (Duolingo English Test). ${contextText}\n\nDame exactamente 4 consejos MUY específicos y concretos en español (máx 18 palabras cada uno) sobre QUÉ decir y CÓMO describir ESTA foto específica durante los 90 segundos. Enfócate en contenido concreto: qué mencionar en cada parte. Solo lista numerada sin intro.`,
-    read: `Eres un coach del DET para hispanohablantes. Pregunta Read Then Speak (90s): "${contextText}"\n\nLlena EXACTAMENTE esta plantilla I·P·C con frases en INGLÉS para ESTA pregunta:\n\nI — [intro + posición: "I think/I truly believe" + tu opinión sobre el tema, máx 15 palabras]\nP — [puntos clave encadenados: "First of all... furthermore... for example...", máx 20 palabras]\nC — [cierre: "In conclusion/Ultimately/All things considered" + posición final, máx 12 palabras]\n\nSOLO esas 3 líneas. Sin texto adicional.`,
-    interactive: `Eres un coach del DET para hispanohablantes. Pregunta Interactive Speaking (35s): "${contextText}"\n\nLlena EXACTAMENTE esta plantilla P·R·E con frases en INGLÉS específicas para ESTA pregunta (máx 14 palabras cada línea):\n\nP — [empieza con "I think/I believe/Definitely" + tu opinión concreta sobre esta pregunta]\nR — [empieza con "Because/The main reason is/This is because" + razón específica]\nE — [empieza con "For example, in my case/In my experience" + ejemplo personal concreto]\n\nSOLO esas 3 líneas. Sin texto adicional.`
+    read: `Eres un coach DET. Pregunta Read Then Speak (90s): "${contextText}"\n\nEscribe exactamente 3 frases en INGLÉS que el estudiante puede decir literalmente para esta pregunta. Sin labels, sin estructura — solo las frases:\n\n1. [Apertura + posición: usa "I truly believe / From my perspective / I strongly think" — máx 14 palabras]\n2. [Desarrollo con conectores: usa "First of all... Furthermore... For example... However..." — máx 22 palabras]\n3. [Cierre: usa "In conclusion / Ultimately / All things considered" — máx 12 palabras]\n\nSOLO las 3 frases numeradas en inglés. Sin comillas en tu respuesta. Sin explicaciones.`,
+    interactive: `Eres un coach DET. Pregunta Interactive Speaking (35s): "${contextText}"\n\nEscribe exactamente 3 frases en INGLÉS que el estudiante puede decir literalmente para responder esta pregunta. Sin labels — solo las frases:\n\n1. [Opinión inmediata: usa "I think / I believe / Personally / Definitely" — máx 10 palabras]\n2. [Razón: usa "because / The main reason is / This is because" — máx 11 palabras]\n3. [Ejemplo personal: usa "For example, in my case / In my experience / When I" — máx 13 palabras]\n\nSOLO las 3 frases numeradas en inglés. Sin comillas en tu respuesta. Sin explicaciones.`
   };
 
   try {
@@ -3458,16 +3417,10 @@ async function genGuide(taskType) {
     });
     const d = await r.json();
     const text = d.content?.[0]?.text || '';
-    const structLines = (text.match(/^[A-Z]\s*[—\-–]\s*.+$/gm) || []).slice(0, 3);
+    const scriptLines = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+[\.\)]\s*/, '').replace(/^[""]|[""]$/g, '').trim()).filter(l => l.length > 6).slice(0, 3);
     let html;
-    if (structLines.length >= 2) {
-      const colorMap = {P:'#6B44E0',R:'#C0392B',E:'#1A6FA8',I:'#6B44E0',C:'#1A6FA8'};
-      html = structLines.map(line => {
-        const m = line.match(/^([A-Z])\s*[—\-–]\s*(.+)$/);
-        if (!m) return '';
-        const bg = colorMap[m[1]] || '#6B44E0';
-        return `<div class="ag-tip-item" style="display:flex;align-items:flex-start;gap:6px;padding:4px 0"><span style="min-width:20px;height:20px;background:${bg};color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.70rem;font-weight:900;flex-shrink:0;margin-top:1px">${m[1]}</span><span style="font-size:.72rem;font-weight:700;line-height:1.45;color:#222">${m[2].trim()}</span></div>`;
-      }).join('');
+    if (scriptLines.length >= 2) {
+      html = scriptLines.map((line, i) => `<div class="ag-script-line"><span class="ag-script-n">${i+1}</span><span class="ag-script-phrase">"${line}"</span></div>`).join('');
     } else {
       const tips = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+\s*/, '').trim()).filter(l => l.length > 4).slice(0, 4);
       if (tips.length === 0) throw new Error('No tips');
@@ -3503,7 +3456,7 @@ function setGuideMode(taskType, mode) {
   card.classList.toggle('coaching', mode === 'post');
 
   if (mode === 'pre') {
-    if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : taskType === 'interactive' ? '✨ Qué decir — P·R·E para esta pregunta' : taskType === 'read' ? '✨ Qué decir — I·P·C para esta pregunta' : '✨ Para esta pregunta — consejos IA';
+    if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : (taskType === 'interactive' || taskType === 'read') ? '✨ Script IA — frases para decir literalmente' : '✨ Para esta pregunta — consejos IA';
     const _emptyLbl = taskType === 'photo' ? 'una foto' : taskType === 'interactive' ? 'un set' : 'una pregunta';
     bodyEl.innerHTML = _agData[taskType].preBody || `<div class="ag-empty">Carga ${_emptyLbl} para recibir guía IA</div>`;
     if (stepsEl) stepsEl.style.display = '';
