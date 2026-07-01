@@ -1334,10 +1334,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="ai-guide-card" id="ai-guide-photo">
     <div class="ag-hdr">
       <span class="ag-title">💜 Coach IA — Hablar sobre la Foto</span>
-      <div class="ag-mode-toggle">
-        <button class="ag-mode-btn on" id="ag-mode-pre-photo" onclick="setGuideMode('photo','pre')">Antes</button>
-        <button class="ag-mode-btn" id="ag-mode-post-photo" onclick="setGuideMode('photo','post')">Después</button>
-      </div>
       <button class="ag-refresh" id="ag-refresh-photo" onclick="genGuide('photo')">↺ Generar</button>
     </div>
     <div class="ag-word-target">
@@ -1480,10 +1476,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="ai-guide-card" id="ai-guide-read">
     <div class="ag-hdr">
       <span class="ag-title">💜 Coach IA — Leer y Hablar</span>
-      <div class="ag-mode-toggle">
-        <button class="ag-mode-btn on" id="ag-mode-pre-read" onclick="setGuideMode('read','pre')">Antes</button>
-        <button class="ag-mode-btn" id="ag-mode-post-read" onclick="setGuideMode('read','post')">Después</button>
-      </div>
       <button class="ag-refresh" id="ag-refresh-read" onclick="genGuide('read')">↺ Generar</button>
     </div>
     <div class="ag-word-target">
@@ -1744,12 +1736,17 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 
   <div class="ai-guide-card" id="ai-guide-interactive">
     <div class="ag-hdr">
-      <span class="ag-title">💜 Estructura — Interactive Speaking</span>
+      <span class="ag-title">💜 Coach IA — Interactive Speaking</span>
+      <button class="ag-refresh" id="ag-refresh-interactive" onclick="genGuide('interactive')">↺ Generar</button>
     </div>
     <div class="ag-word-target">
       <span class="ag-wt-time">⏱ 35 seg</span>
       <span class="ag-wt-goal">Meta: 50–70 palabras</span>
       <span class="ag-wt-hint">responde directo, sin intro</span>
+    </div>
+    <div style="padding:5px 4px 0;display:flex;flex-direction:column;gap:3px">
+      <div style="font-size:.71rem;font-weight:700;color:#1A6FA8">🤖 El AI adapta las siguientes preguntas según tu respuesta — responde bien para escalar a C1</div>
+      <div style="font-size:.7rem;font-weight:700;color:#7A5F00">⏸ Si te congelas: <b>"Well, I think…"</b> · <b>"In my experience…"</b></div>
     </div>
     <div class="ag-steps" id="ag-steps-interactive">
       <div class="ag-step">
@@ -1808,10 +1805,9 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       </div>
     </div>
     <div class="ag-tips">
-      <div style="padding:8px 4px;display:flex;flex-direction:column;gap:5px">
-        <div style="font-size:.76rem;font-weight:700;color:#1A6FA8">🤖 El AI adapta las siguientes preguntas según tu respuesta — responde bien para escalar a C1</div>
-        <div style="font-size:.73rem;font-weight:700;color:#7A5F00">⏸ Si te congelas: <b>"Well, I think…"</b> (gana 2s) · <b>"In my experience…"</b> (gana 2s)</div>
-      </div>
+      <div class="ag-tips-lbl" id="ag-tips-lbl-interactive">✨ Para esta pregunta — consejos IA</div>
+      <div id="ag-body-interactive"><div class="ag-empty">Inicia un set para recibir guía IA</div></div>
+      <div class="ag-retry-hint" id="ag-retry-interactive">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
   </div>
 </div>
@@ -2799,6 +2795,7 @@ function finishEarly(mod){
     const isLast=curQ>=curSet.qs.length-1;
     lastTranscript=_isTxt;lastQuestion=curSet.qs[curQ].q;lastQType='Interactive Speaking';lastHint='';
     addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();
+    setTimeout(()=>coachAfterRecording('interactive',_isTxt,lastQuestion),800);
     if(isLast){
       setBanner('is-banner','idle','🏁','Set complete!','—');
       setBar('is-bar',0,1,'');setTB(null,'');
@@ -3247,6 +3244,8 @@ function newISSet(){
   document.getElementById('is-next').style.display='none';
   document.getElementById('is-transcript').classList.remove('active');
   document.getElementById('is-playback').classList.remove('show');
+  _agData.interactive.postBody='';
+  setGuideMode('interactive','pre');
   showISQ(true);
 }
 
@@ -3284,6 +3283,7 @@ function showISQ(doSpeak){
       setBar('is-bar',35,35,'');
     });
   }
+  setTimeout(()=>genGuide('interactive'),350);
 }
 
 function startISTimer(){
@@ -3318,6 +3318,7 @@ function startISTimer(){
       const isLast=curQ>=curSet.qs.length-1;
       lastTranscript=_isTxt;lastQuestion=curSet.qs[curQ].q;lastQType='Interactive Speaking';lastHint='';
       addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();
+      setTimeout(()=>coachAfterRecording('interactive',_isTxt,lastQuestion),800);
       if(isLast){
         setBanner('is-banner','idle','🏁','Set complete! ¡Excelente!','—');
         setBar('is-bar',0,1,'');setTB(null,'');
@@ -3343,6 +3344,8 @@ function startISTimer(){
 function nextISQ(){
   curQ++;
   if(curQ>=curSet.qs.length){newISSet();return;}
+  _agData.interactive.postBody='';
+  setGuideMode('interactive','pre');
   showISQ(true);
 }
 
@@ -3385,6 +3388,12 @@ async function genGuide(taskType) {
       bodyEl.innerHTML = '<div class="ag-empty">Carga una pregunta primero</div>';
       return;
     }
+  } else if (taskType === 'interactive') {
+    contextText = document.getElementById('is-q')?.textContent || '';
+    if (!contextText || contextText.includes('Press "New Set"')) {
+      bodyEl.innerHTML = '<div class="ag-empty">Inicia un set primero</div>';
+      return;
+    }
   }
 
   if (!key || key.length < 20) {
@@ -3392,12 +3401,14 @@ async function genGuide(taskType) {
     return;
   }
 
+  setGuideMode(taskType, 'pre');
   bodyEl.innerHTML = '<div class="ag-loading"><div class="ag-spin"></div>Generando consejos…</div>';
   if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = '⏳'; }
 
   const prompts = {
     photo: `Eres un coach del DET (Duolingo English Test). ${contextText}\n\nDame exactamente 4 consejos MUY específicos y concretos en español (máx 18 palabras cada uno) sobre QUÉ decir y CÓMO describir ESTA foto específica durante los 90 segundos. Enfócate en contenido concreto: qué mencionar en cada parte. Solo lista numerada sin intro.`,
-    read: `Eres un coach del DET (Duolingo English Test). Pregunta: "${contextText}"\n\nDame exactamente 4 consejos MUY específicos en español (máx 18 palabras cada uno) sobre cómo responder ESTA pregunta concreta: qué posición tomar, qué ejemplos dar, qué argumentos usar. Solo lista numerada sin intro.`
+    read: `Eres un coach del DET (Duolingo English Test). Pregunta: "${contextText}"\n\nDame exactamente 4 consejos MUY específicos en español (máx 18 palabras cada uno) sobre cómo responder ESTA pregunta concreta: qué posición tomar, qué ejemplos dar, qué argumentos usar. Solo lista numerada sin intro.`,
+    interactive: `Eres un coach del DET (Duolingo English Test). Pregunta de Interactive Speaking (35 segundos): "${contextText}"\n\nDame exactamente 4 consejos MUY específicos en español (máx 18 palabras cada uno) sobre cómo responder ESTA pregunta en 35s: qué posición tomar de inmediato, qué vocabulario C1 usar, cómo dar un ejemplo rápido, qué conector usar para cerrar. Solo lista numerada sin intro.`
   };
 
   try {
@@ -3444,7 +3455,8 @@ function setGuideMode(taskType, mode) {
 
   if (mode === 'pre') {
     if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : '✨ Para esta pregunta — consejos IA';
-    bodyEl.innerHTML = _agData[taskType].preBody || '<div class="ag-empty">Carga ' + (taskType === 'photo' ? 'una foto' : 'una pregunta') + ' para recibir guía IA</div>';
+    const _emptyLbl = taskType === 'photo' ? 'una foto' : taskType === 'interactive' ? 'un set' : 'una pregunta';
+    bodyEl.innerHTML = _agData[taskType].preBody || `<div class="ag-empty">Carga ${_emptyLbl} para recibir guía IA</div>`;
     if (stepsEl) stepsEl.style.display = '';
     if (retry) retry.classList.remove('show');
   } else {
