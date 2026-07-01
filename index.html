@@ -389,6 +389,20 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ai-guide-card.coaching .ag-tip-item.add{color:#1a5c1a}
 .ai-guide-card.coaching .ag-tip-item.word{color:#004080}
 .ai-guide-card.coaching .ag-tip-item.expand{color:#5C3D00}
+/* ─── HISPANO TEMPLATE ─── */
+.hispano-tpl{background:linear-gradient(135deg,#FFFBF0,#FFF5F5);border:1.5px solid #F5A623;border-radius:10px;overflow:hidden;margin:6px 8px 4px}
+.htpl-hdr{background:linear-gradient(135deg,#F5A623,#E8360D);color:#fff;font-size:.68rem;font-weight:900;padding:5px 10px;letter-spacing:.3px;display:flex;align-items:center;gap:4px}
+.htpl-body{padding:6px 10px 8px;display:flex;flex-direction:column;gap:5px}
+.htpl-avoid{background:#FFF0F0;border:1px dashed #F5A623;border-radius:6px;padding:5px 8px;font-size:.65rem;font-weight:700;color:#C0392B;line-height:1.55}
+.htpl-avoid b{color:#4B22CC}
+.htpl-row{display:flex;align-items:flex-start;gap:7px}
+.htpl-n{min-width:20px;height:20px;background:linear-gradient(135deg,#6B44E0,#9B59B6);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;margin-top:2px}
+.htpl-lbl{font-size:.66rem;font-weight:900;color:#3D1A6B;display:flex;align-items:center;gap:4px;line-height:1.3}
+.htpl-t{background:#EDE0FF;color:#6B44E0;border-radius:4px;padding:1px 4px;font-size:.59rem;font-weight:800}
+.htpl-phrase{font-size:.67rem;font-weight:700;color:#444;margin-top:2px;line-height:1.4}
+.htpl-phrase b{color:#4B22CC}
+.htpl-ext{background:#E8F4FF;border:1px dashed #6699EE;border-radius:6px;padding:5px 8px;font-size:.63rem;font-weight:700;color:#1A3D8F;line-height:1.55}
+.htpl-ext b{color:#1A6FA8}
 .ag-mode-toggle{display:flex;gap:0;border:1.5px solid var(--br);border-radius:8px;overflow:hidden;margin-left:auto}
 .ag-mode-btn{background:var(--bg);border:none;padding:3px 8px;font:.62rem/1 'Nunito',sans-serif;font-weight:800;color:var(--tm);cursor:pointer;transition:.15s;white-space:nowrap}
 .ag-mode-btn.on{background:#6B44E0;color:#fff}
@@ -1479,6 +1493,28 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-goal">Meta: 120–160 palabras</span>
       <span class="ag-wt-hint">~125 palabras/min ideal</span>
     </div>
+    <div class="hispano-tpl">
+      <div class="htpl-hdr">🇪🇸 Fórmula I·P·C — Hispanohablantes · 90s</div>
+      <div class="htpl-body">
+        <div class="htpl-avoid">❌ <b>Evita</b>: "Ehh…" · "Este…" · respuesta corta · traducir el texto<br>✅ <b>Meta</b>: 120–160 palabras · da TU opinión · usa conectores</div>
+        <div class="htpl-row">
+          <span class="htpl-n">I</span>
+          <div><div class="htpl-lbl">Intro + posición <span class="htpl-t">0–12s</span></div>
+          <div class="htpl-phrase"><b>"I think [tema]…"</b> · <b>"I truly believe…"</b> · <b>"From my perspective,…"</b></div></div>
+        </div>
+        <div class="htpl-row">
+          <span class="htpl-n">P</span>
+          <div><div class="htpl-lbl">Puntos + ejemplo + contraste <span class="htpl-t">12–68s</span></div>
+          <div class="htpl-phrase"><b>"First of all,…"</b> · <b>"For example,…"</b> · <b>"Furthermore,…"</b> · <b>"However,…"</b></div></div>
+        </div>
+        <div class="htpl-row">
+          <span class="htpl-n">C</span>
+          <div><div class="htpl-lbl">Conclusión clara <span class="htpl-t">68–85s</span></div>
+          <div class="htpl-phrase"><b>"In conclusion,…"</b> · <b>"All things considered,…"</b> · <b>"Ultimately,…"</b></div></div>
+        </div>
+        <div class="htpl-ext">🇪🇸 Errores comunes: "I have 25 years" ❌ → <b>"I am 25 years old"</b> ✅ · "make me a question" ❌ → <b>"ask me"</b> ✅</div>
+      </div>
+    </div>
     <div class="ag-steps" id="ag-steps-read">
       <div class="ag-step">
         <div class="ag-step-top" onclick="toggleAgStep(this)">
@@ -1567,7 +1603,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       </div>
     </div>
     <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Para esta pregunta — consejos IA</div>
+      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Qué decir — I·P·C para esta pregunta</div>
       <div id="ag-body-read"><div class="ag-empty">Carga una pregunta para recibir guía IA</div></div>
       <div class="ag-retry-hint" id="ag-retry-read">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
@@ -1740,9 +1776,14 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-goal">Meta: 50–70 palabras</span>
       <span class="ag-wt-hint">responde directo, sin intro</span>
     </div>
-    <div style="padding:5px 4px 0;display:flex;flex-direction:column;gap:3px">
-      <div style="font-size:.71rem;font-weight:700;color:#1A6FA8">🤖 El AI adapta las siguientes preguntas según tu respuesta — responde bien para escalar a C1</div>
-      <div style="font-size:.7rem;font-weight:700;color:#7A5F00">⏸ Si te congelas: <b>"Well, I think…"</b> · <b>"In my experience…"</b></div>
+    <div style="padding:5px 10px 4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;border-bottom:1px dashed #DDD4FF">
+      <span style="font-size:.62rem;font-weight:900;color:#3D1A6B;white-space:nowrap">🇪🇸 Fórmula P·R·E</span>
+      <span style="background:#6B44E0;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">P</span><span style="font-size:.61rem;font-weight:700;color:#444">Punto</span>
+      <span style="color:#CCC;font-size:.7rem">→</span>
+      <span style="background:#C0392B;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">R</span><span style="font-size:.61rem;font-weight:700;color:#444">Razón</span>
+      <span style="color:#CCC;font-size:.7rem">→</span>
+      <span style="background:#1A6FA8;color:#fff;border-radius:50%;width:17px;height:17px;display:inline-flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:900;flex-shrink:0">E</span><span style="font-size:.61rem;font-weight:700;color:#444">Ejemplo</span>
+      <span style="margin-left:auto;font-size:.59rem;font-weight:700;color:#7A5F00">⏸ freeze→ <b>"Well, I think…"</b></span>
     </div>
     <div class="ag-steps" id="ag-steps-interactive">
       <div class="ag-step">
@@ -1801,7 +1842,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       </div>
     </div>
     <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-interactive">✨ Para esta pregunta — consejos IA</div>
+      <div class="ag-tips-lbl" id="ag-tips-lbl-interactive">✨ Qué decir — P·R·E para esta pregunta</div>
       <div id="ag-body-interactive"><div class="ag-empty">Inicia un set para recibir guía IA</div></div>
       <div class="ag-retry-hint" id="ag-retry-interactive">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
@@ -3403,23 +3444,35 @@ async function genGuide(taskType) {
 
   const prompts = {
     photo: `Eres un coach del DET (Duolingo English Test). ${contextText}\n\nDame exactamente 4 consejos MUY específicos y concretos en español (máx 18 palabras cada uno) sobre QUÉ decir y CÓMO describir ESTA foto específica durante los 90 segundos. Enfócate en contenido concreto: qué mencionar en cada parte. Solo lista numerada sin intro.`,
-    read: `Eres un coach del DET (Duolingo English Test). Pregunta: "${contextText}"\n\nDame exactamente 4 consejos MUY específicos en español (máx 18 palabras cada uno) sobre cómo responder ESTA pregunta concreta: qué posición tomar, qué ejemplos dar, qué argumentos usar. Solo lista numerada sin intro.`,
-    interactive: `Eres un coach del DET (Duolingo English Test). Pregunta de Interactive Speaking (35 segundos): "${contextText}"\n\nDame exactamente 4 consejos MUY específicos en español (máx 18 palabras cada uno) sobre cómo responder ESTA pregunta en 35s: qué posición tomar de inmediato, qué vocabulario C1 usar, cómo dar un ejemplo rápido, qué conector usar para cerrar. Solo lista numerada sin intro.`
+    read: `Eres un coach del DET para hispanohablantes. Pregunta Read Then Speak (90s): "${contextText}"\n\nLlena EXACTAMENTE esta plantilla I·P·C con frases en INGLÉS para ESTA pregunta:\n\nI — [intro + posición: "I think/I truly believe" + tu opinión sobre el tema, máx 15 palabras]\nP — [puntos clave encadenados: "First of all... furthermore... for example...", máx 20 palabras]\nC — [cierre: "In conclusion/Ultimately/All things considered" + posición final, máx 12 palabras]\n\nSOLO esas 3 líneas. Sin texto adicional.`,
+    interactive: `Eres un coach del DET para hispanohablantes. Pregunta Interactive Speaking (35s): "${contextText}"\n\nLlena EXACTAMENTE esta plantilla P·R·E con frases en INGLÉS específicas para ESTA pregunta (máx 14 palabras cada línea):\n\nP — [empieza con "I think/I believe/Definitely" + tu opinión concreta sobre esta pregunta]\nR — [empieza con "Because/The main reason is/This is because" + razón específica]\nE — [empieza con "For example, in my case/In my experience" + ejemplo personal concreto]\n\nSOLO esas 3 líneas. Sin texto adicional.`
   };
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true', 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-haiku-4-5', max_tokens: 280,
+      body: JSON.stringify({ model: 'claude-haiku-4-5', max_tokens: 350,
         messages: [{ role: 'user', content: prompts[taskType] }]
       })
     });
     const d = await r.json();
     const text = d.content?.[0]?.text || '';
-    const tips = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+\s*/, '').trim()).filter(l => l.length > 4).slice(0, 4);
-    if (tips.length === 0) throw new Error('No tips');
-    const html = tips.map(t => `<div class="ag-tip-item"><span class="ag-tip-icon">💡</span><span>${t}</span></div>`).join('');
+    const structLines = (text.match(/^[A-Z]\s*[—\-–]\s*.+$/gm) || []).slice(0, 3);
+    let html;
+    if (structLines.length >= 2) {
+      const colorMap = {P:'#6B44E0',R:'#C0392B',E:'#1A6FA8',I:'#6B44E0',C:'#1A6FA8'};
+      html = structLines.map(line => {
+        const m = line.match(/^([A-Z])\s*[—\-–]\s*(.+)$/);
+        if (!m) return '';
+        const bg = colorMap[m[1]] || '#6B44E0';
+        return `<div class="ag-tip-item" style="display:flex;align-items:flex-start;gap:6px;padding:4px 0"><span style="min-width:20px;height:20px;background:${bg};color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.70rem;font-weight:900;flex-shrink:0;margin-top:1px">${m[1]}</span><span style="font-size:.72rem;font-weight:700;line-height:1.45;color:#222">${m[2].trim()}</span></div>`;
+      }).join('');
+    } else {
+      const tips = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+\s*/, '').trim()).filter(l => l.length > 4).slice(0, 4);
+      if (tips.length === 0) throw new Error('No tips');
+      html = tips.map(t => `<div class="ag-tip-item"><span class="ag-tip-icon">💡</span><span>${t}</span></div>`).join('');
+    }
     if (_agData[taskType]) _agData[taskType].preBody = html;
     if (_agMode[taskType] === 'pre') bodyEl.innerHTML = html;
   } catch (e) {
@@ -3450,7 +3503,7 @@ function setGuideMode(taskType, mode) {
   card.classList.toggle('coaching', mode === 'post');
 
   if (mode === 'pre') {
-    if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : '✨ Para esta pregunta — consejos IA';
+    if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : taskType === 'interactive' ? '✨ Qué decir — P·R·E para esta pregunta' : taskType === 'read' ? '✨ Qué decir — I·P·C para esta pregunta' : '✨ Para esta pregunta — consejos IA';
     const _emptyLbl = taskType === 'photo' ? 'una foto' : taskType === 'interactive' ? 'un set' : 'una pregunta';
     bodyEl.innerHTML = _agData[taskType].preBody || `<div class="ag-empty">Carga ${_emptyLbl} para recibir guía IA</div>`;
     if (stepsEl) stepsEl.style.display = '';
