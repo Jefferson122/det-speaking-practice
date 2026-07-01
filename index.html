@@ -254,8 +254,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   .screen{max-width:1060px}
   #screen-photo.active,#screen-read.active,#screen-sample.active,#screen-interactive.active{display:grid;grid-template-columns:1fr 260px;column-gap:22px;align-items:start}
   #screen-photo>*,#screen-read>*,#screen-sample>*,#screen-interactive>*{grid-column:1}
-  #screen-photo>.ai-guide-card,#screen-read>.ai-guide-card,#screen-sample>.tpl-card,#screen-interactive>.tpl-card{grid-column:2;grid-row:1/99;position:sticky;top:76px;margin-top:0;max-height:calc(100vh - 96px);overflow-y:auto}
-  #screen-photo>.tpl-card,#screen-read>.tpl-card{grid-column:2;grid-row:1/99}
+  #screen-photo>.tpl-card,#screen-read>.tpl-card,#screen-sample>.tpl-card,#screen-interactive>.tpl-card{grid-column:2;grid-row:1/99;position:sticky;top:76px;margin-top:0;max-height:calc(100vh - 96px);overflow-y:auto}
 }
 @media(min-width:1200px){
   .screen{max-width:1260px}
@@ -533,7 +532,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .improve-col.orig .improve-col-label{color:var(--tm)}
 .improve-col.impr{background:#F0F4FF;border:1.5px solid #BFD0FF;color:var(--t)}
 .improve-col.impr .improve-col-label{color:#4B22CC}
-.improve-col mark{background:#D6EDFF;color:#1a4a8a;border-radius:3px;padding:0 2px;font-weight:800}
+.improve-col mark,#sc-improved-txt mark{background:#D6EDFF;color:#1a4a8a;border-radius:3px;padding:0 2px;font-weight:800}
 .improve-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 .ai-error{background:var(--rl);border-radius:10px;padding:10px 14px;font-size:.8rem;font-weight:700;color:var(--r);text-align:center}
 
@@ -673,6 +672,494 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ai-coach-panel li{font-size:.75rem;font-weight:700;color:#3D1A6B;line-height:1.45;padding-left:16px;position:relative}
 .ai-coach-panel li::before{content:"▸";position:absolute;left:0;color:#9B59B6;font-weight:900}
 .coach-close{float:right;background:none;border:none;cursor:pointer;font-size:.67rem;color:#9B59B6;font-weight:800;font-family:'Nunito',sans-serif;padding:0;margin-bottom:3px}
+
+/* ─── LEXICAL HUD ─── */
+#hud-fab{
+  position:fixed;bottom:84px;left:16px;z-index:160;
+  width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,#0d0424,#041428);
+  border:1.5px solid rgba(192,132,252,.55);
+  color:#C084FC;font-size:1.25rem;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  box-shadow:0 4px 18px rgba(192,132,252,.35);
+  transition:transform .18s,box-shadow .18s;
+  animation:hud-fab-pulse 3s ease-in-out infinite;
+}
+#hud-fab.show{display:flex}
+#hud-fab:hover{transform:scale(1.12);box-shadow:0 6px 28px rgba(192,132,252,.6)}
+@keyframes hud-fab-pulse{
+  0%,100%{box-shadow:0 4px 18px rgba(192,132,252,.35),0 0 0 0 rgba(192,132,252,.25)}
+  50%{box-shadow:0 4px 18px rgba(192,132,252,.35),0 0 0 9px rgba(192,132,252,.0)}
+}
+#hud-fab-label{font-size:.52rem;font-weight:900;letter-spacing:.5px;line-height:1;margin-top:2px;display:block;text-align:center}
+
+/* ── Side panel — slides in from right, no backdrop ── */
+#lexical-hud{
+  position:fixed;top:0;right:0;bottom:0;z-index:680;
+  display:flex;align-items:stretch;justify-content:flex-end;
+  pointer-events:none;
+}
+#lexical-hud.open{pointer-events:all}
+
+.hud-inner{
+  position:relative;z-index:1;
+  width:min(96vw,480px);
+  background:#07071E;
+  border-left:1px solid rgba(192,132,252,.18);
+  display:flex;flex-direction:column;
+  transform:translateX(102%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+  height:100vh;
+}
+#lexical-hud.open .hud-inner{transform:translateX(0)}
+
+/* ── Scrollable vocabulary area ── */
+#hud-word-grid{
+  flex:1;min-height:0;
+  overflow-y:auto;padding:18px 18px 28px;
+  scrollbar-width:thin;scrollbar-color:rgba(192,132,252,.25) transparent;
+}
+#hud-word-grid::-webkit-scrollbar{width:3px}
+#hud-word-grid::-webkit-scrollbar-thumb{background:rgba(192,132,252,.25);border-radius:4px}
+
+.hwg-section{margin-bottom:14px}
+.hwg-section-head{
+  display:flex;align-items:center;gap:7px;
+  margin-bottom:8px;padding-bottom:5px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.hwg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hwg-lbl{
+  font-size:.72rem;font-weight:900;letter-spacing:1.5px;
+  text-transform:uppercase;font-family:'Nunito',sans-serif;
+}
+.hwg-badge{
+  font-size:.56rem;font-weight:900;letter-spacing:.6px;
+  padding:1px 6px;border-radius:8px;border:1px solid;
+}
+.hwg-count{
+  font-size:.6rem;font-weight:700;color:rgba(255,255,255,.25);
+  margin-left:auto;font-family:'Nunito',sans-serif;
+}
+.hwg-chips{display:flex;flex-wrap:wrap;gap:5px}
+.hwg-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:.84rem;font-weight:700;padding:5px 10px 5px 13px;
+  border-radius:20px;font-family:'Nunito',sans-serif;
+  border:1.5px solid var(--chip-color);color:var(--chip-color);
+  background:transparent;transition:.13s;user-select:none;
+}
+.hwg-chip:hover{background:rgba(255,255,255,.05)}
+.hwg-chip.ctx{
+  background:var(--chip-color);color:#06061A;
+  box-shadow:0 0 10px var(--chip-color);
+}
+.hwg-chip.ctx .hwg-chip-state{color:#06061A;opacity:.5}
+.hwg-chip-txt{cursor:pointer;flex:1;min-width:0}
+.hwg-chip-txt:hover{text-decoration:underline;text-underline-offset:3px}
+.hwg-chip-state{
+  font-size:.7rem;opacity:.22;cursor:pointer;
+  transition:.15s;flex-shrink:0;line-height:1;
+  padding:1px 2px;border-radius:4px;
+}
+.hwg-chip-state:hover{opacity:1;background:rgba(255,255,255,.1)}
+/* State 1 — needs repeat (orange tint) */
+.hwg-chip.st1{background:rgba(251,146,60,.15);border-color:#FB923C;color:#FB923C}
+.hwg-chip.st1 .hwg-chip-state{opacity:1;color:#FB923C}
+/* State 2 — mastered (dimmed, dashed) */
+.hwg-chip.st2{opacity:.45;border-style:dashed}
+.hwg-chip.st2 .hwg-chip-state{opacity:1;color:#4ADE80}
+.hwg-chip.st3{opacity:.28;border-style:dashed;text-decoration:line-through;text-decoration-color:var(--chip-color);filter:grayscale(.6)}
+.hwg-chip.st3 .hwg-chip-state{opacity:1;color:#F87171}
+.hwg-hidden-cnt{
+  margin-left:4px;font-size:.62rem;font-weight:800;
+  color:#F87171;opacity:.6;cursor:pointer;
+  border:1px dashed rgba(248,113,113,.4);border-radius:4px;
+  padding:1px 5px;letter-spacing:.03em
+}
+.hwg-hidden-cnt:hover{opacity:1}
+.hwg-hidden-bar{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 12px;margin-bottom:10px;
+  background:rgba(248,113,113,.05);
+  border:1px dashed rgba(248,113,113,.3);
+  border-radius:8px;cursor:pointer;
+  font-size:.72rem;font-weight:800;letter-spacing:.04em;
+  color:rgba(248,113,113,.7);font-family:'Nunito',sans-serif
+}
+.hwg-hidden-bar:hover{background:rgba(248,113,113,.1);color:#F87171}
+
+/* ── Hero: VOCABULARIO PARA ESTE EJERCICIO ── */
+.hwg-hero{padding:6px 0 20px;margin-bottom:0}
+.hwg-hero-title{
+  font-size:.52rem;font-weight:900;letter-spacing:.25em;
+  color:rgba(255,255,255,.2);margin-bottom:20px;
+  font-family:'Nunito',sans-serif;text-transform:uppercase
+}
+.hwg-hero-sub{margin-bottom:14px}
+.hwg-hero-sub:last-child{margin-bottom:0}
+.hwg-hero-sub-label{display:none} /* labels hidden — words speak for themselves */
+.hwg-ai-lbl,.hwg-conn-lbl{display:none}
+.hwg-hero-chips{display:flex;flex-wrap:wrap;gap:9px}
+.hwg-hero-empty{
+  font-size:.82rem;color:rgba(255,255,255,.15);
+  padding:8px 0;font-family:'Nunito',sans-serif;line-height:1.6
+}
+/* AI suggestion chips — large, prominent */
+.hwg-sug-hero{
+  padding:10px 20px 10px 12px !important;
+  border-radius:26px !important;
+  border:2px solid rgba(167,139,250,.55) !important;
+  background:rgba(167,139,250,.06) !important;
+  gap:9px !important;transition:.18s !important
+}
+.hwg-sug-hero:hover{
+  border-color:#A78BFA !important;
+  background:rgba(167,139,250,.14) !important;
+  transform:translateY(-1px)
+}
+.hwg-sug-hero .hwg-sug-word{
+  font-size:1.05rem !important;font-weight:800 !important;
+  color:#C4B5FD !important;letter-spacing:.01em !important
+}
+.hwg-sug-hero .hwg-sug-plus{
+  width:22px !important;height:22px !important;
+  font-size:1rem !important;font-weight:900 !important;
+  background:rgba(167,139,250,.2) !important;color:#A78BFA !important
+}
+/* Connector toggle row */
+.hwg-conn-toggle{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:12px;padding:5px 12px;border-radius:16px;
+  font-size:.68rem;font-weight:800;letter-spacing:.08em;
+  color:rgba(248,113,113,.5);cursor:pointer;
+  border:1px solid rgba(248,113,113,.2);
+  font-family:'Nunito',sans-serif;transition:.15s
+}
+.hwg-conn-toggle:hover{color:#F87171;border-color:rgba(248,113,113,.5);background:rgba(248,113,113,.05)}
+.hwg-conn-row{margin-top:10px}
+/* Connector chips */
+.hwg-conn-chip{
+  border-color:rgba(248,113,113,.4) !important;
+  background:rgba(248,113,113,.05) !important
+}
+.hwg-conn-chip:hover{border-color:#F87171 !important;background:rgba(248,113,113,.1) !important}
+.hwg-conn-plus{background:rgba(248,113,113,.15) !important;color:#F87171 !important}
+.hwg-conn-word{color:#FCA5A5 !important}
+
+/* ── Bank toggle button ── */
+.hwg-bank-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;margin-bottom:8px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:8px;cursor:pointer;
+  font-size:.72rem;font-weight:800;letter-spacing:.05em;
+  color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif;
+  transition:background .15s
+}
+.hwg-bank-toggle:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8)}
+.hwg-bank-arrow{font-size:.65rem;opacity:.6}
+.hwg-section.sel .hwg-section-head{border-bottom-color:var(--sc);border-bottom-width:2px}
+.hwg-section.sel .hwg-lbl{text-shadow:0 0 8px var(--sc)}
+
+/* ════════════════════════════════════════════════
+   DUOLINGO LIGHT THEME
+   ════════════════════════════════════════════════ */
+/* Panel */
+.hud-inner{background:#FAFAFA;border-left:2px solid #E5E5E5}
+
+/* Header — Duolingo green */
+.hud-header{background:#58CC02;border-bottom:none;padding:10px 14px 10px 18px}
+.hud-title{color:#fff;letter-spacing:1px}
+.hud-subtitle{color:rgba(255,255,255,.8)}
+.hud-legend .hud-dot{box-shadow:none !important;opacity:.85}
+.hud-close{color:#fff;background:rgba(255,255,255,.2);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:none}
+.hud-close:hover{background:rgba(255,255,255,.35);color:#fff}
+
+/* Word grid */
+#hud-word-grid{background:#FAFAFA}
+
+/* Section structure */
+.hwg-section-head{border-bottom-color:#EBEBEB}
+.hwg-count{color:#AFAFAF !important}
+/* Chips on white bg */
+.hwg-chip:hover{background:rgba(0,0,0,.04)}
+.hwg-chip.ctx{background:var(--chip-color);color:#fff;box-shadow:none}
+.hwg-chip.ctx .hwg-chip-state{color:#fff;opacity:.6}
+.hwg-chip-state:hover{background:rgba(0,0,0,.08)}
+.hwg-chip.st1{background:rgba(255,150,0,.1);border-color:#FF9600;color:#CC7A00}
+.hwg-chip.st1 .hwg-chip-state{color:#FF9600}
+.hwg-chip.st2 .hwg-chip-state{color:#58CC02}
+.hwg-chip.st3 .hwg-chip-state{color:#FF4B4B}
+.hwg-chip-rm{color:#C0C0C0}
+.hwg-chip-rm:hover{color:#FF4B4B;opacity:1}
+
+/* Hero */
+.hwg-hero-title{color:#AFAFAF}
+.hwg-hero-empty{color:#BFBFBF}
+
+/* AI chips — Duolingo blue */
+.hwg-sug-chip{
+  border-color:rgba(28,176,246,.45);
+  color:#1CB0F6;background:rgba(28,176,246,.05)
+}
+.hwg-sug-chip:hover{border-color:#1CB0F6;background:rgba(28,176,246,.1);color:#0A8EC4;border-style:solid}
+.hwg-sug-plus{background:rgba(28,176,246,.15) !important;color:#1CB0F6 !important}
+.hwg-sug-word{color:#0A8EC4}
+.hwg-sug-hero{
+  border-color:rgba(28,176,246,.5) !important;
+  background:rgba(28,176,246,.05) !important
+}
+.hwg-sug-hero:hover{border-color:#1CB0F6 !important;background:rgba(28,176,246,.12) !important;transform:translateY(-1px)}
+.hwg-sug-hero .hwg-sug-word{color:#0A8EC4 !important}
+.hwg-sug-hero .hwg-sug-plus{background:rgba(28,176,246,.18) !important;color:#1CB0F6 !important}
+
+/* Connector chips — Duolingo orange */
+.hwg-conn-chip{border-color:rgba(255,150,0,.45) !important;background:rgba(255,150,0,.05) !important}
+.hwg-conn-chip:hover{border-color:#FF9600 !important;background:rgba(255,150,0,.1) !important}
+.hwg-conn-plus{background:rgba(255,150,0,.18) !important;color:#CC7A00 !important}
+.hwg-conn-word{color:#CC7A00 !important}
+.hwg-conn-toggle{color:rgba(204,122,0,.7);border-color:rgba(255,150,0,.25);background:transparent}
+.hwg-conn-toggle:hover{color:#CC7A00;border-color:rgba(255,150,0,.5);background:rgba(255,150,0,.05)}
+
+/* Bank toggle — green */
+.hwg-bank-toggle{
+  background:rgba(88,204,2,.07);
+  border-color:rgba(88,204,2,.35);
+  color:#3A8800
+}
+.hwg-bank-toggle:hover{background:rgba(88,204,2,.13);color:#2A6600}
+.hwg-bank-arrow{color:#58CC02;opacity:1}
+
+/* AI loading */
+.hwg-ai-loading{background:rgba(28,176,246,.06);border-color:rgba(28,176,246,.2);color:#1CB0F6}
+
+/* Hidden bar */
+.hwg-hidden-bar{background:rgba(255,75,75,.04);border-color:rgba(255,75,75,.2);color:#CC3333}
+.hwg-hidden-bar:hover{background:rgba(255,75,75,.08)}
+.hwg-hidden-cnt{color:#FF4B4B;border-color:rgba(255,75,75,.3)}
+
+/* Mobile: bottom sheet */
+@media(max-width:640px){
+  #lexical-hud{top:auto;right:0;bottom:0;left:0;align-items:flex-end}
+  .hud-inner{
+    width:100%;height:88vh;border-left:none;
+    border-top:1px solid rgba(192,132,252,.22);
+    border-radius:20px 20px 0 0;
+    transform:translateY(102%);
+  }
+  #lexical-hud.open .hud-inner{transform:translateY(0)}
+}
+
+/* Header bar */
+.hud-header{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px 12px 18px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;background:#08082A;
+}
+.hud-header-left{flex:1;min-width:0}
+.hud-title{
+  font-size:.7rem;font-weight:900;
+  color:#C084FC;letter-spacing:1.6px;text-transform:uppercase;
+  font-family:'Nunito',sans-serif;
+}
+.hud-subtitle{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.3);margin-top:1px}
+.hud-legend{display:flex;gap:5px;align-items:center}
+.hud-dot{
+  width:9px;height:9px;border-radius:50%;cursor:default;
+  transition:.2s;flex-shrink:0;
+}
+.hud-dot:hover{transform:scale(1.5)}
+.hud-close{
+  background:rgba(255,255,255,.06);border:none;
+  color:rgba(255,255,255,.45);width:28px;height:28px;
+  border-radius:50%;cursor:pointer;font-size:.85rem;
+  transition:.2s;flex-shrink:0;font-family:'Nunito',sans-serif;
+}
+.hud-close:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* Canvas area */
+#hud-canvas-wrap{
+  flex:1;min-height:0;position:relative;overflow:hidden;
+}
+#hud-canvas{display:block;width:100%;height:100%}
+
+/* Scanline overlay for CRT feel */
+.hud-scanline{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(
+    0deg,transparent,transparent 3px,
+    rgba(0,0,20,.08) 3px,rgba(0,0,20,.08) 4px
+  );
+}
+
+/* Bottom word panel */
+#hud-word-panel{
+  flex-shrink:0;overflow:hidden;
+  max-height:0;transition:max-height .28s ease,padding .28s ease;
+  padding:0 14px;border-top:0px solid rgba(255,255,255,.06);
+  background:#08082A;
+}
+#hud-word-panel.visible{
+  max-height:160px;padding:10px 14px 14px;
+  border-top-width:1px;
+}
+.hwp-header{
+  display:flex;align-items:center;gap:7px;margin-bottom:8px;
+}
+.hwp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hwp-title{font-size:.7rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-family:'Nunito',sans-serif}
+.hwp-hint{margin-left:auto;font-size:.62rem;font-weight:700;color:rgba(255,255,255,.28)}
+.hwp-chips{display:flex;flex-wrap:wrap;gap:5px}
+.hwp-chip{
+  font-size:.72rem;font-weight:800;padding:4px 11px;
+  border-radius:20px;cursor:pointer;font-family:'Nunito',sans-serif;
+  border:1.5px solid var(--chip-color);
+  color:var(--chip-color);background:transparent;
+  transition:.15s;
+}
+.hwp-chip:hover{
+  background:var(--chip-color);color:#06061A;
+}
+.hwp-chip.used{
+  opacity:.45;text-decoration:line-through;
+  text-decoration-color:var(--chip-color);
+}
+
+/* ─── HUD CONTEXT BAR ─── */
+#hud-context-bar{
+  flex-shrink:0;padding:8px 14px;
+  background:#080820;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  min-height:36px;transition:.25s;
+}
+.hcb-idle{display:flex;align-items:center}
+.hcb-idle-txt{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.28);font-family:'Nunito',sans-serif}
+
+.hcb-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:7px}
+.hcb-lbl{font-size:.58rem;font-weight:900;letter-spacing:1.1px;color:rgba(255,255,255,.38);
+  text-transform:uppercase;font-family:'Nunito',sans-serif;white-space:nowrap}
+.hcb-pill{font-size:.64rem;font-weight:900;padding:2px 10px;border-radius:20px;
+  border:1px solid var(--pc);color:var(--pc);font-family:'Nunito',sans-serif;white-space:nowrap}
+.hcb-words{display:flex;flex-wrap:wrap;gap:5px}
+.hcb-chip{font-size:.7rem;padding:3px 9px}
+
+/* ─── MY CHOSEN WORDS section ─── */
+.hwg-mine-section .hwg-section-head{
+  background:rgba(250,204,21,.06);border-radius:8px 8px 0 0;
+  padding:6px 8px;border-bottom:1px solid rgba(250,204,21,.2)!important;
+}
+.hwg-chip-mine{background:rgba(250,204,21,.1)!important;border-style:solid!important}
+.hwg-chip-rm{
+  font-size:.72rem;opacity:.4;cursor:pointer;transition:.15s;
+  flex-shrink:0;padding:0 2px;line-height:1;color:inherit;
+}
+.hwg-chip-rm:hover{opacity:1;color:#F87171}
+
+/* ─── AI SUGGESTION TRAY ─── */
+.hwg-sug-section .hwg-section-head{
+  background:rgba(167,139,250,.05);border-radius:8px 8px 0 0;
+  padding:6px 8px;border-bottom:1px solid rgba(167,139,250,.15)!important;
+}
+.hwg-sug-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 11px 5px 8px;
+  border:1.5px dashed rgba(167,139,250,.45);
+  border-radius:20px;cursor:pointer;
+  font-family:'Nunito',sans-serif;
+  color:rgba(167,139,250,.75);
+  background:transparent;transition:.15s;user-select:none;
+}
+.hwg-sug-chip:hover{
+  border-color:#A78BFA;color:#A78BFA;
+  background:rgba(167,139,250,.09);
+  border-style:solid;
+}
+.hwg-sug-plus{
+  font-size:.85rem;font-weight:900;color:#A78BFA;
+  background:rgba(167,139,250,.18);border-radius:50%;
+  width:17px;height:17px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;line-height:1;
+}
+.hwg-sug-word{font-size:.84rem;font-weight:700}
+.hwg-sug-cat{
+  font-size:.52rem;font-weight:900;opacity:.5;text-transform:uppercase;
+  padding:1px 4px;border-radius:3px;background:rgba(255,255,255,.07);flex-shrink:0;
+}
+.hwg-sug-hint{
+  font-size:.68rem;font-weight:700;opacity:.5;
+  font-style:italic;white-space:nowrap;
+}
+.hwg-ai-loading{
+  display:flex;align-items:center;gap:9px;padding:11px 14px;
+  background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.18);
+  border-radius:10px;margin-bottom:10px;
+  font-size:.74rem;font-weight:700;color:rgba(167,139,250,.75);
+  font-family:'Nunito',sans-serif;
+}
+.hwg-ai-spin{display:inline-block;animation:ai-spin 1.2s linear infinite}
+@keyframes ai-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hwg-chip-cat{
+  font-size:.52rem;font-weight:900;letter-spacing:.4px;
+  opacity:.5;text-transform:uppercase;flex-shrink:0;
+  padding:1px 3px;border-radius:3px;background:rgba(255,255,255,.07);
+}
+
+/* ─── PRONUNCIATION BAR ─── */
+.hwg-pron-bar{
+  position:sticky;bottom:0;
+  background:#0b0b22;
+  border:1px solid rgba(192,132,252,.35);
+  border-radius:12px;
+  padding:11px 14px 13px;
+  margin-top:10px;
+  box-shadow:0 -4px 20px rgba(0,0,0,.4);
+}
+.hwg-pron-head{
+  display:flex;align-items:center;margin-bottom:8px;
+}
+.hwg-pron-lbl{
+  font-size:.58rem;font-weight:900;letter-spacing:1.2px;
+  color:rgba(255,255,255,.32);text-transform:uppercase;
+  font-family:'Nunito',sans-serif;flex:1;
+}
+.hwg-pron-close{
+  background:none;border:none;color:rgba(255,255,255,.28);
+  cursor:pointer;font-size:.8rem;padding:0 2px;
+}
+.hwg-pron-close:hover{color:white}
+.hwg-pron-body{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hwg-pron-word{
+  font-size:1.4rem;font-weight:900;
+  font-family:'Nunito',sans-serif;min-width:0;flex:1;
+}
+.hwg-pron-btns{display:flex;gap:7px;flex-shrink:0}
+.hwg-pron-btn{
+  font-size:.72rem;font-weight:800;padding:6px 13px;
+  border-radius:16px;border:1.5px solid rgba(192,132,252,.5);
+  color:#C084FC;background:transparent;cursor:pointer;
+  font-family:'Nunito',sans-serif;transition:.15s;white-space:nowrap;
+}
+.hwg-pron-btn:hover{background:rgba(192,132,252,.18)}
+.hwg-pron-btn.mic{border-color:rgba(248,113,113,.5);color:#F87171}
+.hwg-pron-btn.mic:hover{background:rgba(248,113,113,.18)}
+.hwg-pron-result{
+  width:100%;font-size:.82rem;font-weight:700;
+  font-family:'Nunito',sans-serif;min-height:22px;margin-top:4px;
+}
+
+/* ─── FAB BADGE ─── */
+#hud-fab-badge{
+  position:absolute;top:6px;right:6px;
+  width:9px;height:9px;border-radius:50%;
+  background:#F87171;border:1.5px solid #06061A;
+  display:none;
+}
+#hud-fab-badge.show{display:block;animation:badge-pop .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes badge-pop{from{transform:scale(0)}to{transform:scale(1)}}
 </style>
 </head>
 <body>
@@ -839,90 +1326,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new photo · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="ai-guide-card" id="ai-guide-photo">
-    <div class="ag-hdr">
-      <span class="ag-title" id="ag-title-photo">🤖 Guía IA — Foto</span>
-      <div class="ag-mode-toggle">
-        <button class="ag-mode-btn on" id="ag-mode-pre-photo" onclick="setGuideMode('photo','pre')" title="Antes de hablar">📋 Antes</button>
-        <button class="ag-mode-btn" id="ag-mode-post-photo" onclick="setGuideMode('photo','post')" title="Mejorar lo que dije">🔧 Mejorar</button>
-      </div>
-    </div>
-    <div class="ag-steps" id="ag-steps-photo">
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">1</span><span class="ag-sname">Visión general</span><span class="ag-time">0–15s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"This photo shows…" / "The main focus is…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Also,')">Also,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('What is more,')">What's more,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('It seems like')">It seems like</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('I can notice that')">I can notice that</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">2</span><span class="ag-sname">Primer plano</span><span class="ag-time">15–40s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In the foreground I can see…" / "A person who appears to be…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Moving on,')">Moving on,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('I can also see')">I can also see</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Not only that, but')">Not only that, but</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Next to that,')">Next to that,</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">3</span><span class="ag-sname">Fondo / Lugar</span><span class="ag-time">40–60s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In the background I notice…" / "The setting appears to be…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('In the distance,')">In the distance,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Behind them,')">Behind them,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Furthermore,')">Furthermore,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Further back,')">Further back,</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">4</span><span class="ag-sname">Atmósfera</span><span class="ag-time">60–80s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"The atmosphere is…" / "I think the person feels…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Overall,')">Overall,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('This suggests that')">This suggests that</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Not only does this show, but it also')">Not only… but also</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('It appears that')">It appears that</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">5</span><span class="ag-sname">Conclusión</span><span class="ag-time">80–90s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"This reminds me of…" / "In my country, people often…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('To wrap up,')">To wrap up,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('All in all,')">All in all,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('What stands out is')">What stands out is</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Interestingly,')">Interestingly,</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-photo">✨ Para esta foto</div>
-      <div id="ag-body-photo"><div class="ag-empty">Carga una foto para recibir guía IA personalizada</div></div>
-      <div class="ag-retry-hint" id="ag-retry-photo">💪 ¡Vuelve a grabar con estos consejos!</div>
-    </div>
-  </div>
-
-  <!-- HIDDEN: tpl-card original kept for drill data, not displayed -->
-  <div class="tpl-card" style="display:none" id="tpl-photo-hidden">
+  <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Estructura — Foto (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
       <div class="tpl-step"><span class="tpl-n">1</span><div class="tpl-phrase-card">
@@ -1018,88 +1422,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new question · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="ai-guide-card" id="ai-guide-read">
-    <div class="ag-hdr">
-      <span class="ag-title" id="ag-title-read">🤖 Guía IA — Pregunta</span>
-      <div class="ag-mode-toggle">
-        <button class="ag-mode-btn on" id="ag-mode-pre-read" onclick="setGuideMode('read','pre')" title="Antes de hablar">📋 Antes</button>
-        <button class="ag-mode-btn" id="ag-mode-post-read" onclick="setGuideMode('read','post')" title="Mejorar lo que dije">🔧 Mejorar</button>
-      </div>
-    </div>
-    <div class="ag-steps" id="ag-steps-read">
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">1</span><span class="ag-sname">Tu opinión</span><span class="ag-time">0–12s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In my opinion…" / "I strongly believe that…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('From my perspective,')">From my perspective,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('I would argue that')">I would argue that</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('I strongly feel that')">I strongly feel that</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">2</span><span class="ag-sname">Primer punto + razón</span><span class="ag-time">12–38s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"First of all…" / "One reason is…" / "For example…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('To illustrate,')">To illustrate,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('This is because')">This is because</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('As a result,')">As a result,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('For instance,')">For instance,</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">3</span><span class="ag-sname">Segundo punto</span><span class="ag-time">38–62s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"Another reason is…" / "In addition to this…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Not only that, but also')">Not only… but also</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Furthermore,')">Furthermore,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('What is more,')">What's more,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('In addition,')">In addition,</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">4</span><span class="ag-sname">Contrapunto</span><span class="ag-time">62–78s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"However…" / "Some people think… but I believe…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('On the other hand,')">On the other hand,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Even though')">Even though</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Despite this,')">Despite this,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('Nevertheless,')">Nevertheless,</span>
-          </div>
-        </div>
-      </div>
-      <div class="ag-step" onclick="toggleAgStep(this)">
-        <div class="ag-step-top"><span class="ag-n">5</span><span class="ag-sname">Conclusión</span><span class="ag-time">78–90s</span><span class="ag-step-chev">▶</span></div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In conclusion…" / "That is why I think…"</div>
-          <span class="ag-conn-lbl">Conectores:</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('To sum up,')">To sum up,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('All things considered,')">All things considered,</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('That is why')">That is why</span>
-            <span class="ag-conn-chip" onclick="event.stopPropagation();hearPhrase('All in all,')">All in all,</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="ag-tips">
-      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Para esta pregunta</div>
-      <div id="ag-body-read"><div class="ag-empty">Carga una pregunta para recibir guía IA personalizada</div></div>
-      <div class="ag-retry-hint" id="ag-retry-read">💪 ¡Vuelve a grabar con estos consejos!</div>
-    </div>
-  </div>
-
-  <div class="tpl-card" style="display:none" id="tpl-read-hidden">
+  <div class="tpl-card">
     <div class="tpl-hdr"><h4>📋 Estructura — Leer y Hablar (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
     <div class="tpl-body">
       <div class="tpl-step"><span class="tpl-n">1</span><div class="tpl-phrase-card">
@@ -1792,18 +2115,16 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="lds"></div> IA mejorando tu respuesta…
       </div>
       <div id="sc-ai-result" style="display:none">
-        <div class="improve-cols">
-          <div class="improve-col orig">
-            <div class="improve-col-label">🎙 Lo que dijiste</div>
-            <div id="sc-original-txt"></div>
+        <div style="font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--tm);margin-bottom:4px">🎙 Lo que dijiste</div>
+        <div id="sc-original-txt" style="font-size:.79rem;font-weight:600;color:var(--tl);background:var(--bg);border-radius:8px;padding:8px 12px;margin-bottom:12px;line-height:1.5;font-style:italic"></div>
+        <div class="tpl-phrase-card" style="border-color:var(--g);margin-bottom:10px">
+          <div class="tpl-step-title" style="background:linear-gradient(135deg,#E8F8E0,#EDF8FF);cursor:default">
+            <span class="tpl-step-name">✨ Versión mejorada</span>
+            <button class="tpl-hear" onclick="hearImproved()">🔊 Escuchar</button>
           </div>
-          <div class="improve-col impr">
-            <div class="improve-col-label">✨ Versión mejorada (DET)</div>
-            <div id="sc-improved-txt"></div>
-          </div>
+          <div class="tpl-phrase" id="sc-improved-txt" style="font-style:normal;color:var(--t);font-size:.88rem;padding:12px 14px 10px"></div>
         </div>
         <div class="improve-actions">
-          <button class="btn btn-ghost btn-sm" onclick="hearImproved()">🔊 Escuchar mejorada</button>
           <button class="btn btn-pron btn-sm" id="pron-btn" onclick="requestPronWords()">🎯 Pronunciar palabras</button>
           <button class="btn btn-b btn-sm" onclick="openShadowing()">🎙 Practicar esto →</button>
         </div>
@@ -2130,6 +2451,7 @@ function goTo(mod){
   const s=document.getElementById('screen-'+mod);if(s)s.classList.add('active');
   window.scrollTo(0,0);
   clearAllTimers();hidePrepOverlay();
+  hudFabVisible(true);
   if(!micGranted.val&&mod!=='templates')askMic();
   if(mod==='photo')newPhoto();
   if(mod==='read')newReadQ();
@@ -2144,6 +2466,7 @@ function goHome(){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-home').style.display='block';
   window.scrollTo(0,0);
+  hudFabVisible(false);
 }
 function tplTab(name, el){
   document.querySelectorAll('#tpl-study-tabs .tab').forEach(t=>t.classList.remove('active'));
@@ -2308,7 +2631,6 @@ function finishEarly(mod){
     const txt=document.getElementById('ph-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
-    coachAfterRecording('photo',txt,lastQuestion);
   } else if(mod==='read'){
     if(rdPhase!=='speaking')return;
     clearInterval(rdIv);rdIv=null;
@@ -2321,7 +2643,6 @@ function finishEarly(mod){
     const txt=document.getElementById('rd-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';lastHint='';
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
-    coachAfterRecording('read',txt,lastQuestion);
   } else if(mod==='sample'){
     if(spPhase!=='speaking')return;
     clearInterval(spIv);spIv=null;
@@ -2392,7 +2713,6 @@ function startPhotoTimer(){
       const _phTxt=document.getElementById('ph-transcript').textContent;
       lastTranscript=_phTxt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
       setTimeout(()=>showScore(analyzeTranscript(_phTxt,90)),700);
-      coachAfterRecording('photo',_phTxt,lastQuestion);
       return;
     }
     if(phPhase==='speaking'&&phLeft<=15){
@@ -2577,7 +2897,6 @@ function startReadTimer(){
       const _rdTxt=document.getElementById('rd-transcript').textContent;
       lastTranscript=_rdTxt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';
       setTimeout(()=>showScore(analyzeTranscript(_rdTxt,90)),700);
-      coachAfterRecording('read',_rdTxt,lastQuestion);
       return;
     }
     if(rdPhase==='speaking'&&rdLeft<=15){
@@ -4797,6 +5116,13 @@ function enterApp(){
   pingLMSStatus();
 }
 
+// ─── LEXICAL HUD HELPERS ───
+function hudFabVisible(show){
+  const fab=document.getElementById('hud-fab');
+  if(fab)fab.classList.toggle('show',show);
+  if(!show&&window.LexicalHUD){LexicalHUD.close();LexicalHUD.clearContext();}
+}
+
 // ─── INIT ───
 window.addEventListener('load',()=>{
   if(window.speechSynthesis)speechSynthesis.getVoices();
@@ -4816,5 +5142,44 @@ window.addEventListener('load',()=>{
   }).catch(()=>{});
 });
 </script>
+
+<!-- ═══ LEXICAL HUD — FAB + DRAWER ═══ -->
+<button id="hud-fab" onclick="LexicalHUD.toggle()" title="Lexical HUD — Vocabulario DET" style="position:relative">
+  🧠
+  <span id="hud-fab-label">HUD</span>
+  <span id="hud-fab-badge"></span>
+</button>
+
+<div id="lexical-hud" role="dialog" aria-label="Lexical HUD">
+  <div class="hud-inner">
+
+    <div class="hud-header">
+      <div class="hud-header-left">
+        <div class="hud-title">⚡ Vocabulario DET</div>
+        <div class="hud-subtitle">C1/C2 · Speaking</div>
+      </div>
+      <div class="hud-legend">
+        <div class="hud-dot" style="background:#C084FC;box-shadow:0 0 5px #C084FC" title="Academic"></div>
+        <div class="hud-dot" style="background:#38BDF8;box-shadow:0 0 5px #38BDF8" title="Technical"></div>
+        <div class="hud-dot" style="background:#F87171;box-shadow:0 0 5px #F87171" title="Connectors"></div>
+        <div class="hud-dot" style="background:#FB923C;box-shadow:0 0 5px #FB923C" title="Social"></div>
+        <div class="hud-dot" style="background:#FACC15;box-shadow:0 0 5px #FACC15" title="Emotional"></div>
+        <div class="hud-dot" style="background:#4ADE80;box-shadow:0 0 5px #4ADE80" title="Domestic"></div>
+        <div class="hud-dot" style="background:#F472B6;box-shadow:0 0 5px #F472B6" title="Power Frames"></div>
+      </div>
+      <button class="hud-close" onclick="LexicalHUD.close()" aria-label="Cerrar HUD">✕</button>
+    </div>
+
+    <div id="hud-word-grid"></div>
+
+  </div>
+
+  <!-- Hidden — kept for JS canvas compat -->
+  <canvas id="hud-canvas" style="display:none;position:absolute;visibility:hidden;pointer-events:none"></canvas>
+  <div id="hud-context-bar" style="display:none"></div>
+  <div id="hud-word-panel" style="display:none"></div>
+</div>
+
+<script src="lexical-hud.js"></script>
 </body>
 </html>
