@@ -398,6 +398,11 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ag-mode-btn.on{background:#6B44E0;color:#fff}
 .ag-retry-hint{background:#F0FFF4;border:1px solid #B2EFC0;border-radius:8px;padding:6px 10px;font-size:.7rem;font-weight:700;color:var(--gd);margin-top:8px;text-align:center;display:none}
 .ag-retry-hint.show{display:block}
+.ag-word-target{display:flex;align-items:center;gap:8px;padding:7px 13px;background:linear-gradient(90deg,#F8F5FF,#EDF9FF);border-bottom:1.5px solid var(--br);flex-wrap:wrap}
+.ag-wt-time{font-size:.68rem;font-weight:900;background:var(--yl);color:#5C3D00;padding:2px 9px;border-radius:10px;white-space:nowrap}
+.ag-wt-goal{font-size:.8rem;font-weight:900;color:#4B22CC}
+.ag-wt-hint{font-size:.66rem;font-weight:700;color:var(--tm);margin-left:auto}
+.live-stat .wc-target{color:var(--tm);font-weight:600;font-size:.68rem}
 
 /* ─── PREP OVERLAY ─── */
 #prep-overlay{position:fixed;bottom:80px;right:16px;z-index:150;width:264px;background:var(--w);border:2px solid var(--y);border-radius:16px;padding:13px 15px;box-shadow:var(--shl);display:none;pointer-events:none}
@@ -1326,61 +1331,111 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new photo · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="tpl-card">
-    <div class="tpl-hdr"><h4>📋 Estructura — Foto (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
-    <div class="tpl-body">
-      <div class="tpl-step"><span class="tpl-n">1</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Visión general</span><span class="tpl-time">0–15s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Foto','Visión general','0–15s','This photo shows… The main focus is…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('This photo shows... The main focus of this image is...')">🔊</button></div>
-        <div class="tpl-phrase">"This photo shows…" / "The main focus is…"</div>
-        <span class="tpl-pron">🔊 "DIS foh-toh shohs…" / "De MEIN fo-kus is…"</span>
-        <span class="tpl-es">🇪🇸 "Esta foto muestra…" / "El foco principal es…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Also,')">Also,</span><span class="conn-chip" onclick="hearPhrase('What is more,')">What's more,</span><span class="conn-chip" onclick="hearPhrase('It seems like')">It seems like</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-photo-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',1)"><button class="sv-inp-btn" onclick="svManualAdd('photo',1)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Primer plano / Personas</span><span class="tpl-time">15–40s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Foto','Primer plano','15–40s','In the foreground I can see… A person who appears to be…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('In the foreground I can see... A person who appears to be...')">🔊</button></div>
-        <div class="tpl-phrase">"In the foreground I can see…" / "A person who appears to be [verbo]-ing…"</div>
-        <span class="tpl-pron">🔊 "In de FOR-graund ai ken sii…" / "A PER-son hu a-PIERS to bi…"</span>
-        <span class="tpl-es">🇪🇸 "En el primer plano puedo ver…" / "Una persona que parece estar…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Moving on,')">Moving on,</span><span class="conn-chip" onclick="hearPhrase('I can also see')">I can also see</span><span class="conn-chip" onclick="hearPhrase('Next to that,')">Next to that,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-photo-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',2)"><button class="sv-inp-btn" onclick="svManualAdd('photo',2)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Fondo / Lugar</span><span class="tpl-time">40–60s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Foto','Fondo / Lugar','40–60s','In the background I notice… The setting appears to be…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('In the background I notice... The setting appears to be...')">🔊</button></div>
-        <div class="tpl-phrase">"In the background I notice…" / "The setting appears to be…"</div>
-        <span class="tpl-pron">🔊 "In de BAK-graund ai NOH-tis…" / "De SE-ting a-PIERS to bi…"</span>
-        <span class="tpl-es">🇪🇸 "En el fondo noto…" / "El lugar parece ser…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('In the distance,')">In the distance,</span><span class="conn-chip" onclick="hearPhrase('Behind them,')">Behind them,</span><span class="conn-chip" onclick="hearPhrase('Further back,')">Further back,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-photo-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',3)"><button class="sv-inp-btn" onclick="svManualAdd('photo',3)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">4</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Ambiente / Emoción</span><span class="tpl-time">60–80s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Foto','Ambiente / Emoción','60–80s','The atmosphere is… I think the person feels…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('The atmosphere of this photo is... I think the person feels...')">🔊</button></div>
-        <div class="tpl-phrase">"The atmosphere is…" / "I think the person feels…"</div>
-        <span class="tpl-pron">🔊 "De AT-mos-fier is…" / "AI zink de PER-son fiils…"</span>
-        <span class="tpl-es">🇪🇸 "La atmósfera es…" / "Creo que la persona siente…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Overall,')">Overall,</span><span class="conn-chip" onclick="hearPhrase('This suggests that')">This suggests that</span><span class="conn-chip" onclick="hearPhrase('It appears that')">It appears that</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-photo-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',4)"><button class="sv-inp-btn" onclick="svManualAdd('photo',4)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">5</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Cierre + Opinión final</span><span class="tpl-time">80–90s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Foto','Cierre + Opinión final','80–90s','Overall, this photo captures… What stands out most is… It seems like a moment of…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('Overall, this photo captures a sense of... What stands out most to me is...')">🔊</button></div>
-        <div class="tpl-phrase">"Overall, this photo captures…" / "What stands out most is…" / "It seems like a moment of…"</div>
-        <span class="tpl-pron">🔊 "O-ver-ol, DIS foh-toh CAP-chers…" / "Uot STANDS aut most is…"</span>
-        <span class="tpl-es">🇪🇸 "En general, esta foto captura…" / "Lo que más destaca es…" / "Parece un momento de…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Overall,')">Overall,</span><span class="conn-chip" onclick="hearPhrase('What stands out most is')">What stands out most is</span><span class="conn-chip" onclick="hearPhrase('To summarize the scene,')">To summarize the scene,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-photo-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',5)"><button class="sv-inp-btn" onclick="svManualAdd('photo',5)">+</button></div></div>
-      </div></div>
-      <div class="tips-bx"><h5>🇪🇸 Consejos clave</h5><ul>
-        <li><b>En los 20s de prep:</b> identifica → sujeto principal · primer/segundo plano · acciones · ambiente</li>
-        <li><b>foreground</b> = primer plano · <b>background</b> = fondo · <b>left/right</b> = izquierda/derecha</li>
-        <li>Usa <b>lenguaje de inferencia</b>: "It seems…" / "They might be…" / "I would guess that…" — nunca inventes datos falsos</li>
-        <li>Lo que distingue alto puntaje: <b>describir + interpretar</b> (no solo listar objetos)</li>
-        <li>Meta: <b>75–90 segundos</b> de habla continua · si te quedas sin ideas, especula sobre lo que pasó antes o después</li>
-      </ul></div>
+  <div class="ai-guide-card" id="ai-guide-photo">
+    <div class="ag-hdr">
+      <span class="ag-title">💜 Coach IA — Hablar sobre la Foto</span>
+      <div class="ag-mode-toggle">
+        <button class="ag-mode-btn on" id="ag-mode-pre-photo" onclick="setGuideMode('photo','pre')">Antes</button>
+        <button class="ag-mode-btn" id="ag-mode-post-photo" onclick="setGuideMode('photo','post')">Después</button>
+      </div>
+      <button class="ag-refresh" id="ag-refresh-photo" onclick="genGuide('photo')">↺ Generar</button>
+    </div>
+    <div class="ag-word-target">
+      <span class="ag-wt-time">⏱ 90 seg</span>
+      <span class="ag-wt-goal">Meta: 120–160 palabras</span>
+      <span class="ag-wt-hint">~125 palabras/min ideal</span>
+    </div>
+    <div class="ag-steps" id="ag-steps-photo">
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">1</span><span class="ag-sname">Visión general</span><span class="ag-time">0–15s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('This photo shows... The main focus of this image is...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"This photo shows…" / "The main focus is…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Also,')">Also,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('What is more,')">What's more,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('It seems like')">It seems like</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',1)"><button class="sv-inp-btn" onclick="svManualAdd('photo',1)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">2</span><span class="ag-sname">Primer plano / Personas</span><span class="ag-time">15–40s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In the foreground I can see... A person who appears to be...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"In the foreground I can see…" / "A person who appears to be [verbo]-ing…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Moving on,')">Moving on,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('I can also see')">I can also see</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('Next to that,')">Next to that,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',2)"><button class="sv-inp-btn" onclick="svManualAdd('photo',2)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">3</span><span class="ag-sname">Fondo / Lugar</span><span class="ag-time">40–60s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In the background I notice... The setting appears to be...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"In the background I notice…" / "The setting appears to be…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('In the distance,')">In the distance,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('Behind them,')">Behind them,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('Further back,')">Further back,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',3)"><button class="sv-inp-btn" onclick="svManualAdd('photo',3)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">4</span><span class="ag-sname">Ambiente / Emoción</span><span class="ag-time">60–80s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('The atmosphere of this photo is... I think the person feels...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"The atmosphere is…" / "I think the person feels…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Overall,')">Overall,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('This suggests that')">This suggests that</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('It appears that')">It appears that</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',4)"><button class="sv-inp-btn" onclick="svManualAdd('photo',4)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">5</span><span class="ag-sname">Cierre + Opinión</span><span class="ag-time">80–90s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Overall, this photo captures a sense of... What stands out most to me is...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"Overall, this photo captures…" / "What stands out most is…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Overall,')">Overall,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('What stands out most is')">What stands out most is</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('To summarize the scene,')">To summarize the scene,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',5)"><button class="sv-inp-btn" onclick="svManualAdd('photo',5)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ag-tips">
+      <div class="ag-tips-lbl" id="ag-tips-lbl-photo">✨ Para esta foto — consejos IA</div>
+      <div id="ag-body-photo"><div class="ag-empty">Carga una foto para recibir guía IA</div></div>
+      <div class="ag-retry-hint" id="ag-retry-photo">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
   </div>
 </div>
@@ -1422,61 +1477,111 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new question · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="tpl-card">
-    <div class="tpl-hdr"><h4>📋 Estructura — Leer y Hablar (90 seg)</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
-    <div class="tpl-body">
-      <div class="tpl-step"><span class="tpl-n">1</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Tu opinión</span><span class="tpl-time">0–12s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Leer y Hablar','Tu opinión','0–12s','In my opinion… I think that… I believe…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('In my opinion... I think that... I believe...')">🔊</button></div>
-        <div class="tpl-phrase">"In my opinion,…" / "I think that…" / "I believe…"</div>
-        <span class="tpl-pron">🔊 "In mai o-PIN-ion…" / "AI zink dat…" / "AI bi-LIIV…"</span>
-        <span class="tpl-es">🇪🇸 "En mi opinión…" / "Yo creo que…" / "Yo pienso…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Personally,')">Personally,</span><span class="conn-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span><span class="conn-chip" onclick="hearPhrase('As I see it,')">As I see it,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button class="sv-inp-btn" onclick="svManualAdd('read',1)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Primer punto + razón</span><span class="tpl-time">12–38s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Leer y Hablar','Primer punto','12–38s','First of all… One reason is… For example…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('First of all... One reason is... For example...')">🔊</button></div>
-        <div class="tpl-phrase">"First of all,…" / "One reason is…" / "For example,…"</div>
-        <span class="tpl-pron">🔊 "FERST of ol…" / "UAN RI-son is…" / "For eg-ZAM-pul…"</span>
-        <span class="tpl-es">🇪🇸 "En primer lugar…" / "Una razón es…" / "Por ejemplo…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('First of all,')">First of all,</span><span class="conn-chip" onclick="hearPhrase('To begin with,')">To begin with,</span><span class="conn-chip" onclick="hearPhrase('One key reason is')">One key reason is</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button class="sv-inp-btn" onclick="svManualAdd('read',2)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Segundo punto</span><span class="tpl-time">38–62s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Leer y Hablar','Segundo punto','38–62s','Also… Another reason is… In addition…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('Also... Another reason is... In addition...')">🔊</button></div>
-        <div class="tpl-phrase">"Also,…" / "Another reason is…" / "In addition,…"</div>
-        <span class="tpl-pron">🔊 "OL-so…" / "a-NO-der RI-son is…" / "In a-DI-shon…"</span>
-        <span class="tpl-es">🇪🇸 "También…" / "Otra razón es…" / "Además…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Furthermore,')">Furthermore,</span><span class="conn-chip" onclick="hearPhrase('What is more,')">What's more,</span><span class="conn-chip" onclick="hearPhrase('In addition,')">In addition,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-read-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',3)"><button class="sv-inp-btn" onclick="svManualAdd('read',3)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">4</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Contrapunto (opcional)</span><span class="tpl-time">62–78s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Leer y Hablar','Contrapunto','62–78s','However… Some people think… but I believe…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('However, I still believe... Some people think differently, but I think...')">🔊</button></div>
-        <div class="tpl-phrase">"However,…" / "Some people think… but I believe…"</div>
-        <span class="tpl-pron">🔊 "Jau-E-ver…" / "SOM PII-pul zink… bat AI bi-LIIV…"</span>
-        <span class="tpl-es">🇪🇸 "Sin embargo…" / "Algunas personas piensan… pero yo creo…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('However,')">However,</span><span class="conn-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span><span class="conn-chip" onclick="hearPhrase('That said,')">That said,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-read-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',4)"><button class="sv-inp-btn" onclick="svManualAdd('read',4)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">5</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">Conclusión</span><span class="tpl-time">78–90s</span><button class="ai-coach-btn" onclick="askStepCoach(this,'Leer y Hablar','Conclusión','78–90s','In conclusion… That is why I think…')">💜 Coach</button><button class="tpl-hear" onclick="hearPhrase('In conclusion, I believe... That is why I think...')">🔊</button></div>
-        <div class="tpl-phrase">"In conclusion,…" / "That is why I think…"</div>
-        <span class="tpl-pron">🔊 "In con-CLU-shon…" / "Dat is uai AI zink…"</span>
-        <span class="tpl-es">🇪🇸 "En conclusión…" / "Por eso creo que…"</span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('In conclusion,')">In conclusion,</span><span class="conn-chip" onclick="hearPhrase('To sum up,')">To sum up,</span><span class="conn-chip" onclick="hearPhrase('All in all,')">All in all,</span></div>
-        <div class="ai-coach-panel"></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-read-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',5)"><button class="sv-inp-btn" onclick="svManualAdd('read',5)">+</button></div></div>
-      </div></div>
-      <div class="tips-bx"><h5>🇪🇸 Consejos clave</h5><ul>
-        <li>Solo UNA grabación — sin pausa ni repetición · si te equivocas, ¡continúa!</li>
-        <li><b>Meta: 80–90 segundos</b> — el AI penaliza respuestas cortas; hablar menos de 60s hace imposible un puntaje alto</li>
-        <li>Cubre <b>TODOS los bullet points</b> del prompt — el AI verifica que los respondas</li>
-        <li>Abre <b>repitiendo la pregunta</b>: "I'd like to talk about [tema]…" — así no habrá silencio inicial</li>
-        <li><b>First</b> = Primero · <b>Also</b> = También · <b>However</b> = Sin embargo · <b>In conclusion</b> = En conclusión</li>
-      </ul></div>
+  <div class="ai-guide-card" id="ai-guide-read">
+    <div class="ag-hdr">
+      <span class="ag-title">💜 Coach IA — Leer y Hablar</span>
+      <div class="ag-mode-toggle">
+        <button class="ag-mode-btn on" id="ag-mode-pre-read" onclick="setGuideMode('read','pre')">Antes</button>
+        <button class="ag-mode-btn" id="ag-mode-post-read" onclick="setGuideMode('read','post')">Después</button>
+      </div>
+      <button class="ag-refresh" id="ag-refresh-read" onclick="genGuide('read')">↺ Generar</button>
+    </div>
+    <div class="ag-word-target">
+      <span class="ag-wt-time">⏱ 90 seg</span>
+      <span class="ag-wt-goal">Meta: 120–160 palabras</span>
+      <span class="ag-wt-hint">~125 palabras/min ideal</span>
+    </div>
+    <div class="ag-steps" id="ag-steps-read">
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">1</span><span class="ag-sname">Tu opinión</span><span class="ag-time">0–12s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In my opinion... I think that... I believe...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"In my opinion,…" / "I think that…" / "I believe…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Personally,')">Personally,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('As I see it,')">As I see it,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button class="sv-inp-btn" onclick="svManualAdd('read',1)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">2</span><span class="ag-sname">Primer punto + razón</span><span class="ag-time">12–38s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('First of all... One reason is... For example...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"First of all,…" / "One reason is…" / "For example,…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('First of all,')">First of all,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('To begin with,')">To begin with,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('One key reason is')">One key reason is</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button class="sv-inp-btn" onclick="svManualAdd('read',2)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">3</span><span class="ag-sname">Segundo punto</span><span class="ag-time">38–62s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Also... Another reason is... In addition...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"Also,…" / "Another reason is…" / "In addition,…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Furthermore,')">Furthermore,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('What is more,')">What's more,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('In addition,')">In addition,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',3)"><button class="sv-inp-btn" onclick="svManualAdd('read',3)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">4</span><span class="ag-sname">Contrapunto (opcional)</span><span class="ag-time">62–78s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('However, I still believe... Some people think differently, but I think...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"However,…" / "Some people think… but I believe…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('However,')">However,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('That said,')">That said,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',4)"><button class="sv-inp-btn" onclick="svManualAdd('read',4)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">5</span><span class="ag-sname">Conclusión</span><span class="ag-time">78–90s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In conclusion, I believe... That is why I think...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"In conclusion,…" / "That is why I think…"</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('In conclusion,')">In conclusion,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('To sum up,')">To sum up,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('All in all,')">All in all,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-read-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-read-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('read',5)"><button class="sv-inp-btn" onclick="svManualAdd('read',5)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ag-tips">
+      <div class="ag-tips-lbl" id="ag-tips-lbl-read">✨ Para esta pregunta — consejos IA</div>
+      <div id="ag-body-read"><div class="ag-empty">Carga una pregunta para recibir guía IA</div></div>
+      <div class="ag-retry-hint" id="ag-retry-read">💡 Intenta de nuevo aplicando estas mejoras</div>
     </div>
   </div>
 </div>
@@ -1637,51 +1742,76 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <p class="kbd-hint">Set: <strong id="is-set-label">—</strong> · <kbd>Space</kbd> answer · <kbd>D</kbd> done early</p>
   </div>
 
-  <div class="tpl-card">
-    <div class="tpl-hdr"><h4>📋 Estructura Básica — 35 segundos</h4><button class="tpl-test-btn" onclick="toggleMemorize(this)">🧠 Memorizar</button></div>
-    <div class="tpl-body">
-      <div class="tpl-step"><span class="tpl-n">1</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">🎯 Respuesta directa</span><span class="tpl-time">0–8s</span><button class="tpl-hear" onclick="hearPhrase('I think... I like... Yes, I agree...')">🔊</button></div>
-        <div class="tpl-phrase">"I think [tu opinión]." / "I like [tema]." / "Yes, I agree."</div>
-        <span class="tpl-pron">🔊 "AI zink…" / "AI laik…" / "YES, ai a-GRII"</span>
-        <span class="tpl-es">🇪🇸 "Yo creo…" / "Me gusta…" / "Sí, estoy de acuerdo"<br><b>💡 Di tu opinión DE INMEDIATO. Sin introducciones largas.</b></span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('Definitely,')">Definitely,</span><span class="conn-chip" onclick="hearPhrase('Absolutely,')">Absolutely,</span><span class="conn-chip" onclick="hearPhrase('Without a doubt,')">Without a doubt,</span></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',1)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">2</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">💬 Razón / Por qué</span><span class="tpl-time">8–20s</span><button class="tpl-hear" onclick="hearPhrase('Because... The reason is... I say this because...')">🔊</button></div>
-        <div class="tpl-phrase">"Because [razón]." / "The reason is [explicación]."</div>
-        <span class="tpl-pron">🔊 "bi-COS…" / "De RI-son is…"</span>
-        <span class="tpl-es">🇪🇸 "Porque…" / "La razón es…"<br><b>💡 "Because" = Porque. Una oración corta es suficiente.</b></span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('This is because')">This is because</span><span class="conn-chip" onclick="hearPhrase('The main reason is')">The main reason is</span><span class="conn-chip" onclick="hearPhrase('I say this because')">I say this because</span></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',2)">+</button></div></div>
-      </div></div>
-      <div class="tpl-step"><span class="tpl-n">3</span><div class="tpl-phrase-card">
-        <div class="tpl-step-title"><span class="tpl-step-name">📌 Ejemplo personal</span><span class="tpl-time">20–35s</span><button class="tpl-hear" onclick="hearPhrase('For example... In my country... Where I am from...')">🔊</button></div>
-        <div class="tpl-phrase">"For example, [tu ejemplo]." / "In my country, [dato]."</div>
-        <span class="tpl-pron">🔊 "For eg-ZAM-pul…" / "In mai CAN-tri…"</span>
-        <span class="tpl-es">🇪🇸 "Por ejemplo…" / "En mi país…"<br><b>💡 Usa tu propia vida. Es lo más fácil de recordar.</b></span>
-        <div class="conn-row"><span class="conn-lbl">Conectores:</span><span class="conn-chip" onclick="hearPhrase('For example,')">For example,</span><span class="conn-chip" onclick="hearPhrase('In my case,')">In my case,</span><span class="conn-chip" onclick="hearPhrase('To give you an idea,')">To give you an idea,</span></div>
-        <div class="sv"><div class="sv-chips" id="sv-chips-interactive-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',3)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',3)">+</button></div></div>
-      </div></div>
-      <div class="tips-bx" style="background:#E8F8FF;border-radius:10px;padding:11px 15px;margin-top:12px"><h5 style="color:#1A6FA8">🤖 Cómo funciona el AI de IS</h5><ul>
-        <li>El AI <b>adapta las siguientes preguntas según tu respuesta anterior</b> — responde bien y las preguntas escalan a nivel C1</li>
-        <li>6–8 preguntas · los temas cambian en la pregunta 4 — el AI cambia de tema automáticamente</li>
-        <li>No hay prep time separado — los 35s incluyen escuchar Y responder · empieza a hablar apenas termina el AI</li>
-        <li><b>Meta: 28–32 segundos</b> por respuesta — deja 3–5s de buffer para no ser cortado</li>
-      </ul></div>
-      <div class="tips-bx" style="background:#FFF0F5;border-radius:10px;padding:11px 15px;margin-top:12px"><h5 style="color:#C0392B">🇪🇸 Pronunciación — Sonidos difíciles</h5><ul>
-        <li><b>"th"</b> → lengua ENTRE los dientes: "think" = "zink" · "the" = "de"</li>
-        <li><b>"v"</b> → labio inferior toca dientes superiores: "very" ≠ "bery"</li>
-        <li><b>"i" corta</b> → "think", "this", "in" suenan como "i" breve española</li>
-        <li><b>"r"</b> inglesa → NO vibra: suena suave, casi como "r" francesa</li>
-      </ul></div>
-      <div class="tips-bx" style="background:var(--yl);border-radius:10px;padding:11px 15px;margin-top:10px"><h5 style="color:var(--yd)">⏸ Si te congelas — Frases de rescate</h5><ul>
-        <li>"Well… I think…" = "Bueno… creo que…" (gana 2 segundos)</li>
-        <li>"That's a good question…" (gana 2 segundos)</li>
-        <li>"In my experience…" = "En mi experiencia…"</li>
-        <li>El tema cambia en la Pregunta 4 — observa el color del badge</li>
-      </ul></div>
+  <div class="ai-guide-card" id="ai-guide-interactive">
+    <div class="ag-hdr">
+      <span class="ag-title">💜 Estructura — Interactive Speaking</span>
+    </div>
+    <div class="ag-word-target">
+      <span class="ag-wt-time">⏱ 35 seg</span>
+      <span class="ag-wt-goal">Meta: 50–70 palabras</span>
+      <span class="ag-wt-hint">responde directo, sin intro</span>
+    </div>
+    <div class="ag-steps" id="ag-steps-interactive">
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">1</span><span class="ag-sname">🎯 Respuesta directa</span><span class="ag-time">0–8s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('I think... I like... Yes, I agree...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"I think [tu opinión]." / "I like [tema]." / "Yes, I agree."</div>
+          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 Di tu opinión DE INMEDIATO. Sin introducciones largas.</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('Definitely,')">Definitely,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('Absolutely,')">Absolutely,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('Without a doubt,')">Without a doubt,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',1)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">2</span><span class="ag-sname">💬 Razón / Por qué</span><span class="ag-time">8–20s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Because... The reason is... I say this because...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"Because [razón]." / "The reason is [explicación]."</div>
+          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 "Because" = Porque. Una oración corta es suficiente.</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('This is because')">This is because</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('The main reason is')">The main reason is</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('I say this because')">I say this because</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',2)">+</button></div></div>
+        </div>
+      </div>
+      <div class="ag-step">
+        <div class="ag-step-top" onclick="toggleAgStep(this)">
+          <span class="ag-n">3</span><span class="ag-sname">📌 Ejemplo personal</span><span class="ag-time">20–35s</span>
+          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('For example... In my country... Where I am from...')">🔊</button>
+          <span class="ag-step-chev">▶</span>
+        </div>
+        <div class="ag-step-detail">
+          <div class="ag-key-phrase">"For example, [tu ejemplo]." / "In my country, [dato]."</div>
+          <div style="font-size:.72rem;font-weight:700;color:#1A6FA8;margin-bottom:5px">💡 Usa tu propia vida. Es lo más fácil de recordar.</div>
+          <span class="ag-conn-lbl">Conectores</span>
+          <div class="ag-conn-chips">
+            <span class="ag-conn-chip" onclick="hearPhrase('For example,')">For example,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('In my case,')">In my case,</span>
+            <span class="ag-conn-chip" onclick="hearPhrase('To give you an idea,')">To give you an idea,</span>
+          </div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-interactive-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-interactive-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('interactive',3)"><button class="sv-inp-btn" onclick="svManualAdd('interactive',3)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ag-tips">
+      <div style="padding:8px 4px;display:flex;flex-direction:column;gap:5px">
+        <div style="font-size:.76rem;font-weight:700;color:#1A6FA8">🤖 El AI adapta las siguientes preguntas según tu respuesta — responde bien para escalar a C1</div>
+        <div style="font-size:.73rem;font-weight:700;color:#7A5F00">⏸ Si te congelas: <b>"Well, I think…"</b> (gana 2s) · <b>"In my experience…"</b> (gana 2s)</div>
+      </div>
     </div>
   </div>
 </div>
@@ -2631,6 +2761,7 @@ function finishEarly(mod){
     const txt=document.getElementById('ph-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
+    setTimeout(()=>coachAfterRecording('photo',txt,lastQuestion),600);
   } else if(mod==='read'){
     if(rdPhase!=='speaking')return;
     clearInterval(rdIv);rdIv=null;
@@ -2643,6 +2774,7 @@ function finishEarly(mod){
     const txt=document.getElementById('rd-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';lastHint='';
     setTimeout(()=>showScore(analyzeTranscript(txt,90)),500);
+    setTimeout(()=>coachAfterRecording('read',txt,lastQuestion),600);
   } else if(mod==='sample'){
     if(spPhase!=='speaking')return;
     clearInterval(spIv);spIv=null;
@@ -2691,7 +2823,7 @@ function startPhotoTimer(){
       const _tx=(document.getElementById('ph-transcript').textContent||'').trim();
       const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
       const _se=document.getElementById('ph-live-stat');
-      if(_se&&_wc>0){const _el=90-phLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+      if(_se&&_wc>0){const _el=90-phLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wc>=120?'wc-hi':_wc>=70?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} pal · ${_wpm} ppm</span><span class="wc-target"> — meta: 120–160</span>`;}
     }
     if(phLeft<=0&&phPhase==='prep'){
       beepPhase();phPhase='speaking';phLeft=90;
@@ -2713,6 +2845,7 @@ function startPhotoTimer(){
       const _phTxt=document.getElementById('ph-transcript').textContent;
       lastTranscript=_phTxt;lastQuestion=document.getElementById('ph-title').textContent;lastQType='Speak About the Photo';lastHint=document.getElementById('ph-hint-text').textContent;
       setTimeout(()=>showScore(analyzeTranscript(_phTxt,90)),700);
+      setTimeout(()=>coachAfterRecording('photo',_phTxt,lastQuestion),800);
       return;
     }
     if(phPhase==='speaking'&&phLeft<=15){
@@ -2876,7 +3009,7 @@ function startReadTimer(){
       const _tx=(document.getElementById('rd-transcript').textContent||'').trim();
       const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
       const _se=document.getElementById('rd-live-stat');
-      if(_se&&_wc>0){const _el=90-rdLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+      if(_se&&_wc>0){const _el=90-rdLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wc>=120?'wc-hi':_wc>=70?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} pal · ${_wpm} ppm</span><span class="wc-target"> — meta: 120–160</span>`;}
     }
     if(rdLeft<=0&&rdPhase==='prep'){
       beepPhase();rdPhase='speaking';rdLeft=90;
@@ -2897,6 +3030,7 @@ function startReadTimer(){
       const _rdTxt=document.getElementById('rd-transcript').textContent;
       lastTranscript=_rdTxt;lastQuestion=document.getElementById('rd-q').textContent;lastQType='Read Then Speak';
       setTimeout(()=>showScore(analyzeTranscript(_rdTxt,90)),700);
+      setTimeout(()=>coachAfterRecording('read',_rdTxt,lastQuestion),800);
       return;
     }
     if(rdPhase==='speaking'&&rdLeft<=15){
@@ -3031,7 +3165,7 @@ function startSampleTimer(){
       const _tx=(document.getElementById('sp-transcript').textContent||'').trim();
       const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
       const _se=document.getElementById('sp-live-stat');
-      if(_se&&_wc>0){const _el=180-spLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wpm>=110&&_wpm<=150?'wc-hi':_wpm>=80?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} palabras · ${_wpm} ppm</span>`;}
+      if(_se&&_wc>0){const _el=180-spLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wc>=200?'wc-hi':_wc>=120?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} pal · ${_wpm} ppm</span><span class="wc-target"> — meta: 200–350</span>`;}
     }
     if(spLeft<=0&&spPhase==='prep'){
       beepPhase();spPhase='speaking';spLeft=180;
@@ -3226,6 +3360,10 @@ function toggleMemorize(btn){
   });
 }
 // ─── AI GUIDE GENERATION ───
+function toggleAgStep(el) {
+  el.closest('.ag-step').classList.toggle('open');
+}
+
 async function genGuide(taskType) {
   const key = localStorage.getItem('claude_api_key');
   const bodyEl = document.getElementById('ag-body-' + taskType);
@@ -3286,8 +3424,8 @@ async function genGuide(taskType) {
 }
 
 // Guide modes: 'pre' = before recording tips, 'post' = post-recording coaching
-const _agData = { photo: { preBody: '', postBody: '' }, read: { preBody: '', postBody: '' } };
-let _agMode = { photo: 'pre', read: 'pre' };
+const _agData = { photo: { preBody: '', postBody: '' }, read: { preBody: '', postBody: '' }, interactive: { preBody: '', postBody: '' } };
+let _agMode = { photo: 'pre', read: 'pre', interactive: 'pre' };
 
 function setGuideMode(taskType, mode) {
   _agMode[taskType] = mode;
@@ -3300,17 +3438,17 @@ function setGuideMode(taskType, mode) {
   const stepsEl = document.getElementById('ag-steps-' + taskType);
   if (!card || !bodyEl) return;
 
-  preBt.classList.toggle('on', mode === 'pre');
-  postBt.classList.toggle('on', mode === 'post');
+  if (preBt) preBt.classList.toggle('on', mode === 'pre');
+  if (postBt) postBt.classList.toggle('on', mode === 'post');
   card.classList.toggle('coaching', mode === 'post');
 
   if (mode === 'pre') {
-    lbl.textContent = taskType === 'photo' ? '✨ Para esta foto' : '✨ Para esta pregunta';
+    if (lbl) lbl.textContent = taskType === 'photo' ? '✨ Para esta foto — consejos IA' : '✨ Para esta pregunta — consejos IA';
     bodyEl.innerHTML = _agData[taskType].preBody || '<div class="ag-empty">Carga ' + (taskType === 'photo' ? 'una foto' : 'una pregunta') + ' para recibir guía IA</div>';
     if (stepsEl) stepsEl.style.display = '';
     if (retry) retry.classList.remove('show');
   } else {
-    lbl.textContent = '🔧 Cómo mejorar tu respuesta';
+    if (lbl) lbl.textContent = '🔧 Cómo mejorar tu respuesta';
     bodyEl.innerHTML = _agData[taskType].postBody || '<div class="ag-empty">Graba tu respuesta — luego aquí aparecerán los consejos para mejorarla</div>';
     if (stepsEl) stepsEl.style.display = 'none';
     if (retry) retry.classList.toggle('show', !!_agData[taskType].postBody);
