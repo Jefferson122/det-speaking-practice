@@ -428,6 +428,24 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ag-script-line:last-child{border-bottom:none}
 .ag-script-n{min-width:18px;height:18px;background:#6B44E0;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;margin-top:2px}
 .ag-script-phrase{font-size:.73rem;font-weight:700;line-height:1.5;color:#1A0A3D;font-style:italic}
+/* ─── PRO TEMPLATE ─── */
+.pro-tpl{padding:8px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.tfs-block{display:flex;flex-direction:column;gap:4px}
+.tfs-time-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:#6B44E0;margin-bottom:1px}
+.tfs-sentence{font-size:.70rem;font-weight:700;color:#1A0A3D;line-height:1.7;background:#F8F5FF;border-radius:7px;padding:6px 9px;border-left:3px solid #6B44E0}
+.tfs-blank{color:#E8360D;font-style:italic;font-weight:900}
+.tfs-alt{color:#7B2FBE;font-weight:700;font-style:italic}
+.tfs-chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.tfs-chip{background:#EDE0FF;border:1px solid #C5A9F5;border-radius:6px;padding:2px 8px;font-size:.62rem;font-weight:700;color:#4B22CC;cursor:pointer;transition:.15s;white-space:nowrap;font-family:'Nunito',sans-serif}
+.tfs-chip:hover{background:#DDD4FF;transform:scale(1.03)}
+.tfs-sep{border:none;border-top:1.5px dashed #E8E0FF;margin:0}
+.c1-power-box{background:linear-gradient(135deg,#FFFBF0,#FFF5E0);border:1.5px solid #F5A623;border-radius:9px;padding:6px 9px;display:flex;flex-direction:column;gap:5px}
+.c1p-lbl{font-size:.59rem;font-weight:900;color:#7A5F00;text-transform:uppercase;letter-spacing:.4px}
+.c1p-chips{display:flex;flex-wrap:wrap;gap:3px}
+.c1p-chip{background:#fff;border:1.5px solid #F5A623;border-radius:7px;padding:3px 8px;font-size:.62rem;font-weight:700;color:#5C3D00;cursor:pointer;transition:.15s;font-family:'Nunito',sans-serif}
+.c1p-chip:hover{background:#FFFBF0;transform:scale(1.03)}
+.tricks-box{background:#F0FFF4;border:1.5px solid #B2EFC0;border-radius:8px;padding:6px 9px;font-size:.62rem;font-weight:700;color:#1A5C3D;line-height:1.7}
+.tricks-box span{color:#4B22CC;cursor:pointer;text-decoration:underline;text-decoration-style:dotted;font-family:'Nunito',sans-serif}
 .ag-mode-toggle{display:flex;gap:0;border:1.5px solid var(--br);border-radius:8px;overflow:hidden;margin-left:auto}
 .ag-mode-btn{background:var(--bg);border:none;padding:3px 8px;font:.62rem/1 'Nunito',sans-serif;font-weight:800;color:var(--tm);cursor:pointer;transition:.15s;white-space:nowrap}
 .ag-mode-btn.on{background:#6B44E0;color:#fff}
@@ -1377,89 +1395,64 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-hint">~125 palabras/min ideal</span>
     </div>
     <div class="ag-steps" id="ag-steps-photo">
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">1</span><span class="ag-sname">Visión general</span><span class="ag-time">0–15s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('This photo shows... The main focus of this image is...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"This photo shows…" / "The main focus is…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Also,')">Also,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('What is more,')">What's more,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('It seems like')">It seems like</span>
+      <div class="pro-tpl">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 0–15s — Visión general · C1</div>
+          <div class="tfs-sentence">The image not only shows <span class="tfs-blank">[escena principal]</span> but also <span class="tfs-alt">conveys / reveals / suggests</span> <span class="tfs-blank">[emoción o interpretación]</span>, which <span class="tfs-alt">clearly indicates / strongly suggests</span> that <span class="tfs-blank">[contexto o conclusión]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('The image not only shows a scene of X but also conveys a deep sense of Y')">The image not only shows… but also…</span>
+            <span class="tfs-chip" onclick="hearPhrase('What is particularly striking about this image is')">What is particularly striking is</span>
+            <span class="tfs-chip" onclick="hearPhrase('The main focus of this photograph is')">The main focus of this photograph is</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-photo-1"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-1" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',1)"><button class="sv-inp-btn" onclick="svManualAdd('photo',1)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">2</span><span class="ag-sname">Primer plano / Personas</span><span class="ag-time">15–40s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In the foreground I can see... A person who appears to be...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In the foreground I can see…" / "A person who appears to be [verbo]-ing…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Moving on,')">Moving on,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('I can also see')">I can also see</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('Next to that,')">Next to that,</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 15–42s — Primer plano</div>
+          <div class="tfs-sentence">In the foreground, <span class="tfs-blank">[quién/qué]</span>, who appears to be <span class="tfs-blank">[acción -ing]</span>. What is particularly <span class="tfs-alt">noticeable / striking / interesting</span> is <span class="tfs-blank">[detalle visual clave]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('In the foreground, I can see')">In the foreground, I can see</span>
+            <span class="tfs-chip" onclick="hearPhrase('who appears to be')">who appears to be</span>
+            <span class="tfs-chip" onclick="hearPhrase('What is particularly noticeable is')">What is particularly noticeable is</span>
+            <span class="tfs-chip" onclick="hearPhrase('A person who seems to be engaged in')">A person who seems to be engaged in</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-photo-2"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-2" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',2)"><button class="sv-inp-btn" onclick="svManualAdd('photo',2)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">3</span><span class="ag-sname">Fondo / Lugar</span><span class="ag-time">40–60s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('In the background I notice... The setting appears to be...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"In the background I notice…" / "The setting appears to be…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('In the distance,')">In the distance,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('Behind them,')">Behind them,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('Further back,')">Further back,</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 42–68s — Fondo + Atmósfera</div>
+          <div class="tfs-sentence">In the background, <span class="tfs-blank">[descripción del fondo]</span>, which <span class="tfs-alt">suggests / implies / indicates</span> that the setting is <span class="tfs-blank">[lugar/contexto]</span>. The overall <span class="tfs-alt">atmosphere / mood / tone</span> of the image seems <span class="tfs-blank">[adjetivo: serene/tense/joyful…]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('In the background, I notice')">In the background, I notice</span>
+            <span class="tfs-chip" onclick="hearPhrase('The overall atmosphere of the image seems to be')">The overall atmosphere seems</span>
+            <span class="tfs-chip" onclick="hearPhrase('This strongly suggests that the setting is')">This strongly suggests that</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-photo-3"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-3" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',3)"><button class="sv-inp-btn" onclick="svManualAdd('photo',3)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">4</span><span class="ag-sname">Ambiente / Emoción</span><span class="ag-time">60–80s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('The atmosphere of this photo is... I think the person feels...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"The atmosphere is…" / "I think the person feels…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Overall,')">Overall,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('This suggests that')">This suggests that</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('It appears that')">It appears that</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 68–88s — Interpretación · Cierre fuerte</div>
+          <div class="tfs-sentence">Overall, this photograph <span class="tfs-alt">captures / conveys / depicts</span> a powerful sense of <span class="tfs-blank">[tema: connection/struggle/joy…]</span>. What stands out most to me is <span class="tfs-blank">[observación final]</span>, which I find <span class="tfs-alt">particularly striking / deeply meaningful / quite fascinating</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('Overall, this photograph captures a powerful sense of')">Overall, this photo captures</span>
+            <span class="tfs-chip" onclick="hearPhrase('What stands out most to me is')">What stands out most to me is</span>
+            <span class="tfs-chip" onclick="hearPhrase('The photograph appears to capture a candid moment of')">The photo appears to capture a moment of</span>
+            <span class="tfs-chip" onclick="hearPhrase('This image evokes a strong sense of X and makes me think about')">This image evokes a strong sense of</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-photo-4"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-4" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',4)"><button class="sv-inp-btn" onclick="svManualAdd('photo',4)">+</button></div></div>
         </div>
-      </div>
-      <div class="ag-step">
-        <div class="ag-step-top" onclick="toggleAgStep(this)">
-          <span class="ag-n">5</span><span class="ag-sname">Cierre + Opinión</span><span class="ag-time">80–90s</span>
-          <button class="tpl-hear" style="margin-left:4px" onclick="event.stopPropagation();hearPhrase('Overall, this photo captures a sense of... What stands out most to me is...')">🔊</button>
-          <span class="ag-step-chev">▶</span>
-        </div>
-        <div class="ag-step-detail">
-          <div class="ag-key-phrase">"Overall, this photo captures…" / "What stands out most is…"</div>
-          <span class="ag-conn-lbl">Conectores</span>
-          <div class="ag-conn-chips">
-            <span class="ag-conn-chip" onclick="hearPhrase('Overall,')">Overall,</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('What stands out most is')">What stands out most is</span>
-            <span class="ag-conn-chip" onclick="hearPhrase('To summarize the scene,')">To summarize the scene,</span>
+        <hr class="tfs-sep">
+        <div class="c1-power-box">
+          <div class="c1p-lbl">⭐ C1/C2 — frases largas para fotos</div>
+          <div class="c1p-chips">
+            <span class="c1p-chip" onclick="hearPhrase('The image not only shows a scene of everyday life but also conveys a profound sense of human connection suggesting that people value')">The image not only shows… but also conveys a profound sense of…</span>
+            <span class="c1p-chip" onclick="hearPhrase('What is particularly striking about this image is the way in which the subjects appear to be deeply engaged in')">What is particularly striking about this image is the way in which</span>
+            <span class="c1p-chip" onclick="hearPhrase('The photograph appears to capture a candid and unguarded moment revealing a great deal about the relationship between')">The photo captures a candid and unguarded moment, revealing…</span>
+            <span class="c1p-chip" onclick="hearPhrase('This image evokes a strong sense of nostalgia and makes me reflect on the importance of')">This image evokes a strong sense of… and makes me reflect on…</span>
           </div>
-          <div class="sv"><div class="sv-chips" id="sv-chips-photo-5"></div><div class="sv-add-row"><input class="sv-inp" id="sv-inp-photo-5" placeholder="+ vocabulario…" onkeydown="if(event.key==='Enter')svManualAdd('photo',5)"><button class="sv-inp-btn" onclick="svManualAdd('photo',5)">+</button></div></div>
+        </div>
+        <div style="display:none">
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-1"></div><input class="sv-inp" id="sv-inp-photo-1" onkeydown="if(event.key==='Enter')svManualAdd('photo',1)"><button onclick="svManualAdd('photo',1)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-2"></div><input class="sv-inp" id="sv-inp-photo-2" onkeydown="if(event.key==='Enter')svManualAdd('photo',2)"><button onclick="svManualAdd('photo',2)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-3"></div><input class="sv-inp" id="sv-inp-photo-3" onkeydown="if(event.key==='Enter')svManualAdd('photo',3)"><button onclick="svManualAdd('photo',3)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-4"></div><input class="sv-inp" id="sv-inp-photo-4" onkeydown="if(event.key==='Enter')svManualAdd('photo',4)"><button onclick="svManualAdd('photo',4)">+</button></div>
+          <div class="sv"><div class="sv-chips" id="sv-chips-photo-5"></div><input class="sv-inp" id="sv-inp-photo-5" onkeydown="if(event.key==='Enter')svManualAdd('photo',5)"><button onclick="svManualAdd('photo',5)">+</button></div>
         </div>
       </div>
     </div>
@@ -1519,52 +1512,71 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-hint">~125 palabras/min ideal</span>
     </div>
     <div class="ag-steps" id="ag-steps-read">
-      <div class="phrase-bank">
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#1A5C3D"><span class="pb-t pb-t-green">0–12s</span> 🚀 Abre con tu posición — directo</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('I truly believe that')">I truly believe that</span>
-            <span class="pb-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span>
-            <span class="pb-chip" onclick="hearPhrase('I strongly think that')">I strongly think that</span>
-            <span class="pb-chip" onclick="hearPhrase('As I see it,')">As I see it,</span>
-            <span class="pb-chip" onclick="hearPhrase('I firmly believe')">I firmly believe</span>
-            <span class="pb-chip" onclick="hearPhrase('In my view,')">In my view,</span>
+      <div class="pro-tpl">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 0–12s — Intro + Posición</div>
+          <div class="tfs-sentence">I truly believe that <span class="tfs-blank">[tu posición clara]</span>. This is particularly <span class="tfs-alt">relevant / important / significant</span> because <span class="tfs-blank">[por qué importa]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('I truly believe that')">I truly believe that</span>
+            <span class="tfs-chip" onclick="hearPhrase('From my perspective,')">From my perspective,</span>
+            <span class="tfs-chip" onclick="hearPhrase('This is particularly relevant because')">This is particularly relevant because</span>
+            <span class="tfs-chip" onclick="hearPhrase('I would firmly argue that')">I would firmly argue that</span>
           </div>
         </div>
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#6B44E0"><span class="pb-t pb-t-purple">12–65s</span> 📋 Desarrolla — encadena con conectores</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('First of all,')">First of all,</span>
-            <span class="pb-chip" onclick="hearPhrase('Furthermore,')">Furthermore,</span>
-            <span class="pb-chip" onclick="hearPhrase('What is more,')">What is more,</span>
-            <span class="pb-chip" onclick="hearPhrase('For example,')">For example,</span>
-            <span class="pb-chip" onclick="hearPhrase('To illustrate this,')">To illustrate this,</span>
-            <span class="pb-chip" onclick="hearPhrase('However,')">However,</span>
-            <span class="pb-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span>
-            <span class="pb-chip" onclick="hearPhrase('This clearly shows that')">This clearly shows that</span>
-            <span class="pb-chip" onclick="hearPhrase('In my experience,')">In my experience,</span>
-            <span class="pb-chip" onclick="hearPhrase('It is worth noting that')">It is worth noting that</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 12–40s — Punto 1 + Ejemplo</div>
+          <div class="tfs-sentence">First and foremost, <span class="tfs-blank">[punto principal]</span>. Furthermore, <span class="tfs-blank">[elaboración]</span>. A clear illustration of this is <span class="tfs-blank">[ejemplo concreto]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('First and foremost,')">First and foremost,</span>
+            <span class="tfs-chip" onclick="hearPhrase('It is worth noting that')">It is worth noting that</span>
+            <span class="tfs-chip" onclick="hearPhrase('A clear illustration of this is')">A clear illustration of this is</span>
+            <span class="tfs-chip" onclick="hearPhrase('This clearly demonstrates that')">This clearly demonstrates that</span>
           </div>
         </div>
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#1A3D8F"><span class="pb-t pb-t-blue">65–85s</span> 🏁 Cierra fuerte — deja impresión</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('In conclusion,')">In conclusion,</span>
-            <span class="pb-chip" onclick="hearPhrase('Ultimately,')">Ultimately,</span>
-            <span class="pb-chip" onclick="hearPhrase('All things considered,')">All things considered,</span>
-            <span class="pb-chip" onclick="hearPhrase('That is why I believe')">That is why I believe</span>
-            <span class="pb-chip" onclick="hearPhrase('To sum up,')">To sum up,</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 40–65s — Punto 2 · Estructura C1</div>
+          <div class="tfs-sentence">What is more, <span class="tfs-blank">[punto 2]</span>. Not only does this <span class="tfs-blank">[efecto A]</span>, but it also <span class="tfs-blank">[efecto B]</span>, which strongly suggests that <span class="tfs-blank">[conclusión parcial]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('What is more,')">What is more,</span>
+            <span class="tfs-chip" onclick="hearPhrase('Not only does this demonstrate X but it also reveals that Y')">Not only… but also…</span>
+            <span class="tfs-chip" onclick="hearPhrase('which strongly suggests that')">which strongly suggests that</span>
+            <span class="tfs-chip" onclick="hearPhrase('This is a clear reflection of the fact that')">This is a clear reflection of</span>
           </div>
         </div>
-        <div class="pb-upgrade">
-          <span class="pb-upg-lbl">⬆ C1</span>
-          <span class="pb-upg-item" onclick="hearPhrase('I truly believe')"><del>I think</del> → <b>I truly believe</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('Furthermore,')"><del>also</del> → <b>Furthermore</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('However,')"><del>but</del> → <b>However</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('significant')"><del>good</del> → <b>significant</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('I am 25 years old')"><del>I have 25 years</del> → <b>I am 25</b></span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 65–75s — Contraste · sube nivel</div>
+          <div class="tfs-sentence">While some may argue that <span class="tfs-blank">[argumento contrario]</span>, the reality is that <span class="tfs-blank">[tu rebuttal]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('While some may argue that')">While some may argue that</span>
+            <span class="tfs-chip" onclick="hearPhrase('Far from being a minor concern this is actually')">Far from being… actually…</span>
+            <span class="tfs-chip" onclick="hearPhrase('the reality is that')">the reality is that</span>
+            <span class="tfs-chip" onclick="hearPhrase('On the other hand,')">On the other hand,</span>
+          </div>
         </div>
-        <div class="pb-avoid">❌ Hablar &lt; 65s · sin conectores · "Ehh…" · "O sea…" · traducir el texto sin dar tu opinión</div>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 75–88s — Conclusión fuerte</div>
+          <div class="tfs-sentence">All things considered, I firmly believe that <span class="tfs-blank">[restate tu posición]</span>, and this is precisely why <span class="tfs-blank">[pensamiento final impactante]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('All things considered,')">All things considered,</span>
+            <span class="tfs-chip" onclick="hearPhrase('Ultimately,')">Ultimately,</span>
+            <span class="tfs-chip" onclick="hearPhrase('That is precisely why I believe')">That is precisely why I believe</span>
+            <span class="tfs-chip" onclick="hearPhrase('and this is precisely why')">and this is precisely why</span>
+          </div>
+        </div>
+        <hr class="tfs-sep">
+        <div class="c1-power-box">
+          <div class="c1p-lbl">⭐ C1/C2 — estructuras largas para 90s</div>
+          <div class="c1p-chips">
+            <span class="c1p-chip" onclick="hearPhrase('Not only does this demonstrate the importance of the topic but it also reveals a deeper truth about how society functions')">Not only does this demonstrate… but it also reveals a deeper truth about…</span>
+            <span class="c1p-chip" onclick="hearPhrase('What is particularly striking about this issue is the extent to which it affects everyday decisions and long-term outcomes')">What is particularly striking about this issue is the extent to which it affects</span>
+            <span class="c1p-chip" onclick="hearPhrase('This is a clear reflection of the fact that our society increasingly values efficiency over depth')">This is a clear reflection of the fact that society increasingly values</span>
+            <span class="c1p-chip" onclick="hearPhrase('Far from being a minor inconvenience this is actually a fundamental challenge that requires immediate and sustained attention')">Far from being a minor inconvenience, this is actually a fundamental challenge that</span>
+          </div>
+        </div>
         <div style="display:none">
           <div class="sv"><div class="sv-chips" id="sv-chips-read-1"></div><input class="sv-inp" id="sv-inp-read-1" onkeydown="if(event.key==='Enter')svManualAdd('read',1)"><button onclick="svManualAdd('read',1)">+</button></div>
           <div class="sv"><div class="sv-chips" id="sv-chips-read-2"></div><input class="sv-inp" id="sv-inp-read-2" onkeydown="if(event.key==='Enter')svManualAdd('read',2)"><button onclick="svManualAdd('read',2)">+</button></div>
@@ -1749,50 +1761,56 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <span class="ag-wt-hint">responde directo, sin intro</span>
     </div>
     <div class="ag-steps" id="ag-steps-interactive">
-      <div class="phrase-bank">
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#1A5C3D"><span class="pb-t pb-t-green">0–8s</span> 🚀 Di tu opinión YA — sin intro</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('I think')">I think</span>
-            <span class="pb-chip" onclick="hearPhrase('I believe')">I believe</span>
-            <span class="pb-chip" onclick="hearPhrase('Personally,')">Personally,</span>
-            <span class="pb-chip" onclick="hearPhrase('Definitely,')">Definitely,</span>
-            <span class="pb-chip" onclick="hearPhrase('I strongly feel that')">I strongly feel that</span>
-            <span class="pb-chip" onclick="hearPhrase('Without a doubt,')">Without a doubt,</span>
-            <span class="pb-chip" onclick="hearPhrase('Absolutely,')">Absolutely,</span>
+      <div class="pro-tpl">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 0–8s — Tu posición · sin intro</div>
+          <div class="tfs-sentence">I <span class="tfs-alt">firmly believe / strongly feel / would argue</span> that <span class="tfs-blank">[tu opinión concreta]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('I firmly believe that')">I firmly believe that</span>
+            <span class="tfs-chip" onclick="hearPhrase('I would strongly argue that')">I would strongly argue that</span>
+            <span class="tfs-chip" onclick="hearPhrase('Personally speaking, I feel that')">Personally speaking, I feel that</span>
+            <span class="tfs-chip" onclick="hearPhrase('From where I stand,')">From where I stand,</span>
           </div>
         </div>
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#8B1A1A"><span class="pb-t pb-t-red">8–20s</span> 🔗 Razón — nunca digas "also"</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('because')">because</span>
-            <span class="pb-chip" onclick="hearPhrase('The main reason is')">The main reason is</span>
-            <span class="pb-chip" onclick="hearPhrase('This is because')">This is because</span>
-            <span class="pb-chip" onclick="hearPhrase('I say this because')">I say this because</span>
-            <span class="pb-chip" onclick="hearPhrase('since')">since</span>
-            <span class="pb-chip" onclick="hearPhrase('The reason I feel this way is')">The reason I feel this way is</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 8–22s — Razón + Implicación</div>
+          <div class="tfs-sentence">The <span class="tfs-alt">primary / main / fundamental</span> reason for this is that <span class="tfs-blank">[razón específica]</span>, which <span class="tfs-alt">ultimately means that / suggests that / clearly shows that</span> <span class="tfs-blank">[implicación]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('The primary reason for this is that')">The primary reason for this is that</span>
+            <span class="tfs-chip" onclick="hearPhrase('This is largely due to the fact that')">This is largely due to the fact that</span>
+            <span class="tfs-chip" onclick="hearPhrase('which ultimately means that')">which ultimately means that</span>
+            <span class="tfs-chip" onclick="hearPhrase('suggesting that')">suggesting that</span>
           </div>
         </div>
-        <div class="pb-section">
-          <div class="pb-lbl" style="color:#1A3D8F"><span class="pb-t pb-t-blue">20–32s</span> 💡 Ejemplo — usa tu propia vida</div>
-          <div class="pb-chips">
-            <span class="pb-chip" onclick="hearPhrase('For example, in my case')">For example, in my case</span>
-            <span class="pb-chip" onclick="hearPhrase('In my experience,')">In my experience,</span>
-            <span class="pb-chip" onclick="hearPhrase('When I was young,')">When I was young,</span>
-            <span class="pb-chip" onclick="hearPhrase('To give you an idea,')">To give you an idea,</span>
-            <span class="pb-chip" onclick="hearPhrase('In my country,')">In my country,</span>
-            <span class="pb-chip" onclick="hearPhrase('For instance,')">For instance,</span>
+        <hr class="tfs-sep">
+        <div class="tfs-block">
+          <div class="tfs-time-lbl">⏱ 22–33s — Ejemplo + Cierre</div>
+          <div class="tfs-sentence">For <span class="tfs-alt">instance / example</span>, in my own experience, <span class="tfs-blank">[ejemplo personal]</span>, which clearly <span class="tfs-alt">demonstrates / reflects / reveals</span> that <span class="tfs-blank">[conclusión]</span>.</div>
+          <div class="tfs-chips">
+            <span class="tfs-chip" onclick="hearPhrase('For instance, in my own experience,')">For instance, in my own experience,</span>
+            <span class="tfs-chip" onclick="hearPhrase('A clear example of this from my own life is')">A clear example from my own life is</span>
+            <span class="tfs-chip" onclick="hearPhrase('which clearly demonstrates that')">which clearly demonstrates that</span>
+            <span class="tfs-chip" onclick="hearPhrase('this is a clear reflection of the fact that')">this is a clear reflection of</span>
           </div>
         </div>
-        <div class="pb-upgrade">
-          <span class="pb-upg-lbl">⬆ C1</span>
-          <span class="pb-upg-item" onclick="hearPhrase('I truly believe')"><del>I think</del> → <b>I truly believe</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('particularly')"><del>very</del> → <b>particularly</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('significant')"><del>good</del> → <b>significant</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('nevertheless')"><del>but</del> → <b>nevertheless</b></span>
-          <span class="pb-upg-item" onclick="hearPhrase('I am 25 years old')"><del>I have 25 years</del> → <b>I am 25</b></span>
+        <hr class="tfs-sep">
+        <div class="c1-power-box">
+          <div class="c1p-lbl">⭐ C1/C2 — reemplaza frases débiles</div>
+          <div class="c1p-chips">
+            <span class="c1p-chip" onclick="hearPhrase('Not only does this demonstrate the importance of the topic but it also reveals a deeper truth about society')">Not only does this demonstrate… but it also reveals a deeper truth about…</span>
+            <span class="c1p-chip" onclick="hearPhrase('What is particularly striking about this issue is the way in which it affects everyday life')">What is particularly striking about this is the way in which it affects</span>
+            <span class="c1p-chip" onclick="hearPhrase('Far from being a minor concern this is actually a critical factor that significantly shapes')">Far from being a minor concern, this is actually a critical factor that</span>
+            <span class="c1p-chip" onclick="hearPhrase('While some may argue that this is debatable the reality is that the evidence strongly suggests')">While some may argue that… the reality is that the evidence strongly suggests</span>
+            <span class="c1p-chip" onclick="hearPhrase('It is worth noting that this has a significant and lasting impact on')">It is worth noting that this has a significant and lasting impact on</span>
+          </div>
         </div>
-        <div class="pb-avoid">❌ "Ehh…" · "O sea…" · "Mmm…" · "This is a good question…" → tiempo muerto ⏳<br>⏸ Te congelas → <b>"Well, I think…"</b> te da 2 segundos · Meta: 28–32s de los 35s</div>
+        <div class="tricks-box">
+          ⏸ Freeze → <span onclick="hearPhrase('That is a thought-provoking question, I would say that')">That's a thought-provoking question, I would say that</span><br>
+          🔀 Comparar → <span onclick="hearPhrase('While X may have its merits I would argue that Y is far more beneficial because')">While X may have its merits, I would argue that Y is far more beneficial because</span><br>
+          ✅ Acuerdo → <span onclick="hearPhrase('I wholeheartedly agree with this because it is clear that')">I wholeheartedly agree, because it is clear that</span><br>
+          ❌ Desacuerdo → <span onclick="hearPhrase('I must respectfully disagree because the evidence suggests that')">I must respectfully disagree, because the evidence suggests that</span>
+        </div>
         <div style="display:none">
           <div class="sv"><div class="sv-chips" id="sv-chips-interactive-1"></div><input class="sv-inp" id="sv-inp-interactive-1" onkeydown="if(event.key==='Enter')svManualAdd('interactive',1)"><button onclick="svManualAdd('interactive',1)">+</button></div>
           <div class="sv"><div class="sv-chips" id="sv-chips-interactive-2"></div><input class="sv-inp" id="sv-inp-interactive-2" onkeydown="if(event.key==='Enter')svManualAdd('interactive',2)"><button onclick="svManualAdd('interactive',2)">+</button></div>
