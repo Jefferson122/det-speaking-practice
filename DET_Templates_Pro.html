@@ -1,0 +1,2133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DET — Templates Pro</title>
+<style>
+:root {
+  --bg: #0d0f1a; --bg2: #151827; --bg3: #1e2235; --border: #252840;
+  --text: #e8eaf0; --muted: #6b7490;
+  --c1: #5b8dee; --c2: #3ecf8e; --c3: #f59e0b; --c4: #c084fc;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* ── HEADER ── */
+header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 18px 24px 0; position: sticky; top: 0; z-index: 100; }
+.header-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pill { background: linear-gradient(135deg, var(--c1), var(--c4)); border-radius: 6px; padding: 4px 10px; font-size: 0.68rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; }
+.header-row h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; }
+.header-row p { font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab { padding: 10px 18px; background: none; border: none; border-bottom: 3px solid transparent; color: var(--muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.18s; letter-spacing: 0.1px; }
+.tab:hover { color: var(--text); }
+.tab.active[data-m="photo"]       { color: var(--c1); border-color: var(--c1); }
+.tab.active[data-m="read"]        { color: var(--c2); border-color: var(--c2); }
+.tab.active[data-m="sample"]      { color: var(--c3); border-color: var(--c3); }
+.tab.active[data-m="interactive"] { color: var(--c4); border-color: var(--c4); }
+
+/* ── MAIN ── */
+main { max-width: 1060px; margin: 0 auto; padding: 28px 16px 80px; }
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── MODULE HERO ── */
+.mod-hero { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; }
+.mod-title { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.5px; }
+.mod-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.badge { padding: 3px 10px; border-radius: 100px; font-size: 0.7rem; font-weight: 700; border: 1px solid; }
+.b1 { border-color: var(--c1); color: var(--c1); background: rgba(91,141,238,.1); }
+.b2 { border-color: var(--c2); color: var(--c2); background: rgba(62,207,142,.1); }
+.b3 { border-color: var(--c3); color: var(--c3); background: rgba(245,158,11,.1); }
+.b4 { border-color: var(--c4); color: var(--c4); background: rgba(192,132,252,.1); }
+.bg { border-color: var(--muted); color: var(--muted); background: transparent; }
+
+/* ── TIMELINE ── */
+.timeline { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; }
+.tl-label { font-size: 0.67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 10px; }
+.tl-bar { display: flex; height: 34px; border-radius: 8px; overflow: hidden; gap: 2px; }
+.tl-seg { display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,.85); letter-spacing: 0.3px; overflow: hidden; }
+.tl-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; }
+.tl-leg-item { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--muted); }
+.tl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── STEPS ── */
+.steps { display: grid; gap: 10px; margin-bottom: 22px; }
+.step { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.step-head { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; transition: background .15s; }
+.step-head:hover { background: rgba(255,255,255,.02); }
+.step-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; flex-shrink: 0; }
+.step-info { flex: 1; min-width: 0; }
+.step-name { font-size: 0.88rem; font-weight: 700; }
+.step-time { font-size: 0.68rem; color: var(--muted); margin-top: 1px; }
+.step-arrow { color: var(--muted); font-size: 0.75rem; transition: transform .2s; }
+.step.open .step-arrow { transform: rotate(180deg); }
+.step-body { display: none; padding: 0 18px 16px; border-top: 1px solid var(--border); }
+.step.open .step-body { display: block; }
+.step-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; margin: 12px 0 10px; }
+.lbl { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 7px; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 4px 9px; font-size: 0.75rem; font-style: italic; cursor: pointer; color: var(--text); transition: all .15s; }
+.chip:hover { border-color: var(--muted); background: var(--bg); }
+.chip.ok { border-color: var(--c2) !important; color: var(--c2) !important; }
+
+/* ── PHRASE BANK ── */
+.bank { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; }
+.bank-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; margin-top: 12px; }
+.bank-cat h4 { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.bank-cat .chips { gap: 4px; }
+
+/* ── EXAMPLE ── */
+.example { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; }
+.ex-nav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.ex-btn { padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); background: none; color: var(--muted); font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+.ex-btn.active { background: var(--bg3); color: var(--text); border-color: var(--muted); }
+.ex-panel { display: none; font-size: 0.83rem; line-height: 1.8; color: #c8cfe0; }
+.ex-panel.active { display: block; }
+.ex-panel em { font-style: normal; color: var(--c1); font-weight: 600; }
+.ex-panel .conn { color: var(--c3); font-weight: 600; font-style: normal; }
+.ex-panel .inf  { color: var(--c2); font-style: italic; }
+
+/* ── TIPS GRID ── */
+.tips { display: grid; grid-template-columns: repeat(auto-fill, minmax(185px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.tip { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 15px; }
+.tip-ico { font-size: 1.1rem; margin-bottom: 6px; }
+.tip-title { font-size: 0.78rem; font-weight: 700; margin-bottom: 4px; }
+.tip-desc { font-size: 0.73rem; color: var(--muted); line-height: 1.55; }
+
+/* ── DOS DONTS ── */
+.dd { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+@media(max-width:580px){ .dd { grid-template-columns:1fr; } }
+.do, .dont { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.do  { border-left: 3px solid var(--c2); }
+.dont{ border-left: 3px solid #ef4444; }
+.do h4  { color: var(--c2); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.dont h4{ color: #ef4444; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.do li, .dont li { font-size: 0.78rem; color: var(--muted); line-height: 1.6; margin-left: 14px; margin-bottom: 3px; }
+
+/* ── VOCAB ── */
+.vocab { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 22px; }
+.vocab-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.vchip { padding: 4px 10px; border-radius: 100px; font-size: 0.73rem; font-weight: 500; cursor: pointer; transition: opacity .15s; }
+.vchip:hover { opacity: .75; }
+.vc1 { background: rgba(91,141,238,.15); color: #93b8f8; border: 1px solid rgba(91,141,238,.3); }
+.vc2 { background: rgba(62,207,142,.15); color: #6ee7b7; border: 1px solid rgba(62,207,142,.3); }
+.vc3 { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
+.vc4 { background: rgba(192,132,252,.15); color: #dbb6fe; border: 1px solid rgba(192,132,252,.3); }
+
+/* ── SECTION DIVIDER ── */
+.sdiv { font-size: 0.67rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* ── OREO VISUAL ── */
+.oreo { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+.oreo-seg { flex: 1; min-width: 120px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; text-align: center; }
+.oreo-letter { font-size: 2rem; font-weight: 900; }
+.oreo-name { font-size: 0.72rem; font-weight: 700; margin-top: 4px; }
+.oreo-time { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+.oreo-hint { font-size: 0.72rem; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+/* ── TOAST ── */
+#toast { position: fixed; bottom: 22px; right: 22px; background: var(--bg3); border: 1px solid var(--c2); border-radius: 8px; padding: 9px 15px; font-size: 0.78rem; color: var(--c2); font-weight: 600; opacity: 0; transform: translateY(8px); transition: all .2s; pointer-events: none; z-index: 999; }
+#toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ══ MOBILE FIXES ══ */
+@media(max-width:600px){
+  header{padding:12px 14px 0}
+  .header-row h1{font-size:1.05rem}
+  .header-row p{display:none}
+  .tab{padding:8px 12px;font-size:.73rem}
+  main{padding:16px 10px 100px}
+  .dd{grid-template-columns:1fr}
+}
+@media(min-width:601px){main{padding-bottom:90px}}
+
+/* FAB */
+#prac-fab{
+  position:fixed;bottom:20px;right:20px;z-index:200;
+  width:58px;height:58px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--c1),var(--c4));color:#fff;
+  font-size:1.55rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(91,141,238,.45);transition:.2s;
+}
+#prac-fab:hover{transform:scale(1.08)}
+#prac-fab:active{transform:scale(.95)}
+#prac-fab-lbl{
+  position:fixed;bottom:24px;right:84px;z-index:200;
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;
+  padding:6px 10px;font-size:.7rem;font-weight:800;color:var(--text);
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s;
+}
+#prac-fab:hover+#prac-fab-lbl{opacity:1}
+
+/* API cfg button */
+#api-cfg-btn{
+  position:fixed;bottom:20px;left:20px;z-index:200;
+  background:var(--bg2);border:1.5px solid var(--border);border-radius:10px;
+  padding:7px 11px;font-size:.7rem;font-weight:800;color:var(--muted);
+  cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px;font-family:inherit;
+}
+#api-cfg-btn:hover{border-color:var(--c1);color:var(--c1)}
+#api-dot{width:7px;height:7px;border-radius:50%;background:#ef4444;flex-shrink:0;transition:.3s}
+#api-dot.ok{background:var(--c2)}
+
+/* ══ PRACTICE SHEET ══ */
+#prac-sheet{position:fixed;inset:0;z-index:500;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
+#prac-sheet.open{display:flex}
+#prac-inner{display:flex;flex-direction:column;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch}
+@media(min-width:640px){
+  #prac-sheet{align-items:center;justify-content:center;background:rgba(0,0,0,.7);backdrop-filter:blur(8px)}
+  #prac-inner{background:var(--bg2);border:1.5px solid var(--border);border-radius:20px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 28px 70px rgba(0,0,0,.65)}
+}
+@keyframes ps-slide{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+#prac-sheet.open #prac-inner{animation:ps-slide .28s ease}
+.ps-head{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1.5px solid var(--border);padding:13px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+@media(min-width:640px){.ps-head{background:var(--bg2)}}
+.ps-close{background:rgba(255,255,255,.07);border:none;color:var(--muted);width:30px;height:30px;border-radius:50%;font-size:.85rem;cursor:pointer;transition:.18s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.ps-close:hover{background:rgba(239,68,68,.2);color:#ef4444}
+.ps-head-title{flex:1;min-width:0}
+.ps-head-module{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--c1);display:block}
+.ps-head-name{font-size:.88rem;font-weight:900;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+#ps-api-btn{background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 8px;color:var(--muted);font-size:.65rem;font-weight:800;cursor:pointer;transition:.18s;display:flex;align-items:center;gap:4px;font-family:inherit;flex-shrink:0}
+#ps-api-btn:hover{border-color:var(--c1);color:var(--c1)}
+#ps-api-dot{width:6px;height:6px;border-radius:50%;background:#ef4444;flex-shrink:0}
+.ps-body{padding:14px 16px 24px;display:flex;flex-direction:column;gap:12px}
+
+/* Template accordion */
+.ps-tpl-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:13px;overflow:hidden}
+.ps-tpl-hdr{display:flex;align-items:center;gap:8px;padding:11px 14px;cursor:pointer;user-select:none;min-height:44px}
+.ps-tpl-hdr-txt{flex:1;font-size:.8rem;font-weight:900;color:var(--text)}
+.ps-tpl-chevron{font-size:.55rem;color:var(--muted);transition:transform .2s}
+.ps-tpl-card.open .ps-tpl-chevron{transform:rotate(180deg)}
+.ps-tpl-body{display:none;border-top:1px solid var(--border)}
+.ps-tpl-card.open .ps-tpl-body{display:block}
+.ps-step-row{display:flex;gap:9px;padding:9px 12px;border-bottom:1px solid var(--border)}
+.ps-step-row:last-child{border-bottom:none}
+.ps-step-num{width:22px;height:22px;border-radius:50%;background:rgba(91,141,238,.18);color:var(--c1);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:900;flex-shrink:0;margin-top:2px}
+.ps-step-info{flex:1;min-width:0}
+.ps-step-name{font-size:.74rem;font-weight:900;color:var(--text);display:block;margin-bottom:2px}
+.ps-step-time{font-size:.6rem;font-weight:700;color:var(--muted);display:block;margin-bottom:4px}
+.ps-step-chips{display:flex;flex-wrap:wrap;gap:3px}
+.ps-step-chip{font-size:.67rem;font-style:italic;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:2px 7px;color:#b8c0d0;line-height:1.5}
+
+/* Exercise */
+.ps-ex-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:13px;padding:13px 14px}
+.ps-ex-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--c3);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.ps-ex-shuffle{background:none;border:1.5px solid var(--border);border-radius:7px;padding:3px 8px;color:var(--muted);font-size:.66rem;font-weight:800;cursor:pointer;transition:.18s;font-family:inherit;min-height:28px}
+.ps-ex-shuffle:hover{border-color:var(--c3);color:var(--c3)}
+.ps-ex-text{font-size:.88rem;font-weight:700;color:var(--text);line-height:1.55}
+.ps-ex-hint{font-size:.7rem;color:var(--muted);margin-top:5px;font-style:italic;line-height:1.4}
+
+/* Recording */
+.ps-rec-area{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0 2px}
+.ps-mic-wrap{position:relative;display:flex;align-items:center;justify-content:center}
+.ps-mic-ring{position:absolute;width:88px;height:88px;border-radius:50%;background:rgba(239,68,68,.15);opacity:0;pointer-events:none}
+.ps-mic-ring.active{opacity:1;animation:mic-ring 1.2s ease-in-out infinite}
+@keyframes mic-ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+#ps-mic-btn{width:74px;height:74px;border-radius:50%;border:none;cursor:pointer;font-size:1.8rem;background:var(--c2);color:#fff;position:relative;z-index:1;box-shadow:0 5px 0 #099a6a,0 4px 18px rgba(62,207,142,.3);transition:.18s;display:flex;align-items:center;justify-content:center}
+#ps-mic-btn:hover{transform:translateY(-2px)}
+#ps-mic-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #099a6a}
+#ps-mic-btn.rec{background:#ef4444;box-shadow:0 5px 0 #b83030,0 4px 18px rgba(239,68,68,.3);animation:mic-pulse 1.4s ease-in-out infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 5px 0 #b83030,0 0 0 0 rgba(239,68,68,.4)}50%{box-shadow:0 5px 0 #b83030,0 0 0 14px rgba(239,68,68,0)}}
+#ps-mic-status{font-size:.77rem;font-weight:800;color:var(--muted);text-align:center}
+#ps-mic-status.rec{color:#ef4444}
+.ps-wv{display:flex;align-items:center;gap:2px;height:22px}
+.ps-wvb{width:3px;border-radius:2px;background:var(--border);min-height:3px;transition:height .09s}
+.ps-transcript{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:.79rem;font-weight:600;color:#c2cade;line-height:1.55;min-height:40px;display:none}
+.ps-transcript.show{display:block}
+.ps-wc{font-size:.65rem;color:var(--muted);text-align:right}
+
+/* Check btn */
+#ps-check-btn{width:100%;padding:13px;border-radius:13px;border:none;cursor:pointer;font-size:.88rem;font-weight:900;font-family:inherit;background:linear-gradient(135deg,var(--c1),var(--c4));color:#fff;transition:.18s;display:none}
+#ps-check-btn.show{display:block;animation:fadeUp .22s ease}
+#ps-check-btn:hover{opacity:.88;transform:translateY(-1px)}
+#ps-check-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
+/* Results */
+.ps-results{display:none}
+.ps-results.show{display:block;animation:fadeUp .25s ease}
+.ps-score-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:15px;padding:18px;text-align:center;margin-bottom:10px}
+.ps-score-big{font-size:2.9rem;font-weight:900;line-height:1}
+.ps-score-big.great{color:var(--c2)}
+.ps-score-big.good{color:var(--c3)}
+.ps-score-big.low{color:#ef4444}
+.ps-score-lbl{font-size:.68rem;font-weight:700;color:var(--muted);margin:3px 0 10px}
+.ps-score-track{height:7px;background:var(--border);border-radius:4px;overflow:hidden;width:130px;margin:0 auto 10px}
+.ps-score-fill{height:100%;border-radius:4px;transition:width .7s cubic-bezier(.4,0,.2,1);width:0%}
+.ps-score-fill.great{background:var(--c2)}
+.ps-score-fill.good{background:var(--c3)}
+.ps-score-fill.low{background:#ef4444}
+.ps-next-msg{font-size:.76rem;font-weight:700;color:var(--text);background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.18);border-radius:9px;padding:7px 11px}
+.ps-phrases-box{background:var(--bg3);border:1.5px solid var(--border);border-radius:13px;padding:12px 14px;margin-bottom:9px}
+.ps-phrases-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px}
+.ps-phrases-lbl.found{color:var(--c2)}
+.ps-phrases-lbl.miss{color:var(--c3)}
+.ps-phrase-item{display:flex;align-items:flex-start;gap:6px;font-size:.78rem;font-weight:600;margin-bottom:6px;line-height:1.4}
+.ps-phrase-item:last-child{margin-bottom:0}
+.pi-icon{flex-shrink:0;font-size:.75rem;margin-top:1px}
+.ps-sbadge{font-size:.55rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;padding:1px 5px;border-radius:7px;display:inline-block;margin-bottom:1px}
+.ps-sbadge.found{background:rgba(62,207,142,.15);color:var(--c2)}
+.ps-sbadge.miss{background:rgba(245,158,11,.15);color:var(--c3)}
+.ps-tip{background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2);border-radius:11px;padding:10px 13px;font-size:.8rem;font-weight:700;color:var(--c4);line-height:1.5;margin-bottom:11px}
+.ps-tip-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.ps-retry-btn{width:100%;padding:11px;border-radius:11px;border:1.5px solid var(--border);background:none;color:var(--text);font-size:.82rem;font-weight:900;cursor:pointer;transition:.18s;font-family:inherit}
+.ps-retry-btn:hover{border-color:var(--c2);color:var(--c2);background:rgba(62,207,142,.08)}
+
+/* API modal */
+.am-overlay{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.8);backdrop-filter:blur(8px)}
+.am-overlay.open{display:flex}
+.am-box{background:var(--bg2);border:1.5px solid var(--border);border-radius:17px;padding:22px;max-width:340px;width:100%}
+.am-box h3{font-size:.92rem;font-weight:900;color:var(--text);margin-bottom:6px}
+.am-box p{font-size:.73rem;color:var(--muted);font-weight:600;line-height:1.5;margin-bottom:11px}
+.am-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:.8rem;font-weight:700;color:var(--text);outline:none;margin-bottom:9px;transition:.18s;font-family:monospace;box-sizing:border-box}
+.am-input:focus{border-color:var(--c1)}
+.am-save{width:100%;padding:10px;border-radius:9px;border:none;cursor:pointer;font-size:.85rem;font-weight:900;font-family:inherit;background:linear-gradient(135deg,var(--c1),var(--c4));color:#fff;margin-bottom:7px}
+.am-cancel{width:100%;padding:8px;background:none;border:1.5px solid var(--border);border-radius:9px;color:var(--muted);font-size:.78rem;font-weight:700;font-family:inherit;cursor:pointer}
+.am-note{font-size:.65rem;color:var(--muted);text-align:center;margin-top:7px}
+.am-note a{color:var(--c1)}
+
+/* Timer + WPM */
+.ps-rec-stats{display:flex;align-items:center;gap:12px;font-size:.75rem;font-weight:800;justify-content:center;display:none}
+.ps-rec-stats.show{display:flex}
+.ps-timer{color:var(--c3);font-family:monospace;font-size:.92rem;letter-spacing:.5px}
+.ps-wpm-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);border-radius:7px;padding:3px 9px;font-size:.68rem;font-weight:800;color:var(--c3);margin-top:6px}
+.ps-wpm-badge.great{background:rgba(62,207,142,.12);border-color:rgba(62,207,142,.3);color:var(--c2)}
+.ps-wpm-badge.low{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#ef4444}
+/* Pronunciación */
+.ps-pron-card{background:rgba(91,141,238,.08);border:1.5px solid rgba(91,141,238,.2);border-radius:13px;padding:12px 14px;margin-bottom:9px}
+.ps-pron-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--c1);margin-bottom:8px}
+.ps-pron-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;font-size:.78rem;line-height:1.45}
+.ps-pron-item:last-child{margin-bottom:0}
+.ps-pron-word{font-weight:900;color:var(--text)}
+.ps-pron-how{color:#a0b0cc;font-weight:600}
+/* Historial de progreso */
+.ps-history{background:var(--bg3);border:1.5px solid var(--border);border-radius:13px;padding:12px 14px;margin-bottom:9px}
+.ps-history-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px}
+.ps-history-bars{display:flex;align-items:flex-end;gap:4px;height:44px}
+.ps-hbar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.ps-hbar{width:100%;border-radius:3px 3px 0 0;min-height:4px;transition:height .6s cubic-bezier(.4,0,.2,1)}
+.ps-hbar.great{background:var(--c2)}
+.ps-hbar.good{background:var(--c3)}
+.ps-hbar.low{background:#ef4444}
+.ps-hbar-pct{font-size:.52rem;font-weight:900;color:var(--muted)}
+/* Estrategia + coaching tips */
+.ps-strategy{background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.2);border-radius:10px;padding:9px 12px;font-size:.75rem;font-weight:700;color:#d8c0f8;line-height:1.55;margin-bottom:0}
+.ps-strategy-lbl{font-size:.55rem;font-weight:900;text-transform:uppercase;letter-spacing:.8px;display:block;margin-bottom:3px;color:var(--c4)}
+.ps-step-coachtip{font-size:.67rem;font-weight:700;color:var(--c3);display:block;margin:3px 0 4px;font-style:italic;line-height:1.4}
+.ps-step-prons{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.ps-step-pron{font-size:.61rem;background:rgba(91,141,238,.1);border:1px solid rgba(91,141,238,.2);border-radius:5px;padding:2px 7px;color:#8aabf0;font-weight:700;font-family:monospace}
+/* ── Mastery chips ── */
+.ps-step-chip.m-mastered{border-color:var(--c2)!important;color:var(--c2)!important;background:rgba(62,207,142,.08)}
+.ps-step-chip.m-weak{border-color:#ef4444!important;color:#ef4444!important;background:rgba(239,68,68,.07)}
+.ps-step-chip.m-learning{border-color:var(--c3)!important;color:var(--c3)!important;background:rgba(245,158,11,.07)}
+/* ── Adaptive summary card ── */
+.ps-adapt-card{background:var(--bg3);border:1.5px solid var(--border);border-radius:11px;padding:10px 13px;margin-bottom:9px}
+.ps-adapt-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--c4);margin-bottom:8px;display:block}
+.ps-adapt-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ps-adapt-pill{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px}
+
+@keyframes fadeUp{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <span class="pill">DET PRO</span>
+    <h1>Templates de Speaking</h1>
+    <p>Scraped &amp; curado · 4 módulos</p>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-m="photo"       onclick="show('photo',this)">📸 Speak About the Photo</button>
+    <button class="tab"        data-m="read"         onclick="show('read',this)">📖 Read Then Speak</button>
+    <button class="tab"        data-m="sample"       onclick="show('sample',this)">🎙 Speaking Sample</button>
+    <button class="tab"        data-m="interactive"  onclick="show('interactive',this)">💬 Interactive Speaking</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ════════════════════════════════════════════════
+     MODULE 1 · SPEAK ABOUT THE PHOTO
+═════════════════════════════════════════════════ -->
+<div id="photo" class="section active">
+
+  <div class="mod-hero">
+    <div>
+      <div class="mod-title" style="color:var(--c1)">Speak About the Photo</div>
+      <div class="mod-meta">
+        <span class="badge b1">90 s total</span>
+        <span class="badge b1">20 s prep</span>
+        <span class="badge b1">70 s speaking</span>
+        <span class="badge bg">~5 steps</span>
+        <span class="badge b1">~4 q / test</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="tl-label">Distribución de tiempo (70 s de habla)</div>
+    <div class="tl-bar">
+      <div class="tl-seg" style="width:21%;background:#3b60c4;">GENERAL</div>
+      <div class="tl-seg" style="width:36%;background:#2d7dd2;">1er PLANO</div>
+      <div class="tl-seg" style="width:29%;background:#1a9ec9;">FONDO</div>
+      <div class="tl-seg" style="width:14%;background:#0fbcb0;">CIERRE</div>
+    </div>
+    <div class="tl-legend">
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#3b60c4"></span>0–15 s · Visión General</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#2d7dd2"></span>15–40 s · Primer Plano</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#1a9ec9"></span>40–60 s · Fondo + Inferencias</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#0fbcb0"></span>60–70 s · Ambiente + Cierre</span>
+    </div>
+  </div>
+
+  <!-- STEPS -->
+  <div class="sdiv">Template paso a paso</div>
+  <div class="steps">
+
+    <div class="step open">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(91,141,238,.2);color:var(--c1)">1</div>
+        <div class="step-info">
+          <div class="step-name">Visión General</div>
+          <div class="step-time">0 – 15 s · Describe la escena principal en 1-2 frases</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Abre con una oración que capture el "qué" completo: quién, qué está haciendo, dónde. No empieces con "I see..." — usa verbos más ricos.</div>
+        <div class="lbl">Frases de apertura (clic para copiar)</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"This photograph depicts…"</span>
+          <span class="chip" onclick="copy(this)">"This image captures…"</span>
+          <span class="chip" onclick="copy(this)">"This photo shows…"</span>
+          <span class="chip" onclick="copy(this)">"In this photograph, we can see…"</span>
+          <span class="chip" onclick="copy(this)">"This vibrant scene portrays…"</span>
+          <span class="chip" onclick="copy(this)">"At first glance, this image presents…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(91,141,238,.2);color:var(--c1)">2</div>
+        <div class="step-info">
+          <div class="step-name">Primer Plano — Sujeto Principal</div>
+          <div class="step-time">15 – 40 s · Descripción detallada del foco principal</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Describe apariencia, ropa, expresión, acción, postura. Usa adjetivos específicos (no "nice" — usa "vibrant", "intricate", "weathered"). Siempre describe el COLOR de los objetos.</div>
+        <div class="lbl">Conectores de foco</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"The first thing that catches my eye is…"</span>
+          <span class="chip" onclick="copy(this)">"In the foreground, I can see…"</span>
+          <span class="chip" onclick="copy(this)">"Looking closely at the center…"</span>
+          <span class="chip" onclick="copy(this)">"The main subject appears to be…"</span>
+          <span class="chip" onclick="copy(this)">"Most prominently…"</span>
+          <span class="chip" onclick="copy(this)">"Dominating the frame is…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(91,141,238,.2);color:var(--c1)">3</div>
+        <div class="step-info">
+          <div class="step-name">Fondo y Contexto</div>
+          <div class="step-time">40 – 60 s · Entorno, setting, elementos secundarios</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Describe el entorno: tipo de lugar, luz, elementos del fondo. Usa preposiciones espaciales ricas y relaciones entre elementos.</div>
+        <div class="lbl">Posiciones espaciales</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"In the background…"</span>
+          <span class="chip" onclick="copy(this)">"Behind the main subject…"</span>
+          <span class="chip" onclick="copy(this)">"To the left/right of…"</span>
+          <span class="chip" onclick="copy(this)">"Further back in the scene…"</span>
+          <span class="chip" onclick="copy(this)">"Surrounding the central figure…"</span>
+          <span class="chip" onclick="copy(this)">"In the upper/lower portion…"</span>
+          <span class="chip" onclick="copy(this)">"Scattered across the frame…"</span>
+          <span class="chip" onclick="copy(this)">"Adjacent to…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(91,141,238,.2);color:var(--c1)">4</div>
+        <div class="step-info">
+          <div class="step-name">Inferencias y Ambiente</div>
+          <div class="step-time">60 – 65 s · Especulación + mood de la foto</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Este paso marca la diferencia entre B2 y C1. Pregúntate "¿Por qué?" y especula sobre el contexto, emoción o propósito de la foto.</div>
+        <div class="lbl">Frases de inferencia</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"It appears that…"</span>
+          <span class="chip" onclick="copy(this)">"Judging by…, I would say…"</span>
+          <span class="chip" onclick="copy(this)">"This must be…"</span>
+          <span class="chip" onclick="copy(this)">"Presumably, this was taken…"</span>
+          <span class="chip" onclick="copy(this)">"The overall atmosphere seems…"</span>
+          <span class="chip" onclick="copy(this)">"Based on the details, it's likely that…"</span>
+          <span class="chip" onclick="copy(this)">"This could well be…"</span>
+          <span class="chip" onclick="copy(this)">"One might assume that…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(91,141,238,.2);color:var(--c1)">5</div>
+        <div class="step-info">
+          <div class="step-name">Cierre + Impresión Final</div>
+          <div class="step-time">65 – 70 s · Conclusión memorable</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Cierra con una observación global que muestre pensamiento crítico. Evita repetir lo que ya dijiste.</div>
+        <div class="lbl">Frases de cierre</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Overall, this photo beautifully captures…"</span>
+          <span class="chip" onclick="copy(this)">"This image powerfully conveys…"</span>
+          <span class="chip" onclick="copy(this)">"What strikes me most about this scene is…"</span>
+          <span class="chip" onclick="copy(this)">"This photograph reminds us of…"</span>
+          <span class="chip" onclick="copy(this)">"It's a compelling snapshot of…"</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VOCAB -->
+  <div class="vocab">
+    <div class="sdiv">Vocabulario de alta puntuación</div>
+    <p style="font-size:.72rem;color:var(--muted);margin-bottom:10px">Categorías para describir fotos. Clic para copiar.</p>
+    <div style="margin-bottom:10px"><div class="lbl">Setting / Lugar</div>
+    <div class="vocab-row">
+      <span class="vchip vc1" onclick="copy(this)">urban landscape</span><span class="vchip vc1" onclick="copy(this)">bustling marketplace</span><span class="vchip vc1" onclick="copy(this)">serene coastal setting</span><span class="vchip vc1" onclick="copy(this)">verdant hillside</span><span class="vchip vc1" onclick="copy(this)">sunlit interior</span><span class="vchip vc1" onclick="copy(this)">dimly lit space</span><span class="vchip vc1" onclick="copy(this)">open-air venue</span>
+    </div></div>
+    <div style="margin-bottom:10px"><div class="lbl">Acciones</div>
+    <div class="vocab-row">
+      <span class="vchip vc2" onclick="copy(this)">is engaged in</span><span class="vchip vc2" onclick="copy(this)">appears to be concentrating on</span><span class="vchip vc2" onclick="copy(this)">is leaning forward</span><span class="vchip vc2" onclick="copy(this)">gazing intently at</span><span class="vchip vc2" onclick="copy(this)">working collaboratively</span><span class="vchip vc2" onclick="copy(this)">gesturing expressively</span>
+    </div></div>
+    <div style="margin-bottom:10px"><div class="lbl">Mood / Atmósfera</div>
+    <div class="vocab-row">
+      <span class="vchip vc3" onclick="copy(this)">conveys a sense of…</span><span class="vchip vc3" onclick="copy(this)">radiates energy</span><span class="vchip vc3" onclick="copy(this)">lively and vibrant</span><span class="vchip vc3" onclick="copy(this)">tranquil yet purposeful</span><span class="vchip vc3" onclick="copy(this)">charged with emotion</span><span class="vchip vc3" onclick="copy(this)">exudes warmth</span>
+    </div></div>
+    <div><div class="lbl">Apariencia</div>
+    <div class="vocab-row">
+      <span class="vchip vc4" onclick="copy(this)">wearing a vibrant [color]</span><span class="vchip vc4" onclick="copy(this)">sporting a weathered look</span><span class="vchip vc4" onclick="copy(this)">dressed in protective gear</span><span class="vchip vc4" onclick="copy(this)">equipped with</span><span class="vchip vc4" onclick="copy(this)">displaying focused expressions</span>
+    </div></div>
+  </div>
+
+  <!-- EXAMPLE -->
+  <div class="example">
+    <div class="sdiv">Respuesta Ejemplo Completa</div>
+    <div class="ex-nav">
+      <button class="ex-btn active" onclick="showEx('photo','p1',this)">Foto: Surf</button>
+      <button class="ex-btn" onclick="showEx('photo','p2',this)">Foto: Laboratorio</button>
+    </div>
+    <div id="photo-p1" class="ex-panel active">
+      <em>This photograph depicts</em> a surfer skillfully riding a powerful ocean wave. <span class="conn">Looking at the foreground,</span> the subject — a young man wearing a sleek black wetsuit — is balanced perfectly on a white surfboard, with his arms extended for stability and his gaze fixed on the wave ahead. His posture <span class="inf">appears tense yet controlled</span>, suggesting years of practice. <span class="conn">In the background,</span> the wave towers impressively, its deep turquoise water contrasting with the bright white foam cascading around the surfer. The surrounding water <span class="conn">further</span> reinforces the sense of raw natural power. <span class="inf">Judging by the wave's height and the surfer's confidence,</span> this is likely a competitive surfing event or a well-known surf location. The overall atmosphere <span class="conn">conveys</span> a thrilling blend of athleticism and connection with nature. <em>Overall, this image powerfully captures</em> the exhilaration and skill required to master one of the world's most demanding sports.
+    </div>
+    <div id="photo-p2" class="ex-panel">
+      <em>This image captures</em> a scientist working attentively in a modern research laboratory. <span class="conn">The first thing that catches my eye is</span> the researcher — a woman dressed in a crisp white lab coat and protective safety goggles — who is peering through a high-powered microscope. Her expression <span class="inf">appears deeply focused</span>, suggesting she is analysing a critical specimen. <span class="conn">In the background,</span> I can make out neatly organized shelves lined with glass beakers, test tubes, and labelled solution bottles, all of which point to a well-equipped professional environment. <span class="conn">Surrounding her workstation</span> are various instruments and notebooks, indicating ongoing, methodical research. <span class="inf">Based on the sophisticated equipment and sterile setting, this must be</span> a university or pharmaceutical laboratory. The atmosphere <span class="conn">exudes</span> precision and dedication. <em>What strikes me most</em> is how the image encapsulates the quiet intensity of scientific inquiry — a reminder of how vital this work is to human progress.
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="sdiv">Pro Tips · Puntuación alta</div>
+  <div class="tips">
+    <div class="tip"><div class="tip-ico">⏱</div><div class="tip-title">Usa los 70 segundos</div><div class="tip-desc">Bajo 30 s = score muy bajo. Si te quedas sin cosas que decir, especula sobre el origen, propósito o historia de la foto.</div></div>
+    <div class="tip"><div class="tip-ico">🎨</div><div class="tip-title">Siempre describe el color</div><div class="tip-desc">"A car" → "a sleek silver car." Agregar color a cada objeto suma puntos de vocabulario rápidamente.</div></div>
+    <div class="tip"><div class="tip-ico">🔍</div><div class="tip-title">Pregunta "¿Por qué?"</div><div class="tip-desc">Especular sobre la razón o contexto de la foto demuestra C1. "This must be..." / "Presumably..."</div></div>
+    <div class="tip"><div class="tip-ico">📐</div><div class="tip-title">Usa posición espacial</div><div class="tip-desc">Organiza tu descripción espacialmente: foreground → background → left/right. Da estructura y coherencia.</div></div>
+    <div class="tip"><div class="tip-ico">🚫</div><div class="tip-title">Evita "I see..."</div><div class="tip-desc">Reemplaza con "depicts," "portrays," "captures," "shows." Los evaluadores notan variedad léxica desde la primera oración.</div></div>
+    <div class="tip"><div class="tip-ico">🎭</div><div class="tip-title">Describe emociones</div><div class="tip-desc">Siempre menciona la emoción o expresión de las personas. "She appears excited..." / "He looks exhausted yet proud..."</div></div>
+  </div>
+
+  <div class="dd">
+    <div class="do"><h4>✓ Sí hacer</h4><ul>
+      <li>Hablar los 70 segundos completos</li>
+      <li>Describir colores específicos de cada objeto</li>
+      <li>Usar vocabulary variado (no repetir palabras)</li>
+      <li>Especular con modales: must, could, might</li>
+      <li>Incluir emociones / expresiones de personas</li>
+      <li>Organizar por foreground → background</li>
+    </ul></div>
+    <div class="dont"><h4>✗ No hacer</h4><ul>
+      <li>Empezar con "I see a photo of..."</li>
+      <li>Responder menos de 30 segundos</li>
+      <li>Usar adjetivos vagos: nice, good, big</li>
+      <li>Hacer pausas largas de silencio (rellena con "Let me also mention...")</li>
+      <li>Describir solo el foreground e ignorar el fondo</li>
+    </ul></div>
+  </div>
+
+</div><!-- /photo -->
+
+
+<!-- ════════════════════════════════════════════════
+     MODULE 2 · READ THEN SPEAK
+═════════════════════════════════════════════════ -->
+<div id="read" class="section">
+
+  <div class="mod-hero">
+    <div>
+      <div class="mod-title" style="color:var(--c2)">Read, Then Speak</div>
+      <div class="mod-meta">
+        <span class="badge b2">90 s total</span>
+        <span class="badge b2">20 s prep</span>
+        <span class="badge b2">90 s speaking</span>
+        <span class="badge bg">Opinion / Experience</span>
+        <span class="badge b2">~4 q / test</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="tl-label">Distribución de tiempo — Template OPINIÓN (90 s)</div>
+    <div class="tl-bar">
+      <div class="tl-seg" style="width:13%;background:#0d7b56;">TESIS</div>
+      <div class="tl-seg" style="width:29%;background:#0a9e6e;">ARG 1</div>
+      <div class="tl-seg" style="width:27%;background:#0bbf84;">ARG 2</div>
+      <div class="tl-seg" style="width:18%;background:#0fd89a;">CONTRA</div>
+      <div class="tl-seg" style="width:13%;background:#12f2b0;">CONCL.</div>
+    </div>
+    <div class="tl-legend">
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#0d7b56"></span>0–12 s · Tesis</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#0a9e6e"></span>12–38 s · 1er Argumento</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#0bbf84"></span>38–62 s · 2do Argumento</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#0fd89a"></span>62–78 s · Contrapunto</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#12f2b0"></span>78–90 s · Conclusión</span>
+    </div>
+  </div>
+
+  <!-- TEMPLATE OPINION STEPS -->
+  <div class="sdiv">Template A — Opinión / Argumentación</div>
+  <div class="steps">
+
+    <div class="step open">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">1</div>
+        <div class="step-info">
+          <div class="step-name">Tesis Clara</div>
+          <div class="step-time">0 – 12 s · Posición en 1 oración directa</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Di tu posición en la primera oración. El evaluador necesita saber inmediatamente qué vas a argumentar. Sé específico, no general.</div>
+        <div class="lbl">Frases de tesis (Opinion)</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"In my view, [topic] is undeniably…"</span>
+          <span class="chip" onclick="copy(this)">"I firmly believe that…"</span>
+          <span class="chip" onclick="copy(this)">"It is my considered opinion that…"</span>
+          <span class="chip" onclick="copy(this)">"I would argue that…"</span>
+          <span class="chip" onclick="copy(this)">"Without a doubt, I support the idea that…"</span>
+          <span class="chip" onclick="copy(this)">"When it comes to [topic], I strongly feel that…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">2</div>
+        <div class="step-info">
+          <div class="step-name">Primer Argumento</div>
+          <div class="step-time">12 – 38 s · Razón + Ejemplo específico</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Presenta tu argumento más fuerte con una razón clara y un ejemplo concreto o personal. Sé específico — los ejemplos vagos no puntúan bien.</div>
+        <div class="lbl">Introducir argumento</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"First of all, one compelling reason is that…"</span>
+          <span class="chip" onclick="copy(this)">"To begin with, the most significant factor is…"</span>
+          <span class="chip" onclick="copy(this)">"My primary reason for this view is…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Introducir ejemplo</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"For instance…"</span>
+          <span class="chip" onclick="copy(this)">"A clear example of this is…"</span>
+          <span class="chip" onclick="copy(this)">"To illustrate, consider how…"</span>
+          <span class="chip" onclick="copy(this)">"This is evident in the fact that…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">3</div>
+        <div class="step-info">
+          <div class="step-name">Segundo Argumento</div>
+          <div class="step-time">38 – 62 s · Punto distinto + evidencia</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Agrega un segundo punto que sea claramente diferente al primero. No lo repitas — explora otro ángulo del mismo tema.</div>
+        <div class="lbl">Transiciones de adición</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Furthermore…"</span>
+          <span class="chip" onclick="copy(this)">"What's more…"</span>
+          <span class="chip" onclick="copy(this)">"Moreover, it is worth noting that…"</span>
+          <span class="chip" onclick="copy(this)">"In addition to this…"</span>
+          <span class="chip" onclick="copy(this)">"Another compelling point is that…"</span>
+          <span class="chip" onclick="copy(this)">"Building on this idea…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">4</div>
+        <div class="step-info">
+          <div class="step-name">Contrapunto y Refutación</div>
+          <div class="step-time">62 – 78 s · Reconoce + rebate</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Reconocer la posición opuesta y rebatirla es característica C1. Fórmula: "Some argue X. However, this overlooks Y."</div>
+        <div class="lbl">Reconocer posición opuesta</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"While some may argue that…"</span>
+          <span class="chip" onclick="copy(this)">"Admittedly, critics might point out…"</span>
+          <span class="chip" onclick="copy(this)">"It could be argued that…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Refutar</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"However, this fails to account for…"</span>
+          <span class="chip" onclick="copy(this)">"Nevertheless, the benefits far outweigh…"</span>
+          <span class="chip" onclick="copy(this)">"Yet when we consider…, it becomes clear that…"</span>
+          <span class="chip" onclick="copy(this)">"This perspective, however, overlooks…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">5</div>
+        <div class="step-info">
+          <div class="step-name">Conclusión</div>
+          <div class="step-time">78 – 90 s · Reafirma + nota final</div>
+        </div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Repite tu tesis con palabras diferentes. Añade una observación final o implicación más amplia si tienes tiempo.</div>
+        <div class="lbl">Frases de conclusión</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"In conclusion, I maintain that…"</span>
+          <span class="chip" onclick="copy(this)">"To sum up, it is clear that…"</span>
+          <span class="chip" onclick="copy(this)">"Ultimately, the evidence suggests that…"</span>
+          <span class="chip" onclick="copy(this)">"All things considered, I believe…"</span>
+          <span class="chip" onclick="copy(this)">"For these reasons, I would argue that…"</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps opinion -->
+
+  <!-- TEMPLATE EXPERIENCE -->
+  <div class="sdiv">Template B — Experiencia Personal</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">1</div>
+        <div class="step-info"><div class="step-name">Contexto y Setting</div><div class="step-time">0 – 12 s · Quién, cuándo, dónde</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"I'd like to tell you about a time when…"</span>
+          <span class="chip" onclick="copy(this)">"This reminds me of an experience I had…"</span>
+          <span class="chip" onclick="copy(this)">"A few years ago, I found myself in a situation where…"</span>
+          <span class="chip" onclick="copy(this)">"One experience that stands out is when…"</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">2</div>
+        <div class="step-info"><div class="step-name">Evento Principal</div><div class="step-time">12 – 45 s · Qué pasó, en detalle</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"What happened was…"</span>
+          <span class="chip" onclick="copy(this)">"To give you some context…"</span>
+          <span class="chip" onclick="copy(this)">"The situation unfolded when…"</span>
+          <span class="chip" onclick="copy(this)">"Specifically…"</span>
+          <span class="chip" onclick="copy(this)">"What made this particularly memorable was…"</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">3</div>
+        <div class="step-info"><div class="step-name">Reacción y Sentimientos</div><div class="step-time">45 – 68 s · Cómo te sentiste</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"At the time, I felt…"</span>
+          <span class="chip" onclick="copy(this)">"My initial reaction was…"</span>
+          <span class="chip" onclick="copy(this)">"I was struck by…"</span>
+          <span class="chip" onclick="copy(this)">"What surprised me most was…"</span>
+        </div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(62,207,142,.15);color:var(--c2)">4</div>
+        <div class="step-info"><div class="step-name">Reflexión y Lección</div><div class="step-time">68 – 90 s · Qué aprendiste</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Looking back, I realize that…"</span>
+          <span class="chip" onclick="copy(this)">"What I learned from this was…"</span>
+          <span class="chip" onclick="copy(this)">"In retrospect…"</span>
+          <span class="chip" onclick="copy(this)">"This experience taught me that…"</span>
+          <span class="chip" onclick="copy(this)">"To this day, it has shaped the way I…"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE -->
+  <div class="example">
+    <div class="sdiv">Respuesta Ejemplo</div>
+    <div class="ex-nav">
+      <button class="ex-btn active" onclick="showEx('read','r1',this)">Opinion: Gap Year</button>
+      <button class="ex-btn" onclick="showEx('read','r2',this)">Experience: Disagreement</button>
+    </div>
+    <div id="read-r1" class="ex-panel active">
+      <em>I firmly believe that</em> young people should take a gap year before university. <span class="conn">First of all,</span> a gap year allows individuals to mature emotionally, making them far better prepared for the academic and social demands of higher education. <span class="conn">For instance,</span> students who spend time working or volunteering abroad often develop greater independence and self-discipline. <span class="conn">Furthermore,</span> a gap year provides invaluable real-world experience that complements academic study — skills like problem-solving, communication, and adaptability are difficult to acquire in a classroom setting alone. <span class="conn">While some may argue that</span> a gap year causes students to lose academic momentum, <span class="conn">this perspective overlooks</span> the fact that returning students consistently demonstrate higher motivation and clearer career goals. <em>In conclusion,</em> the personal and professional development offered by a gap year makes it a worthwhile investment for most young people.
+    </div>
+    <div id="read-r2" class="ex-panel">
+      <em>One experience that stands out</em> is a disagreement I once had with my closest friend over a shared project. <span class="conn">To give you some context,</span> we were co-leading a community event and had fundamentally different ideas about how to organize it. <span class="conn">What happened was</span> that our differing approaches led to a serious argument, which created tension between us for several days. <span class="conn">What made this particularly difficult</span> was that I genuinely believed I was right, so letting go of my position felt almost impossible at first. <span class="conn">However,</span> we eventually sat down for a calm, honest conversation where we each listened without interrupting. <span class="conn">Looking back,</span> I realize that the disagreement actually strengthened our friendship, because it forced us to communicate more openly and respectfully. <em>This experience taught me</em> that effective conflict resolution requires both empathy and a willingness to compromise.
+    </div>
+  </div>
+
+  <div class="dd">
+    <div class="do"><h4>✓ Sí hacer</h4><ul>
+      <li>Estado tu posición en la primera oración</li>
+      <li>Dar 2 argumentos con ejemplos específicos</li>
+      <li>Incluir un contrapunto (marca C1)</li>
+      <li>Usar variedad de conectores</li>
+      <li>Hablar mínimo 60-70 segundos</li>
+    </ul></div>
+    <div class="dont"><h4>✗ No hacer</h4><ul>
+      <li>Empezar sin posición clara</li>
+      <li>Repetir el mismo argumento con otras palabras</li>
+      <li>Ignorar el contrapunto (pierde puntos)</li>
+      <li>Usar siempre "I think" — varía con "I believe," "I maintain," "I would argue"</li>
+    </ul></div>
+  </div>
+
+</div><!-- /read -->
+
+
+<!-- ════════════════════════════════════════════════
+     MODULE 3 · SPEAKING SAMPLE
+═════════════════════════════════════════════════ -->
+<div id="sample" class="section">
+
+  <div class="mod-hero">
+    <div>
+      <div class="mod-title" style="color:var(--c3)">Speaking Sample</div>
+      <div class="mod-meta">
+        <span class="badge b3">180 s total</span>
+        <span class="badge b3">30 s prep</span>
+        <span class="badge b3">180 s speaking</span>
+        <span class="badge bg">4 tipos de pregunta</span>
+        <span class="badge b3">1–2 q / test</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline">
+    <div class="tl-label">Distribución de tiempo (180 s)</div>
+    <div class="tl-bar">
+      <div class="tl-seg" style="width:8%;background:#92400e;">INTRO</div>
+      <div class="tl-seg" style="width:22%;background:#b45309;">ANÉCDOTA</div>
+      <div class="tl-seg" style="width:36%;background:#d97706;">DESARROLLO</div>
+      <div class="tl-seg" style="width:19%;background:#f59e0b;">REFLEXIÓN</div>
+      <div class="tl-seg" style="width:15%;background:#fbbf24;">CIERRE</div>
+    </div>
+    <div class="tl-legend">
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#92400e"></span>0–15 s · Intro / Hook</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#b45309"></span>15–55 s · Anécdota</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#d97706"></span>55–120 s · Desarrollo</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#f59e0b"></span>120–155 s · Reflexión</span>
+      <span class="tl-leg-item"><span class="tl-dot" style="background:#fbbf24"></span>155–180 s · Cierre</span>
+    </div>
+  </div>
+
+  <div class="sdiv">Template Universal (adaptable a los 4 tipos)</div>
+  <div class="steps">
+
+    <div class="step open">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:var(--c3)">1</div>
+        <div class="step-info"><div class="step-name">Introducción — Hook</div><div class="step-time">0 – 15 s · Abre con algo memorable</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Tienes 15 segundos para enganchar al evaluador. Usa una pregunta retórica, una declaración impactante, o entra directamente a una anécdota vivid.</div>
+        <div class="lbl">Frases de apertura por tipo</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"This is a topic I feel genuinely passionate about…"</span>
+          <span class="chip" onclick="copy(this)">"Let me tell you about an experience that completely changed my perspective on…"</span>
+          <span class="chip" onclick="copy(this)">"If I had to choose one word to describe [topic], it would be…"</span>
+          <span class="chip" onclick="copy(this)">"There's a memory that comes to mind immediately when I think about…"</span>
+          <span class="chip" onclick="copy(this)">"Few things have shaped my thinking more profoundly than…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:var(--c3)">2</div>
+        <div class="step-info"><div class="step-name">Anécdota / Experiencia Personal</div><div class="step-time">15 – 55 s · Historia específica y concreta</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Cuenta una historia específica. Evita generalizaciones. Da contexto: dónde, cuándo, con quién. Los evaluadores valoran especificidad por encima de todo.</div>
+        <div class="lbl">Conectores narrativos</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"I vividly remember the moment when…"</span>
+          <span class="chip" onclick="copy(this)">"It was [time/place] when…"</span>
+          <span class="chip" onclick="copy(this)">"I was [age/in a specific situation] when…"</span>
+          <span class="chip" onclick="copy(this)">"The whole thing started when…"</span>
+          <span class="chip" onclick="copy(this)">"At the time, I had no idea that…"</span>
+          <span class="chip" onclick="copy(this)">"What unfolded next was…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:var(--c3)">3</div>
+        <div class="step-info"><div class="step-name">Desarrollo con Detalles Sensoriales</div><div class="step-time">55 – 120 s · El núcleo de tu respuesta</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">65 segundos para desarrollar. Usa detalles sensoriales, emociones, diálogo. Describe lo que sentiste, viste, oíste. Los detalles hacen la diferencia entre B2 y C1.</div>
+        <div class="lbl">Detalles y transiciones</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Specifically, what I noticed was…"</span>
+          <span class="chip" onclick="copy(this)">"What stood out most was…"</span>
+          <span class="chip" onclick="copy(this)">"To paint a clearer picture…"</span>
+          <span class="chip" onclick="copy(this)">"What made this moment particularly [adj.] was…"</span>
+          <span class="chip" onclick="copy(this)">"At that point, I realized that…"</span>
+          <span class="chip" onclick="copy(this)">"As this was unfolding, I felt…"</span>
+          <span class="chip" onclick="copy(this)">"The more I [verb], the more I [verb]…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:var(--c3)">4</div>
+        <div class="step-info"><div class="step-name">Reflexión y Perspectiva</div><div class="step-time">120 – 155 s · Qué aprendiste / cómo cambió algo</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">La reflexión es lo que diferencia una respuesta C1 de una B2. Conecta la experiencia a algo más grande: un valor, una lección, un cambio de perspectiva.</div>
+        <div class="lbl">Transiciones reflexivas</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Looking back on this now, I realize…"</span>
+          <span class="chip" onclick="copy(this)">"What this experience ultimately taught me was…"</span>
+          <span class="chip" onclick="copy(this)">"In retrospect, I can see that…"</span>
+          <span class="chip" onclick="copy(this)">"This fundamentally changed the way I…"</span>
+          <span class="chip" onclick="copy(this)">"What surprised me most, in hindsight, was…"</span>
+          <span class="chip" onclick="copy(this)">"The broader lesson here is that…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(245,158,11,.15);color:var(--c3)">5</div>
+        <div class="step-info"><div class="step-name">Conclusión Memorable</div><div class="step-time">155 – 180 s · Cierre que deja huella</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Cierra con una nota que sea hacia adelante — una implicación, un objetivo, o un insight que conecte con el mundo más amplio.</div>
+        <div class="lbl">Frases de cierre</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Ultimately, this experience has shaped who I am today in that…"</span>
+          <span class="chip" onclick="copy(this)">"To this day, I carry that lesson with me…"</span>
+          <span class="chip" onclick="copy(this)">"And that, I believe, is one of the most valuable things…"</span>
+          <span class="chip" onclick="copy(this)">"In the end, what matters most is…"</span>
+          <span class="chip" onclick="copy(this)">"It's a reminder that…"</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUICK ADAPT -->
+  <div class="bank">
+    <div class="sdiv">Adaptación por tipo de pregunta</div>
+    <div class="bank-grid">
+      <div class="bank-cat">
+        <h4 style="color:var(--c3)">Experience</h4>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"I vividly recall…"</span>
+          <span class="chip" onclick="copy(this)">"The person who came to mind immediately…"</span>
+          <span class="chip" onclick="copy(this)">"It was a turning point because…"</span>
+        </div>
+      </div>
+      <div class="bank-cat">
+        <h4 style="color:var(--c2)">Describe</h4>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"What makes this unique is…"</span>
+          <span class="chip" onclick="copy(this)">"The best way I can describe it is…"</span>
+          <span class="chip" onclick="copy(this)">"Its defining characteristic is…"</span>
+        </div>
+      </div>
+      <div class="bank-cat">
+        <h4 style="color:var(--c1)">Compare</h4>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"While both share…, they differ in…"</span>
+          <span class="chip" onclick="copy(this)">"The key distinction is…"</span>
+          <span class="chip" onclick="copy(this)">"On balance, I would say…"</span>
+          <span class="chip" onclick="copy(this)">"What tips the scales for me is…"</span>
+        </div>
+      </div>
+      <div class="bank-cat">
+        <h4 style="color:var(--c4)">Opinion</h4>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"My stance on this is clear…"</span>
+          <span class="chip" onclick="copy(this)">"There are several reasons I believe…"</span>
+          <span class="chip" onclick="copy(this)">"A case in point is…"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE -->
+  <div class="example">
+    <div class="sdiv">Respuesta Ejemplo (180 s)</div>
+    <div class="ex-nav">
+      <button class="ex-btn active" onclick="showEx('sample','s1',this)">Experience</button>
+      <button class="ex-btn" onclick="showEx('sample','s2',this)">Compare</button>
+    </div>
+    <div id="sample-s1" class="ex-panel active">
+      <em>There's a memory that comes to mind immediately</em> when I think about a time I helped a stranger. <span class="conn">It was a rainy Tuesday afternoon</span> a few years ago, when I was rushing to catch a train. <span class="conn">I vividly remember</span> noticing an elderly woman struggling to lift a heavy suitcase up a steep staircase at the station. <span class="conn">Without thinking,</span> I put down my own bags and helped her carry it to the platform. <span class="conn">What stood out most</span> was how visibly relieved she was — she grabbed my hand with both of hers and said something I still think about: "Young people give me hope." <span class="conn">At that point, I realized</span> that small actions can carry an enormous emotional weight for someone who is struggling. <span class="conn">What made this moment particularly powerful</span> was how little effort it required from me, yet how meaningful it clearly was for her. <span class="conn">Looking back on this now,</span> I recognize that we often underestimate the impact of spontaneous kindness. <span class="conn">This fundamentally changed the way I</span> navigate busy public spaces — I am now far more attentive to people around me who might need help. <em>Ultimately, this experience reinforced my belief that</em> genuine connection and human compassion are among the most valuable things we can offer each other, even in passing.
+    </div>
+    <div id="sample-s2" class="ex-panel">
+      <em>Few topics generate more debate</em> than the question of whether it's better to live in a large city or a small town. <span class="conn">Having experienced both,</span> I feel well-positioned to explore the key differences. <span class="conn">On one hand,</span> city life offers unrivalled access to professional opportunities, cultural diversity, and world-class infrastructure. <span class="conn">For instance,</span> during the three years I spent living in a major capital, I had access to international networking events, cutting-edge technology hubs, and a social circle that spanned over twenty nationalities — opportunities that would have been impossible in a smaller setting. <span class="conn">On the other hand,</span> small towns provide something cities consistently fail to deliver: a genuine sense of community and a slower, more sustainable pace of life. <span class="conn">What tips the scales for me</span> is the quality of human connection available in smaller communities, where neighbours know each other by name and social ties run deep. <span class="conn">The key distinction, however,</span> lies in what stage of life you are in — cities reward ambition and youth, while smaller towns nurture rootedness and wellbeing. <span class="conn">In retrospect,</span> my years in both environments taught me that neither is inherently superior. <em>Ultimately, the ideal choice</em> depends entirely on the kind of life you want to build — and I believe both deserve celebration for what they uniquely offer.
+    </div>
+  </div>
+
+  <div class="tips">
+    <div class="tip"><div class="tip-ico">⏳</div><div class="tip-title">Habla los 3 minutos</div><div class="tip-desc">Score más alto correlaciona directamente con hablar más. Usa los 180 s completos siempre.</div></div>
+    <div class="tip"><div class="tip-ico">🎯</div><div class="tip-title">Sé específico</div><div class="tip-desc">"A few years ago" no es suficiente — di "During my second year of university..." Los detalles concretos construyen coherencia.</div></div>
+    <div class="tip"><div class="tip-ico">🔄</div><div class="tip-title">Usa los 30 s de prep</div><div class="tip-desc">Anota mentalmente: gancho, anécdota, 2 detalles, reflexión, cierre. 5 puntos de apoyo para 180 segundos.</div></div>
+    <div class="tip"><div class="tip-ico">📚</div><div class="tip-title">Vocabulario lexical</div><div class="tip-desc">Los evaluadores notan "lexical range" en los primeros 60 s. Usa tu vocabulario más sofisticado al principio.</div></div>
+    <div class="tip"><div class="tip-ico">😌</div><div class="tip-title">Pausa ≠ filler</div><div class="tip-desc">Una pausa de 0.5 s es normal. "Um, uh, like" repetidos bajan el score. Entrena con pausas silenciosas cortas.</div></div>
+    <div class="tip"><div class="tip-ico">🔗</div><div class="tip-title">Conecta cada idea</div><div class="tip-desc">Cada oración debe conectar con la anterior. "Discourse coherence" es 20% del score total.</div></div>
+  </div>
+
+</div><!-- /sample -->
+
+
+<!-- ════════════════════════════════════════════════
+     MODULE 4 · INTERACTIVE SPEAKING
+═════════════════════════════════════════════════ -->
+<div id="interactive" class="section">
+
+  <div class="mod-hero">
+    <div>
+      <div class="mod-title" style="color:var(--c4)">Interactive Speaking</div>
+      <div class="mod-meta">
+        <span class="badge b4">35 s por pregunta</span>
+        <span class="badge b4">6–8 preguntas</span>
+        <span class="badge b4">Sin prep</span>
+        <span class="badge bg">Desde jul 2025</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OREO VISUAL -->
+  <div class="sdiv">Framework OREO — Las 35 segundas perfectas</div>
+  <div class="oreo">
+    <div class="oreo-seg">
+      <div class="oreo-letter" style="color:var(--c4)">O</div>
+      <div class="oreo-name">Opinion</div>
+      <div class="oreo-time">0 – 8 s</div>
+      <div class="oreo-hint">Di tu respuesta directa inmediatamente. Sin intro larga.</div>
+    </div>
+    <div class="oreo-seg">
+      <div class="oreo-letter" style="color:var(--c3)">R</div>
+      <div class="oreo-name">Reason</div>
+      <div class="oreo-time">8 – 18 s</div>
+      <div class="oreo-hint">"One reason is that…" / "This is because…"</div>
+    </div>
+    <div class="oreo-seg">
+      <div class="oreo-letter" style="color:var(--c2)">E</div>
+      <div class="oreo-name">Example</div>
+      <div class="oreo-time">18 – 28 s</div>
+      <div class="oreo-hint">"For instance…" / "In my own experience…"</div>
+    </div>
+    <div class="oreo-seg">
+      <div class="oreo-letter" style="color:var(--c1)">O</div>
+      <div class="oreo-name">Outcome</div>
+      <div class="oreo-time">28 – 35 s</div>
+      <div class="oreo-hint">"That's why I believe…" / "In short…"</div>
+    </div>
+  </div>
+
+  <!-- ALTERNATIVE: ILAST -->
+  <div class="bank" style="margin-bottom:22px">
+    <div class="sdiv">Framework alternativo — I LAST (para preguntas más abiertas)</div>
+    <div class="bank-grid">
+      <div class="bank-cat"><h4 style="color:var(--c4)">I — Introduce</h4>
+        <div class="chips"><span class="chip" onclick="copy(this)">"Well, I'd say…"</span><span class="chip" onclick="copy(this)">"Honestly,…"</span><span class="chip" onclick="copy(this)">"That's a great point —"</span></div>
+      </div>
+      <div class="bank-cat"><h4 style="color:var(--c3)">L — Link</h4>
+        <div class="chips"><span class="chip" onclick="copy(this)">"This connects to my experience with…"</span><span class="chip" onclick="copy(this)">"I've actually dealt with this before…"</span></div>
+      </div>
+      <div class="bank-cat"><h4 style="color:var(--c2)">A — Advanced Lexis</h4>
+        <div class="chips"><span class="chip" onclick="copy(this)">"What's particularly significant is…"</span><span class="chip" onclick="copy(this)">"The fundamental issue here is…"</span></div>
+      </div>
+      <div class="bank-cat"><h4 style="color:var(--c1)">S + T — Specific + Transition</h4>
+        <div class="chips"><span class="chip" onclick="copy(this)">"A concrete example would be…"</span><span class="chip" onclick="copy(this)">"So in short…"</span><span class="chip" onclick="copy(this)">"That's essentially why…"</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEPS POR TIPO -->
+  <div class="sdiv">Templates por tipo de pregunta</div>
+  <div class="steps">
+
+    <div class="step open">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(192,132,252,.15);color:var(--c4)">A</div>
+        <div class="step-info"><div class="step-name">Pregunta de Opinión</div><div class="step-time">"Do you prefer X or Y?" / "What do you think about…?"</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Empieza con tu respuesta. No digas "This is a very interesting question" — pierde 2-3 segundos valiosos.</div>
+        <div class="lbl">Estructura exacta (35 s)</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"I'd definitely say [X], mainly because…"</span>
+          <span class="chip" onclick="copy(this)">"Personally, I lean toward [X]. The reason is that…"</span>
+          <span class="chip" onclick="copy(this)">"For me, [X] is clearly preferable because…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Razón + Ejemplo (combinar)</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"One reason is that… For example, in my case…"</span>
+          <span class="chip" onclick="copy(this)">"This is because… A clear instance of this is…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Cierre</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"So that's why I strongly prefer [X]."</span>
+          <span class="chip" onclick="copy(this)">"In short, [X] works best for me."</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(192,132,252,.15);color:var(--c4)">B</div>
+        <div class="step-info"><div class="step-name">Pregunta de Experiencia</div><div class="step-time">"Tell me about a time…" / "Have you ever…?"</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Micro-narrativa: contexto muy breve + qué pasó + resultado/lección. No intentes dar una historia larga — 35 s es micro-story.</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"Yes, I actually experienced something like this when…"</span>
+          <span class="chip" onclick="copy(this)">"One time that comes to mind is when…"</span>
+          <span class="chip" onclick="copy(this)">"I remember a specific situation where…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Conector de resultado</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"As a result…"</span>
+          <span class="chip" onclick="copy(this)">"What I learned from it was…"</span>
+          <span class="chip" onclick="copy(this)">"It taught me that…"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-head" onclick="toggleStep(this)">
+        <div class="step-num" style="background:rgba(192,132,252,.15);color:var(--c4)">C</div>
+        <div class="step-info"><div class="step-name">Pregunta Comparativa / Abstracta</div><div class="step-time">"How does X compare to Y?" / "Why do you think…?"</div></div>
+        <span class="step-arrow">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">Para comparativas: toma partido rápido, da una diferencia clave. Para abstractas: anclate a algo concreto inmediatamente.</div>
+        <div class="lbl">Comparativa</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"The main difference is that… while…"</span>
+          <span class="chip" onclick="copy(this)">"Compared to [X], [Y] tends to…"</span>
+          <span class="chip" onclick="copy(this)">"On one hand… on the other hand…"</span>
+        </div>
+        <div class="lbl" style="margin-top:10px">Pregunta abstracta</div>
+        <div class="chips">
+          <span class="chip" onclick="copy(this)">"I think the core reason is…"</span>
+          <span class="chip" onclick="copy(this)">"From my perspective, this happens because…"</span>
+          <span class="chip" onclick="copy(this)">"What I find most interesting about this is…"</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /interactive steps -->
+
+  <!-- EXAMPLE -->
+  <div class="example">
+    <div class="sdiv">Respuestas Ejemplo (35 s cada una)</div>
+    <div class="ex-nav">
+      <button class="ex-btn active" onclick="showEx('int','i1',this)">Opinion</button>
+      <button class="ex-btn" onclick="showEx('int','i2',this)">Experience</button>
+      <button class="ex-btn" onclick="showEx('int','i3',this)">Compare</button>
+    </div>
+    <div id="int-i1" class="ex-panel active">
+      <strong style="color:var(--muted);font-size:.72rem">Q: Should young people take a gap year before university?</strong><br><br>
+      <em>I'd definitely say yes,</em> and quite strongly at that. <span class="conn">One key reason is that</span> a gap year gives young people time to mature before facing the academic and financial pressures of university. <span class="conn">In my own case,</span> I took several months off to volunteer abroad, and it gave me a sense of direction that I simply didn't have at 18. <span class="conn">So yes,</span> I firmly believe gap years build the kind of self-awareness that makes university far more productive.
+    </div>
+    <div id="int-i2" class="ex-panel">
+      <strong style="color:var(--muted);font-size:.72rem">Q: Tell me about a time you learned something difficult. What motivated you?</strong><br><br>
+      <em>One situation that comes to mind immediately</em> is when I was learning to code from scratch. I had no background in programming, and those first weeks were genuinely overwhelming. <span class="conn">What kept me going was</span> the immediate feedback — every small piece of code that worked felt like a real victory. <span class="conn">What I learned from it was</span> that motivation in hard tasks often comes not from big wins, but from noticing incremental progress. That shift in mindset changed how I approach challenges entirely.
+    </div>
+    <div id="int-i3" class="ex-panel">
+      <strong style="color:var(--muted);font-size:.72rem">Q: How has social media changed the way people communicate compared to 20 years ago?</strong><br><br>
+      <em>The difference is striking.</em> <span class="conn">Compared to 20 years ago,</span> communication today is far more immediate, constant, and public. <span class="conn">On one hand,</span> platforms like Instagram and WhatsApp have made it easier to stay connected across long distances — something that genuinely wasn't possible before. <span class="conn">On the other hand,</span> depth of connection has arguably suffered; people interact more frequently but often more superficially. <span class="conn">I think</span> the key shift is that communication went from being intentional to being almost automatic.
+    </div>
+  </div>
+
+  <!-- CRITICAL TIPS FOR INTERACTIVE -->
+  <div class="sdiv">Reglas críticas del Interactive Speaking</div>
+  <div class="tips">
+    <div class="tip"><div class="tip-ico">🎙</div><div class="tip-title">Click "Record Now" primero</div><div class="tip-desc">Tu respuesta NO se graba hasta que hagas clic. Es lo primero que debes hacer.</div></div>
+    <div class="tip"><div class="tip-ico">⚡</div><div class="tip-title">Habla en los primeros 2 s</div><div class="tip-desc">No planifiques durante 5 segundos en silencio. Tu primera idea es válida — úsala.</div></div>
+    <div class="tip"><div class="tip-ico">👂</div><div class="tip-title">Escucha las keyword del final</div><div class="tip-desc">La pregunta real suele estar en la segunda mitad del enunciado. Concentra tu atención ahí.</div></div>
+    <div class="tip"><div class="tip-ico">🌊</div><div class="tip-title">Un ejemplo forte &gt; tres débiles</div><div class="tip-desc">En 35 s, un ejemplo específico y desarrollado puntúa más que tres ejemplos superficiales.</div></div>
+    <div class="tip"><div class="tip-ico">💬</div><div class="tip-title">Fillers naturales sí</div><div class="tip-desc">"Well," "Honestly," "I'd say," dan tiempo de procesamiento sin penalizar. "Um, um, um" sí penaliza.</div></div>
+    <div class="tip"><div class="tip-ico">🎯</div><div class="tip-title">Habla ≥ 28 segundos</div><div class="tip-desc">Respuestas bajo 15 s puntúan muy bajo. Apunta a 28-32 s siempre — el score mejora con longitud.</div></div>
+  </div>
+
+  <div class="dd">
+    <div class="do"><h4>✓ Sí hacer</h4><ul>
+      <li>Responder inmediatamente (sin intro larga)</li>
+      <li>Usar OREO: posición → razón → ejemplo → cierre</li>
+      <li>Hablar 28-35 segundos</li>
+      <li>Usar fillers naturales: "Well," "Honestly"</li>
+      <li>Desarrollar UN ejemplo con detalle</li>
+      <li>Escuchar las keywords del final de la pregunta</li>
+    </ul></div>
+    <div class="dont"><h4>✗ No hacer</h4><ul>
+      <li>"This is a very interesting question..." (pierde 3s)</li>
+      <li>Silencio planificando más de 1 segundo</li>
+      <li>Dar 3+ ejemplos superficiales</li>
+      <li>"Um, uh" repetitivos</li>
+      <li>Olvidar hacer clic en "Record Now"</li>
+      <li>Responder menos de 15 segundos</li>
+    </ul></div>
+  </div>
+
+</div><!-- /interactive -->
+
+</main>
+
+<div id="toast">¡Copiado!</div>
+
+<!-- ══ FAB + API CFG ══ -->
+<button id="api-cfg-btn" onclick="openApiModal()"><span id="api-dot"></span>Claude API Key</button>
+<button id="prac-fab" onclick="openPractice()" title="Practicar ahora">🎯</button>
+<span id="prac-fab-lbl">Practicar ahora</span>
+
+<!-- ══ PRACTICE SHEET ══ -->
+<div id="prac-sheet">
+  <div id="prac-inner">
+    <div class="ps-head">
+      <button class="ps-close" onclick="closePractice()">✕</button>
+      <div class="ps-head-title">
+        <span class="ps-head-module" id="ps-head-module">MÓDULO</span>
+        <span class="ps-head-name" id="ps-head-name">Modo Práctica</span>
+      </div>
+      <button id="ps-api-btn" onclick="openApiModal()">
+        <span id="ps-api-dot"></span>API
+      </button>
+    </div>
+    <div class="ps-body">
+      <div class="ps-tpl-card" id="ps-tpl-card">
+        <div class="ps-tpl-hdr" onclick="this.closest('.ps-tpl-card').classList.toggle('open')">
+          <span>📋</span>
+          <span class="ps-tpl-hdr-txt">Template de referencia</span>
+          <span class="ps-tpl-chevron">▲</span>
+        </div>
+        <div class="ps-tpl-body" id="ps-tpl-body"></div>
+      </div>
+      <div class="ps-ex-card">
+        <div class="ps-ex-lbl">
+          <span>🎯 Tu ejercicio</span>
+          <button class="ps-ex-shuffle" onclick="newExercise()">🔀 Otro</button>
+        </div>
+        <div class="ps-ex-text" id="ps-ex-text">Cargando ejercicio…</div>
+        <div class="ps-ex-hint" id="ps-ex-hint"></div>
+      </div>
+      <div class="ps-rec-area">
+        <div class="ps-mic-wrap">
+          <div class="ps-mic-ring" id="ps-mic-ring"></div>
+          <button id="ps-mic-btn" onclick="togglePracRec()">🎙</button>
+        </div>
+        <div id="ps-mic-status">Toca el micrófono para grabar</div>
+        <div class="ps-wv">
+          <div class="ps-wvb" id="pwvb0"></div><div class="ps-wvb" id="pwvb1"></div>
+          <div class="ps-wvb" id="pwvb2"></div><div class="ps-wvb" id="pwvb3"></div>
+          <div class="ps-wvb" id="pwvb4"></div><div class="ps-wvb" id="pwvb5"></div>
+          <div class="ps-wvb" id="pwvb6"></div><div class="ps-wvb" id="pwvb7"></div>
+        </div>
+        <div class="ps-transcript" id="ps-transcript"></div>
+        <div class="ps-wc" id="ps-wc"></div>
+        <div class="ps-rec-stats" id="ps-rec-stats">
+          <span class="ps-timer" id="ps-timer">0:00</span>
+          <span style="color:var(--border)">·</span>
+          <span id="ps-wpm-live" style="font-size:.68rem;color:var(--muted);font-weight:700"></span>
+        </div>
+      </div>
+      <button id="ps-check-btn" onclick="checkWithClaude()">🤖 Revisar con Claude →</button>
+      <div class="ps-results" id="ps-results">
+        <div class="ps-score-card">
+          <div class="ps-score-big" id="ps-score-num">0/0</div>
+          <div class="ps-score-lbl">frases del template detectadas</div>
+          <div class="ps-score-track"><div class="ps-score-fill" id="ps-score-fill"></div></div>
+          <div class="ps-next-msg" id="ps-next-msg"></div>
+          <div class="ps-wpm-badge" id="ps-wpm-badge" style="display:none"></div>
+        </div>
+        <div class="ps-pron-card" id="ps-pron-card" style="display:none">
+          <div class="ps-pron-lbl">🗣 Pronunciación — practica estas palabras en voz alta</div>
+          <div id="ps-pron-list"></div>
+        </div>
+        <div class="ps-history" id="ps-history" style="display:none">
+          <div class="ps-history-lbl">📈 Tu progreso reciente</div>
+          <div class="ps-history-bars" id="ps-history-bars"></div>
+        </div>
+        <div class="ps-phrases-box" id="ps-found-box" style="display:none">
+          <div class="ps-phrases-lbl found">✅ Frases que usaste bien</div>
+          <div id="ps-found-list"></div>
+        </div>
+        <div class="ps-phrases-box" id="ps-miss-box" style="display:none">
+          <div class="ps-phrases-lbl miss">🎯 Frases que te faltaron — practica estas</div>
+          <div id="ps-miss-list"></div>
+        </div>
+        <div class="ps-tip" id="ps-tip" style="display:none">
+          <span class="ps-tip-lbl">💡 Para la próxima vez</span>
+          <span id="ps-tip-text"></span>
+        </div>
+        <div class="ps-adapt-card" id="ps-adapt-card" style="display:none">
+          <span class="ps-adapt-lbl">🧠 Adaptación del Template</span>
+          <div class="ps-adapt-row" id="ps-adapt-row"></div>
+        </div>
+        <button class="ps-retry-btn" onclick="retryPractice()">🔄 Intentar de nuevo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ API MODAL ══ -->
+<div class="am-overlay" id="api-modal">
+  <div class="am-box">
+    <h3>🔑 Claude API Key</h3>
+    <p>Necesitas una API key de Anthropic para la evaluación IA. Gratis para empezar.</p>
+    <input class="am-input" id="api-key-input" type="password" placeholder="sk-ant-api03-…" autocomplete="off" />
+    <button class="am-save" onclick="saveApiKey()">Guardar y usar Claude</button>
+    <button class="am-cancel" onclick="closeApiModal()">Cancelar</button>
+    <div class="am-note">Gratis en <a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a></div>
+  </div>
+</div>
+
+<script>
+// ── Tabs ──
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Steps toggle ──
+function toggleStep(head) {
+  const card = head.closest('.step');
+  const wasOpen = card.classList.contains('open');
+  // close all siblings
+  card.closest('.steps').querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) card.classList.add('open');
+}
+
+// ── Example tabs ──
+function showEx(prefix, panelId, btn) {
+  const container = btn.closest('.example');
+  container.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
+  container.querySelectorAll('.ex-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Copy ──
+let toastTimer;
+function copy(el) {
+  const text = el.textContent.replace(/^"|"$/g,'');
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('ok');
+    setTimeout(() => el.classList.remove('ok'), 1200);
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+// Open first step of each module by default
+document.querySelectorAll('.steps').forEach(g => {
+  const first = g.querySelector('.step');
+  if (first && !first.classList.contains('open')) first.classList.add('open');
+});
+
+// ══════════════════════════════════════════════════════════
+//  PRACTICE MODE — DET Templates Pro (mobile-first)
+// ══════════════════════════════════════════════════════════
+
+const TEMPLATES = {
+  photo: {
+    label: '📸 Speak About the Photo',
+    goal: 'Narra como storyteller — específico, vívido, especulativo. Meta: 100-120 palabras en 90 seg.',
+    steps: [
+      { n:1, name:'Apertura · Escena General', time:'0–15 s',
+        tip:'Primera oración directa — sin "OK so" o "Um". Captura QUIÉN, QUÉ, DÓNDE en 1-2 oraciones.',
+        phrases:['This photograph depicts','This image captures','What immediately strikes me is','This is a striking scene showing','Looking at this image, I can see'],
+        pron:[{w:'photograph',h:'FO-to-graf'},{w:'depicts',h:'de-PIKTS'},{w:'immediately',h:'ih-MEE-dee-it-lee'}]
+      },
+      { n:2, name:'Detalle Principal', time:'15–40 s',
+        tip:'Sé específico: "a woman in a red jacket" no "a person". Menciona acción, postura o expresión.',
+        phrases:['In the foreground','The main focus of this image is','What stands out most is','Most prominently','Dominating the frame is'],
+        pron:[{w:'foreground',h:'FOR-grownd'},{w:'prominently',h:'PROM-ih-nent-lee'},{w:'dominating',h:'DOM-ih-nay-ting'}]
+      },
+      { n:3, name:'Fondo & Contexto', time:'40–60 s',
+        tip:'Preposiciones espaciales añaden profundidad. Menciona al menos 2 elementos del fondo.',
+        phrases:['In the background','To the left of the frame','Further back in the scene','Surrounding the main subject','Behind the central figure'],
+        pron:[{w:'background',h:'BAK-grownd'},{w:'surrounding',h:'se-ROWN-ding'},{w:'further',h:'FER-ther — TH suave'}]
+      },
+      { n:4, name:'Inferencia & Especulación', time:'60–75 s',
+        tip:'Modales para especular — "It appears that" suena más avanzado que "I think".',
+        phrases:['It appears that','This must be taking place','Based on the details, it\'s likely','One might assume','Judging by the surroundings'],
+        pron:[{w:'appears',h:'uh-PEERZ'},{w:'presumably',h:'prih-ZYOO-muh-blee'},{w:'judging',h:'JUJ-ing'}]
+      },
+      { n:5, name:'Cierre & Reflexión', time:'75–90 s',
+        tip:'Termina con un pensamiento que eleva — emoción, contraste, impacto. No cierres con "That\'s it".',
+        phrases:['Overall, this image conveys','What this photograph suggests is','This scene powerfully captures','The mood here is one of','This image reminds us that'],
+        pron:[{w:'conveys',h:'kon-VAYZ'},{w:'powerfully',h:'POW-er-fu-lee'},{w:'atmosphere',h:'AT-mos-feer'}]
+      },
+    ]
+  },
+  read: {
+    label: '📖 Read Then Speak',
+    goal: 'Sé un debatiente, no un redactor. Posición clara → evidencia → contrapunto → cierre de impacto.',
+    steps: [
+      { n:1, name:'Tesis · Tu Posición', time:'0–12 s',
+        tip:'Tu opinión en la primera oración. El evaluador quiere saber tu postura YA. Sin intro larga.',
+        phrases:['I firmly believe that','In my view','I would argue that','It is my strong conviction that','Without a doubt'],
+        pron:[{w:'firmly',h:'FERM-lee'},{w:'conviction',h:'kon-VIK-shun'},{w:'doubt',h:'DOWT — la B no suena'}]
+      },
+      { n:2, name:'1er Argumento', time:'12–38 s',
+        tip:'Tu razón más fuerte + ejemplo concreto. Evita "because I like it" — sé específico.',
+        phrases:['First of all','To begin with','The most significant reason is','My primary argument is','Consider the fact that'],
+        pron:[{w:'significant',h:'sig-NIF-ih-kunt'},{w:'primarily',h:'pry-MAIR-ih-lee'},{w:'argument',h:'AR-gyuh-ment'}]
+      },
+      { n:3, name:'2do Argumento', time:'38–62 s',
+        tip:'Diferente al primero — no repitas la misma idea. Usa estos conectores de adición.',
+        phrases:['Furthermore','What\'s more, I would add that','Moreover, it is worth noting','In addition to this','Another compelling reason is'],
+        pron:[{w:'furthermore',h:'FER-ther-mor — 3 sílabas'},{w:'moreover',h:'mor-OH-ver'},{w:'compelling',h:'kom-PEL-ing'}]
+      },
+      { n:4, name:'Contrapunto · Rebate', time:'62–78 s',
+        tip:'Reconoce el otro lado Y refútalo — esto marca C1. "While... this overlooks...".',
+        phrases:['While some may argue that','Admittedly, critics might suggest','It could be argued that','However, this perspective overlooks','Nevertheless, the evidence shows'],
+        pron:[{w:'admittedly',h:'ad-MIT-id-lee'},{w:'overlooks',h:'OH-ver-lookz'},{w:'nevertheless',h:'nev-er-the-LESS'}]
+      },
+      { n:5, name:'Conclusión · Impacto', time:'78–90 s',
+        tip:'Reformula tu tesis con palabras distintas + una implicación más amplia.',
+        phrases:['In conclusion','To sum up','Ultimately, the evidence suggests','All things considered','For these reasons, I maintain that'],
+        pron:[{w:'ultimately',h:'UL-tih-mit-lee'},{w:'conclusion',h:'kon-KLOO-zhun'},{w:'maintain',h:'men-TAYN'}]
+      },
+    ]
+  },
+  sample: {
+    label: '🎤 Speaking Sample',
+    goal: 'Historia real, específica y personal. Específico > genérico. Emoción > información. Meta: 300-350 palabras.',
+    steps: [
+      { n:1, name:'Hook · Engancha', time:'0–15 s',
+        tip:'La primera oración hace que el evaluador quiera escuchar más. Empieza IN MEDIA RES.',
+        phrases:['There\'s a moment I\'ll never forget','This is something I feel strongly about','Let me take you back to','Of all the experiences I\'ve had','One thing that has truly shaped me'],
+        pron:[{w:'forget',h:'fer-GET'},{w:'experience',h:'ek-SPEER-ee-unts — 4 sílabas'},{w:'shaped',h:'SHAYPT — -ed → T'}]
+      },
+      { n:2, name:'Escena · Contexto', time:'15–55 s',
+        tip:'Sitúa al oyente: CUÁNDO, DÓNDE, QUIÉN. Usa detalles concretos — no generalices.',
+        phrases:['I vividly remember','It was a time when','I found myself in a situation where','The moment I realized','Picture this —'],
+        pron:[{w:'vividly',h:'VIV-id-lee'},{w:'realized',h:'REE-uh-lyzd'},{w:'situation',h:'sitch-yoo-AY-shun'}]
+      },
+      { n:3, name:'Desarrollo · Detalles', time:'55–120 s',
+        tip:'Detalles sensoriales — qué viste, sentiste, escuchaste. Hazlo cinematográfico.',
+        phrases:['What I noticed most was','The thing that surprised me was','What unfolded next was','The turning point came when','What struck me in that moment was'],
+        pron:[{w:'noticed',h:'NOH-tist — -d → T'},{w:'surprised',h:'ser-PRYZD'},{w:'unfolded',h:'un-FOLD-ed'}]
+      },
+      { n:4, name:'Reflexión · Insight', time:'120–155 s',
+        tip:'Esta parte te distingue de B2. Conecta tu historia a una verdad más amplia.',
+        phrases:['Looking back on this now','What that experience taught me was','In hindsight, I realize','That moment fundamentally changed','The broader lesson I took from this'],
+        pron:[{w:'hindsight',h:'HYND-syt — acento en 1ª'},{w:'fundamentally',h:'fun-duh-MEN-tuh-lee'},{w:'broader',h:'BROD-er'}]
+      },
+      { n:5, name:'Cierre · Resonancia', time:'155–180 s',
+        tip:'Vuelve a la idea del hook — círculo narrativo. Deja al evaluador pensando.',
+        phrases:['And that\'s why, to this day','It\'s a constant reminder that','That experience is part of why I','What I carry with me from that moment','In the end, what stayed with me was'],
+        pron:[{w:'reminder',h:'rih-MYN-der'},{w:'constant',h:'KON-stunt'},{w:'carries',h:'KAIR-eez'}]
+      },
+    ]
+  },
+  interactive: {
+    label: '💬 Interactive Speaking · OREO',
+    goal: 'Responde DIRECTO — los primeros 2 segundos definen tu score. Sin "Hmm" o "That\'s a great question."',
+    steps: [
+      { n:1, name:'O · Opinión Directa', time:'0–8 s',
+        tip:'¡Tu respuesta YA! "For me, definitely X" — sin warmup. El silencio inicial resta puntos.',
+        phrases:['For me, definitely','Personally, I\'d have to say','Without a doubt, I prefer','I strongly believe','I\'d choose X in a heartbeat'],
+        pron:[{w:'definitely',h:'DEF-ih-nit-lee — 4 sílabas'},{w:'personally',h:'PER-sun-uh-lee'},{w:'heartbeat',h:'HART-beet'}]
+      },
+      { n:2, name:'R · Razón Específica', time:'8–18 s',
+        tip:'UNA razón específica. Evita "because it\'s better" — responde ¿por qué es mejor?',
+        phrases:['The main reason is','This is because','What drives this for me is','I say this because','The thing that matters most here is'],
+        pron:[{w:'reason',h:'REE-zun'},{w:'because',h:'bih-KOZ'},{w:'drives',h:'DRYVZ'}]
+      },
+      { n:3, name:'E · Ejemplo Concreto', time:'18–28 s',
+        tip:'UN ejemplo específico y real. "I\'ve seen this when..." suena más auténtico.',
+        phrases:['For example','To illustrate this','In my own experience','I\'ve seen this firsthand when','A clear example of this is'],
+        pron:[{w:'illustrate',h:'IL-uh-strayt'},{w:'firsthand',h:'FERST-hand'},{w:'concrete',h:'KON-kreet'}]
+      },
+      { n:4, name:'O · Outcome · Cierre', time:'28–35 s',
+        tip:'"Aterriza" — conecta tu ejemplo de vuelta a tu opinión. No lo dejes abierto.',
+        phrases:['That\'s exactly why I prefer','So when it comes down to it','Which is why I lean toward','In short, for me it\'s clear that','That\'s the main reason I believe'],
+        pron:[{w:'exactly',h:'eg-ZAKT-lee'},{w:'prefer',h:'prih-FER — acento en 2ª'},{w:'believe',h:'bih-LEEV'}]
+      },
+    ]
+  }
+};
+
+const EXERCISES = {
+  photo: [
+    { text:'Describe la foto: dos chefs en una cocina profesional preparando platos gourmet.', hint:'Menciona ropa, movimientos, el entorno y el ambiente de trabajo.' },
+    { text:'Describe la foto: una familia volando una cometa en la playa al atardecer.', hint:'Habla del padre, el niño, la cometa, el océano y los colores del cielo.' },
+    { text:'Describe la foto: un científico mirando un microscopio en laboratorio.', hint:'Foco en la ropa de laboratorio, el equipo y la expresión de concentración.' },
+    { text:'Describe la foto: dos personas mayores jugando ajedrez en un parque.', hint:'Habla de sus expresiones, el tablero, los árboles y el ambiente tranquilo.' },
+    { text:'Describe la foto: un surfista montando una ola poderosa.', hint:'Describe el traje, la postura, la ola y la emoción del momento.' },
+    { text:'Describe la foto: una abuela y su nieta horneando juntas en la cocina.', hint:'Describe las expresiones de ambas, los ingredientes, los colores y el ambiente cálido.' },
+    { text:'Describe la foto: un músico tocando guitarra en una calle concurrida de la ciudad.', hint:'Habla del instrumento, la ropa, la multitud alrededor y la atmósfera urbana.' },
+    { text:'Describe la foto: un grupo de estudiantes universitarios trabajando en equipo en una biblioteca.', hint:'Foco en los libros, laptops, expresiones de los estudiantes y el ambiente académico.' },
+  ],
+  read: [
+    { text:'¿Crees que los jóvenes deberían tomar un año sabático antes de la universidad?', hint:'Tesis clara → 2 argumentos → contrapunto → conclusión.' },
+    { text:'¿Las redes sociales tienen más efectos positivos o negativos en las relaciones humanas?', hint:'Toma una posición clara y defiéndela con ejemplos concretos.' },
+    { text:'¿Deberían los gobiernos invertir más en exploración espacial o en resolver problemas en la Tierra?', hint:'Usa "First of all," / "Furthermore," / "In conclusion,"' },
+    { text:'¿Es mejor seguir tu pasión en una carrera o elegir una que pague mejor?', hint:'Incluye un contrapunto con "While some may argue…"' },
+    { text:'¿La inteligencia artificial cambiará el mercado laboral para mejor o para peor?', hint:'Da dos argumentos distintos y un cierre con "Ultimately,"' },
+    { text:'¿Crees que los niños menores de 12 años deberían tener acceso a smartphones?', hint:'Tesis → argumento 1 con ejemplo → argumento 2 → "Admittedly,…However" → conclusión.' },
+    { text:'¿El trabajo remoto beneficia más a los empleados o a las empresas?', hint:'Toma una posición y defiéndela. Incluye "Moreover," / "Nevertheless,"' },
+    { text:'¿Debería la educación universitaria ser gratuita para todos los ciudadanos?', hint:'Dos argumentos claramente distintos → contrapunto honesto → cierre con impacto.' },
+  ],
+  sample: [
+    { text:'Habla de un momento en que ayudaste a un desconocido. ¿Qué pasó y qué aprendiste?', hint:'Hook → anécdota con detalles sensoriales → reflexión al final.' },
+    { text:'Describe a una persona que haya influido profundamente en tu vida y cómo.', hint:'Sé específico: cuándo, cómo y por qué esa persona cambió tu perspectiva.' },
+    { text:'Habla de un reto importante que superaste y las estrategias que usaste.', hint:'Hook → Anécdota → Desarrollo con detalles → Reflexión → Cierre.' },
+    { text:'Describe el lugar más significativo que hayas visitado y por qué fue especial para ti.', hint:'Incluye detalles sensoriales: qué viste, sentiste, oliste, escuchaste.' },
+    { text:'Habla de un hábito que intentaste cambiar. ¿Lo lograste? ¿Por qué?', hint:'Conecta la experiencia a una lección más amplia en la reflexión.' },
+    { text:'Habla de una decisión importante que tomaste y cómo cambió el rumbo de tu vida.', hint:'Hook dramático → contexto → desarrollo emocional → reflexión profunda → cierre.' },
+    { text:'Describe un momento en que tuviste que salir de tu zona de confort. ¿Qué pasó?', hint:'Sé específico con los detalles. La emoción + reflexión = respuesta C1.' },
+    { text:'Habla de algo que fracasó y qué aprendiste de ese fracaso.', hint:'La vulnerabilidad auténtica + reflexión genuina distingue C1 de B2.' },
+  ],
+  interactive: [
+    { text:'¿Prefieres trabajar solo o en equipo? ¿Por qué?', hint:'Responde directo. OREO: Opinión → Razón → Ejemplo → Cierre.' },
+    { text:'¿Cuál es una habilidad que desearías haber aprendido mucho antes?', hint:'Sé específico en el ejemplo — 1 ejemplo fuerte > 3 débiles.' },
+    { text:'¿Las redes sociales mejoran o empeoran la comunicación entre personas?', hint:'Toma partido claro y da UNA razón bien desarrollada con ejemplo.' },
+    { text:'¿Qué valoras más: la libertad personal o la seguridad económica?', hint:'Usa "For me, X is clearly preferable because…" y termina con "That\'s why."' },
+    { text:'¿La tecnología ha hecho a las personas más o menos productivas?', hint:'Opinión → razón + ejemplo real → cierre en menos de 35 segundos.' },
+    { text:'¿Cuál crees que es la habilidad más importante que todos deberían aprender?', hint:'OREO completo. Sé concreto — "communication skills" es demasiado vago.' },
+    { text:'¿Cómo ha cambiado internet la manera en que aprendes cosas nuevas?', hint:'Anclate a un ejemplo específico y real, no generalidades.' },
+    { text:'¿Prefieres vivir en una ciudad grande o en un pueblo pequeño? ¿Por qué?', hint:'Toma posición en la primera oración. No empieces con "it depends."' },
+  ]
+};
+
+// ── State ──
+let pracRecActive = false;
+let pracMediaRec = null;
+let pracSpeechRec = null;
+let pracFinalTxt = '';
+let pracWvInterval = null;
+let pracCurrentModule = 'photo';
+let pracCurrentExIdx = 0;
+let pracCurrentTxt = '';
+
+const _origShow = window.show;
+window.show = function(id, btn) {
+  _origShow(id, btn);
+  pracCurrentModule = id;
+};
+
+// ── API Key ──
+function getApiKey() {
+  return localStorage.getItem('claude_api_key') || localStorage.getItem('det_pro_claude_key') || '';
+}
+function saveApiKey() {
+  const v = document.getElementById('api-key-input').value.trim();
+  if (v) { localStorage.setItem('claude_api_key', v); localStorage.setItem('det_pro_claude_key', v); }
+  updateApiDots();
+  closeApiModal();
+}
+function updateApiDots() {
+  const ok = getApiKey().length > 20;
+  ['api-dot','ps-api-dot'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.background = ok ? 'var(--c2)' : '#ef4444';
+  });
+}
+function openApiModal() {
+  document.getElementById('api-key-input').value = getApiKey();
+  document.getElementById('api-modal').classList.add('open');
+}
+function closeApiModal() { document.getElementById('api-modal').classList.remove('open'); }
+updateApiDots();
+
+// ── Open Practice ──
+function openPractice() {
+  const activeTab = document.querySelector('.tab.active');
+  if (activeTab && activeTab.dataset.m) pracCurrentModule = activeTab.dataset.m;
+
+  const tpl = TEMPLATES[pracCurrentModule];
+  document.getElementById('ps-head-module').textContent = tpl.label;
+  document.getElementById('ps-head-name').textContent = 'Modo Práctica';
+
+  buildTplReference();
+  pracCurrentExIdx = pickFreshExercise(pracCurrentModule);
+  markExerciseUsed(pracCurrentModule, pracCurrentExIdx);
+  loadExercise();
+  resetPracUI();
+
+  document.getElementById('prac-sheet').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePractice() {
+  stopPracRec(false);
+  document.getElementById('prac-sheet').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function buildTplReference() {
+  const tpl = TEMPLATES[pracCurrentModule];
+  const strategyHtml = tpl.goal
+    ? `<div class="ps-strategy"><span class="ps-strategy-lbl">🎯 Estrategia</span>${tpl.goal}</div>` : '';
+
+  let globalIdx = 0;
+  const stepsHtml = tpl.steps.map(s => {
+    const pronHtml = (s.pron || []).map(p =>
+      `<span class="ps-step-pron">${p.w}: ${p.h}</span>`).join('');
+
+    const chips = s.phrases.map((p, li) => {
+      const idx = globalIdx++;
+      if (li >= 3) return null;
+      const m = getPhraseMastery(pracCurrentModule, idx);
+      const cls = getMasteryClass(m);
+      const pre = getMasteryPrefix(m);
+      return `<span class="ps-step-chip${cls}">${pre}"${p}…"</span>`;
+    }).filter(Boolean).join('');
+
+    return `
+    <div class="ps-step-row">
+      <div class="ps-step-num">${s.n}</div>
+      <div class="ps-step-info">
+        <span class="ps-step-name">${s.name}</span>
+        <span class="ps-step-time">${s.time}</span>
+        ${s.tip ? `<span class="ps-step-coachtip">💡 ${s.tip}</span>` : ''}
+        <div class="ps-step-chips">${chips}</div>
+        ${pronHtml ? `<div class="ps-step-prons">${pronHtml}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('ps-tpl-body').innerHTML = strategyHtml + stepsHtml;
+  document.getElementById('ps-tpl-card').classList.add('open');
+}
+
+function loadExercise() {
+  const ex = EXERCISES[pracCurrentModule][pracCurrentExIdx];
+  document.getElementById('ps-ex-text').textContent = ex.text;
+  document.getElementById('ps-ex-hint').textContent = '💡 ' + ex.hint;
+}
+
+function newExercise() {
+  pracCurrentExIdx = pickFreshExercise(pracCurrentModule);
+  markExerciseUsed(pracCurrentModule, pracCurrentExIdx);
+  loadExercise();
+  resetPracUI();
+}
+function retryPractice() {
+  resetPracUI();
+  buildTplReference(); // refresh mastery colors after session
+}
+
+function resetPracUI() {
+  pracFinalTxt = '';
+  pracCurrentTxt = '';
+  stopTimer();
+  pracRecSeconds = 0;
+  const micBtn = document.getElementById('ps-mic-btn');
+  micBtn.textContent = '🎙';
+  micBtn.classList.remove('rec');
+  document.getElementById('ps-mic-ring').classList.remove('active');
+  document.getElementById('ps-mic-status').textContent = 'Toca el micrófono para grabar';
+  document.getElementById('ps-mic-status').className = '';
+  document.getElementById('ps-transcript').textContent = '';
+  document.getElementById('ps-transcript').classList.remove('show');
+  document.getElementById('ps-wc').textContent = '';
+  document.getElementById('ps-rec-stats').classList.remove('show');
+  document.getElementById('ps-timer').textContent = '0:00';
+  document.getElementById('ps-wpm-live').textContent = '';
+  const cb = document.getElementById('ps-check-btn');
+  cb.classList.remove('show');
+  cb.textContent = '🤖 Revisar con Claude →';
+  cb.disabled = false;
+  document.getElementById('ps-results').classList.remove('show');
+  document.getElementById('ps-found-box').style.display = 'none';
+  document.getElementById('ps-miss-box').style.display = 'none';
+  document.getElementById('ps-tip').style.display = 'none';
+  document.getElementById('ps-pron-card').style.display = 'none';
+  document.getElementById('ps-history').style.display = 'none';
+  document.getElementById('ps-wpm-badge').style.display = 'none';
+  resetPracWv();
+}
+
+// ── Recording ──
+async function togglePracRec() {
+  if (pracRecActive) stopPracRec(true);
+  else await startPracRec();
+}
+
+async function startPracRec() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    pracRecActive = true;
+    pracFinalTxt = '';
+
+    pracMediaRec = new MediaRecorder(stream);
+    pracMediaRec.start();
+
+    document.getElementById('ps-mic-btn').textContent = '⏹';
+    document.getElementById('ps-mic-btn').classList.add('rec');
+    document.getElementById('ps-mic-ring').classList.add('active');
+    document.getElementById('ps-mic-status').textContent = '🔴 Grabando… habla ahora';
+    document.getElementById('ps-mic-status').className = 'rec';
+    document.getElementById('ps-transcript').classList.add('show');
+    document.getElementById('ps-transcript').textContent = '';
+    document.getElementById('ps-check-btn').classList.remove('show');
+    document.getElementById('ps-results').classList.remove('show');
+
+    startPracWv();
+    startTimer();
+    startPracSpeech();
+  } catch(e) {
+    alert('No se pudo acceder al micrófono. En Chrome: Ajustes → Privacidad → Micrófono.');
+  }
+}
+
+function stopPracRec(save) {
+  pracRecActive = false;
+  if (pracMediaRec && pracMediaRec.state !== 'inactive') {
+    pracMediaRec.stop();
+    pracMediaRec.stream.getTracks().forEach(t => t.stop());
+  }
+  if (pracSpeechRec) { try { pracSpeechRec.stop(); } catch(e){} }
+  stopPracWv();
+  stopTimer();
+  resetPracWv();
+
+  if (save) {
+    pracCurrentTxt = pracFinalTxt.trim() ||
+      (document.getElementById('ps-transcript').textContent || '').trim();
+    const wc = pracCurrentTxt.split(/\s+/).filter(Boolean).length;
+    document.getElementById('ps-mic-btn').textContent = '🎙';
+    document.getElementById('ps-mic-btn').classList.remove('rec');
+    document.getElementById('ps-mic-ring').classList.remove('active');
+    document.getElementById('ps-mic-status').className = '';
+    const wpm = pracRecSeconds > 0 ? Math.round(wc / (pracRecSeconds / 60)) : 0;
+    document.getElementById('ps-mic-status').textContent = wc > 0
+      ? `✅ ${wc} palabras · ${pracRecSeconds}s · ${wpm} WPM`
+      : '⚠ No se detectó voz — intenta de nuevo';
+    document.getElementById('ps-rec-stats').classList.remove('show');
+    if (wc > 0) document.getElementById('ps-check-btn').classList.add('show');
+    document.getElementById('ps-wc').textContent = '';
+  }
+}
+
+// ── Waveform ──
+function startPracWv() {
+  const bars = Array.from({length:8}, (_,i) => document.getElementById('pwvb'+i));
+  bars.forEach(b => { if(b) b.style.background = '#ef4444'; });
+  pracWvInterval = setInterval(() => {
+    bars.forEach(b => { if(b) b.style.height = (4 + Math.random() * 20) + 'px'; });
+  }, 100);
+}
+function stopPracWv() { clearInterval(pracWvInterval); pracWvInterval = null; }
+function resetPracWv() {
+  Array.from({length:8}, (_,i) => document.getElementById('pwvb'+i)).forEach(b => {
+    if(b) { b.style.height = '3px'; b.style.background = 'var(--border)'; }
+  });
+}
+
+// ── Speech Recognition ──
+function startPracSpeech() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  pracSpeechRec = new SR();
+  pracSpeechRec.lang = 'en-US';
+  pracSpeechRec.interimResults = true;
+  pracSpeechRec.continuous = true;
+  pracSpeechRec.onresult = (e) => {
+    let fin = '', intr = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) fin += e.results[i][0].transcript;
+      else intr += e.results[i][0].transcript;
+    }
+    pracFinalTxt += fin;
+    const wc = pracFinalTxt.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('ps-transcript').innerHTML =
+      pracFinalTxt + (intr ? `<span style="color:var(--muted)"> ${intr}</span>` : '');
+    document.getElementById('ps-wc').textContent = wc > 0 ? wc + ' palabras' : '';
+  };
+  pracSpeechRec.onend = () => { if (pracRecActive) { try { pracSpeechRec.start(); } catch(ex){} } };
+  try { pracSpeechRec.start(); } catch(e){}
+}
+
+// ── Claude Evaluation ──
+async function checkWithClaude() {
+  const key = getApiKey();
+  if (!key || key.length < 20) { openApiModal(); return; }
+
+  const txt = pracCurrentTxt;
+  if (!txt || txt.length < 8) { alert('Graba una respuesta primero.'); return; }
+
+  const tpl = TEMPLATES[pracCurrentModule];
+  const cb = document.getElementById('ps-check-btn');
+  cb.disabled = true;
+  cb.textContent = '⏳ Claude está revisando…';
+
+  const allPhrases = tpl.steps.flatMap(s => s.phrases.map(p => ({ p, n: s.n, name: s.name })));
+  const list = allPhrases.map((x,i) => `${i+1}. [Paso ${x.n} — ${x.name}]: "${x.p}"`).join('\n');
+
+  // Build mastery context for coaching
+  const phrData = getPhraseData(pracCurrentModule);
+  const masteredPhrases = allPhrases.filter((_,i) => getPhraseMastery(pracCurrentModule, i) === 'mastered').map(x => `"${x.p}"`);
+  const weakPhrases = allPhrases.filter((_,i) => getPhraseMastery(pracCurrentModule, i) === 'weak').map(x => `"${x.p}"`);
+  const sessionCount = (JSON.parse(localStorage.getItem('dph_' + pracCurrentModule) || '[]')).length;
+
+  const masteryCtx = [
+    sessionCount > 0 ? `El estudiante lleva ${sessionCount} sesión${sessionCount>1?'es':''} practicando este módulo.` : 'Primera sesión en este módulo.',
+    masteredPhrases.length ? `Frases YA dominadas (no las menciones como objetivo): ${masteredPhrases.join(', ')}` : '',
+    weakPhrases.length ? `Frases CON DIFICULTAD CONSISTENTE (priorizar en el tip): ${weakPhrases.join(', ')}` : '',
+  ].filter(Boolean).join(' ');
+
+  const prompt = `Eres un coach avanzado del DET (Duolingo English Test) especializado en hispanohablantes. Tu rol es como un tutor que conoce el progreso del estudiante y lo lleva paso a paso hacia C1/C2.
+
+CONTEXTO DEL ESTUDIANTE:
+${masteryCtx}
+
+TEMPLATE: "${tpl.label}"
+FRASES CLAVE (acepta paráfrasis naturales — lo importante es el propósito comunicativo):
+${list}
+
+TRANSCRIPCIÓN:
+"${txt}"
+
+Responde SOLO con este JSON (sin texto extra, sin markdown):
+{
+  "found": [1,3,7],
+  "not_found": [2,4,5,6,8],
+  "tip": "Un consejo coaching MUY específico y accionable en español (máx 15 palabras). Si tiene frases difíciles, menciona cuál practicar. Si ya domina frases básicas, empújalo hacia variantes más avanzadas.",
+  "pron": [
+    {"word": "palabra_del_template", "how": "guía de pronunciación en español"},
+    {"word": "palabra2", "how": "guía"}
+  ]
+}
+
+Reglas estrictas:
+- "found" = frases usadas O equivalente natural con mismo propósito (sé generoso con paráfrasis)
+- "not_found" = todos los índices no encontrados
+- "pron" = 2-3 palabras específicas DEL TEMPLATE (no de la transcripción) que un hispanohablante pronuncia mal
+- "tip" = consejo progresivo: si el estudiante va mejorando, empújalo a un nivel más exigente; si sigue fallando las mismas frases, sé muy directo sobre cuál practicar exacta
+- NUNCA menciones frases ya dominadas como algo a trabajar`;
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 400,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error?.message || 'Error ' + r.status);
+    const raw = (d.content?.[0]?.text || '').trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Respuesta no válida');
+    renderPracResults(JSON.parse(match[0]), allPhrases);
+    cb.textContent = '✅ Revisado';
+  } catch(e) {
+    cb.disabled = false;
+    cb.textContent = '🔄 Error — Reintentar';
+    document.getElementById('ps-results').classList.add('show');
+    document.getElementById('ps-score-num').textContent = '—';
+    document.getElementById('ps-next-msg').textContent = '❌ ' + e.message;
+  }
+}
+
+function renderPracResults(result, allPhrases) {
+  const found = new Set(result.found || []);
+  // Update adaptive tracking first
+  updatePhraseTracking(pracCurrentModule, allPhrases, found);
+  const total = allPhrases.length;
+  const fc = found.size;
+  const pct = total > 0 ? Math.round(fc / total * 100) : 0;
+  const cls = pct >= 70 ? 'great' : pct >= 40 ? 'good' : 'low';
+
+  // Score
+  document.getElementById('ps-score-num').textContent = `${fc}/${total}`;
+  document.getElementById('ps-score-num').className = 'ps-score-big ' + cls;
+  const fill = document.getElementById('ps-score-fill');
+  fill.className = 'ps-score-fill ' + cls;
+  setTimeout(() => { fill.style.width = pct + '%'; }, 80);
+  document.getElementById('ps-next-msg').textContent =
+    cls === 'great' ? `🌟 ¡Excelente! Dominando el template — ${pct}%` :
+    cls === 'good'  ? `👍 Buen progreso — practica las frases que faltaron` :
+                      `💪 Vas mejorando — enfócate en 1-2 frases nuevas cada vez`;
+
+  // WPM badge
+  const wc = pracCurrentTxt.split(/\s+/).filter(Boolean).length;
+  if (pracRecSeconds > 5 && wc > 5) {
+    const wpm = Math.round(wc / (pracRecSeconds / 60));
+    const targetWpm = pracCurrentModule === 'interactive' ? 100 : 130;
+    const wpmCls = wpm >= targetWpm ? 'great' : wpm >= targetWpm * 0.7 ? '' : 'low';
+    const wpmBadge = document.getElementById('ps-wpm-badge');
+    wpmBadge.textContent = `${wpm} WPM ${wpm >= targetWpm ? '🔥' : wpm >= targetWpm * 0.7 ? '📈' : '🐢'}`;
+    wpmBadge.className = 'ps-wpm-badge ' + wpmCls;
+    wpmBadge.style.display = '';
+  }
+
+  // Found / Missing phrases
+  const foundItems = allPhrases.filter((_,i) => found.has(i+1));
+  const missItems  = allPhrases.filter((_,i) => !found.has(i+1));
+
+  if (foundItems.length > 0) {
+    document.getElementById('ps-found-list').innerHTML = foundItems.map(x =>
+      `<div class="ps-phrase-item">
+        <span class="pi-icon">✅</span>
+        <div><span class="ps-sbadge found">Paso ${x.n} — ${x.name}</span><br>"${x.p}…"</div>
+      </div>`).join('');
+    document.getElementById('ps-found-box').style.display = 'block';
+  }
+
+  if (missItems.length > 0) {
+    document.getElementById('ps-miss-list').innerHTML = missItems.map(x =>
+      `<div class="ps-phrase-item">
+        <span class="pi-icon">🎯</span>
+        <div><span class="ps-sbadge miss">Paso ${x.n} — ${x.name}</span><br>"${x.p}…"</div>
+      </div>`).join('');
+    document.getElementById('ps-miss-box').style.display = 'block';
+  }
+
+  // Tip estructural
+  if (result.tip) {
+    document.getElementById('ps-tip-text').textContent = result.tip;
+    document.getElementById('ps-tip').style.display = 'block';
+  }
+
+  // Pronunciación de Claude
+  if (result.pron && result.pron.length > 0) {
+    document.getElementById('ps-pron-list').innerHTML = result.pron.map(p =>
+      `<div class="ps-pron-item">
+        🔊 <div><span class="ps-pron-word">${p.word}</span> — <span class="ps-pron-how">${p.how}</span></div>
+      </div>`).join('');
+    document.getElementById('ps-pron-card').style.display = 'block';
+  }
+
+  // Historial de sesiones
+  saveSession(pracCurrentModule, fc, total);
+  renderSessionHistory(pracCurrentModule);
+
+  // Adaptive summary
+  buildMasterySummary(pracCurrentModule, allPhrases);
+
+  document.getElementById('ps-results').classList.add('show');
+  setTimeout(() => {
+    document.getElementById('ps-results').scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 150);
+}
+
+// ── Adaptive Phrase Tracking ──
+function getPhraseData(mod) {
+  return JSON.parse(localStorage.getItem('dph_phr_' + mod) || '{}');
+}
+function savePhraseData(mod, data) {
+  localStorage.setItem('dph_phr_' + mod, JSON.stringify(data));
+}
+function updatePhraseTracking(mod, allPhrases, foundSet) {
+  const data = getPhraseData(mod);
+  allPhrases.forEach((_, i) => {
+    const k = String(i + 1);
+    if (!data[k]) data[k] = { a: 0, f: 0 };
+    data[k].a++;
+    if (foundSet.has(i + 1)) data[k].f++;
+  });
+  savePhraseData(mod, data);
+}
+function getPhraseMastery(mod, idx) { // idx is 0-based
+  const d = getPhraseData(mod)[String(idx + 1)];
+  if (!d || d.a < 2) return 'new';
+  const r = d.f / d.a;
+  if (r >= 0.67 && d.a >= 3) return 'mastered';
+  if (r < 0.35 && d.a >= 3) return 'weak';
+  return 'learning';
+}
+function getMasteryClass(m) {
+  if (m === 'mastered') return ' m-mastered';
+  if (m === 'weak')     return ' m-weak';
+  if (m === 'learning') return ' m-learning';
+  return '';
+}
+function getMasteryPrefix(m) {
+  if (m === 'mastered') return '✓ ';
+  if (m === 'weak')     return '⚠ ';
+  return '';
+}
+function buildMasterySummary(mod, allPhrases) {
+  let nM = 0, nW = 0, nL = 0, nN = 0;
+  allPhrases.forEach((_, i) => {
+    const m = getPhraseMastery(mod, i);
+    if (m === 'mastered') nM++;
+    else if (m === 'weak') nW++;
+    else if (m === 'learning') nL++;
+    else nN++;
+  });
+  const pills = [];
+  if (nM) pills.push(`<span class="ps-adapt-pill" style="background:rgba(62,207,142,.15);color:var(--c2)">✅ ${nM} dominada${nM>1?'s':''}</span>`);
+  if (nL) pills.push(`<span class="ps-adapt-pill" style="background:rgba(245,158,11,.12);color:var(--c3)">📈 ${nL} practicando</span>`);
+  if (nW) pills.push(`<span class="ps-adapt-pill" style="background:rgba(239,68,68,.1);color:#ef4444">⚠ ${nW} difícil${nW>1?'es':''}</span>`);
+  if (nN) pills.push(`<span class="ps-adapt-pill" style="background:rgba(255,255,255,.05);color:var(--muted)">○ ${nN} nueva${nN>1?'s':''}</span>`);
+  document.getElementById('ps-adapt-row').innerHTML = pills.join('');
+  document.getElementById('ps-adapt-card').style.display = pills.length ? 'block' : 'none';
+}
+
+// ── Smart Exercise Rotation (avoid recent repeats) ──
+function getUsedExercises(mod) {
+  return JSON.parse(localStorage.getItem('dph_used_' + mod) || '[]');
+}
+function markExerciseUsed(mod, idx) {
+  const used = getUsedExercises(mod);
+  used.push(idx);
+  // keep only last (pool_size - 1) used, so one slot is always fresh
+  const pool = EXERCISES[mod].length;
+  if (used.length >= pool) used.splice(0, used.length - (pool - 1));
+  localStorage.setItem('dph_used_' + mod, JSON.stringify(used));
+}
+function pickFreshExercise(mod) {
+  const used = new Set(getUsedExercises(mod));
+  const pool = EXERCISES[mod].length;
+  const available = Array.from({length: pool}, (_, i) => i).filter(i => !used.has(i));
+  if (available.length === 0) return Math.floor(Math.random() * pool);
+  return available[Math.floor(Math.random() * available.length)];
+}
+
+// ── Session tracking ──
+function saveSession(module, score, total) {
+  const key = 'dph_' + module;
+  const h = JSON.parse(localStorage.getItem(key) || '[]');
+  h.push({ t: Date.now(), s: score, total });
+  if (h.length > 8) h.splice(0, h.length - 8);
+  localStorage.setItem(key, JSON.stringify(h));
+}
+
+function renderSessionHistory(module) {
+  const h = JSON.parse(localStorage.getItem('dph_' + module) || '[]');
+  if (h.length < 2) return;
+  const slots = h.slice(-7);
+  document.getElementById('ps-history-bars').innerHTML = slots.map((s, i) => {
+    const pct = Math.round(s.s / s.total * 100);
+    const cls = pct >= 70 ? 'great' : pct >= 40 ? 'good' : 'low';
+    const heightPx = Math.max(4, Math.round(pct * 0.40));
+    const isLast = i === slots.length - 1;
+    return `<div class="ps-hbar-wrap">
+      <span class="ps-hbar-pct" style="${isLast ? 'font-weight:900;color:var(--text)' : ''}">${pct}%</span>
+      <div class="ps-hbar ${cls}" style="height:${heightPx}px;${isLast ? 'opacity:1' : 'opacity:.6'}"></div>
+    </div>`;
+  }).join('');
+  document.getElementById('ps-history').style.display = 'block';
+}
+
+// ── Timer ──
+let pracTimerInterval = null;
+let pracRecSeconds = 0;
+
+function startTimer() {
+  pracRecSeconds = 0;
+  document.getElementById('ps-rec-stats').classList.add('show');
+  document.getElementById('ps-timer').textContent = '0:00';
+  pracTimerInterval = setInterval(() => {
+    pracRecSeconds++;
+    const m = Math.floor(pracRecSeconds / 60);
+    const s = pracRecSeconds % 60;
+    document.getElementById('ps-timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    // Live WPM
+    const wc = (document.getElementById('ps-transcript').textContent || '').split(/\s+/).filter(Boolean).length;
+    if (pracRecSeconds > 5 && wc > 0) {
+      const wpm = Math.round(wc / (pracRecSeconds / 60));
+      document.getElementById('ps-wpm-live').textContent = wpm + ' WPM';
+    }
+  }, 1000);
+}
+function stopTimer() { clearInterval(pracTimerInterval); pracTimerInterval = null; }
+
+</script>
+</body>
+</html>
