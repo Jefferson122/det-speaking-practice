@@ -755,22 +755,17 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 /* ─── LEXICAL HUD ─── */
 #hud-fab{
   position:fixed;bottom:84px;left:16px;z-index:160;
-  width:50px;height:50px;border-radius:50%;
+  width:38px;height:38px;border-radius:50%;
   background:linear-gradient(135deg,#0d0424,#041428);
-  border:1.5px solid rgba(192,132,252,.55);
-  color:#C084FC;font-size:1.25rem;cursor:pointer;
+  border:1.5px solid rgba(192,132,252,.45);
+  color:#C084FC;font-size:.95rem;cursor:pointer;
   display:none;align-items:center;justify-content:center;
-  box-shadow:0 4px 18px rgba(192,132,252,.35);
+  box-shadow:0 3px 12px rgba(192,132,252,.28);
   transition:transform .18s,box-shadow .18s;
-  animation:hud-fab-pulse 3s ease-in-out infinite;
 }
 #hud-fab.show{display:flex}
-#hud-fab:hover{transform:scale(1.12);box-shadow:0 6px 28px rgba(192,132,252,.6)}
-@keyframes hud-fab-pulse{
-  0%,100%{box-shadow:0 4px 18px rgba(192,132,252,.35),0 0 0 0 rgba(192,132,252,.25)}
-  50%{box-shadow:0 4px 18px rgba(192,132,252,.35),0 0 0 9px rgba(192,132,252,.0)}
-}
-#hud-fab-label{font-size:.52rem;font-weight:900;letter-spacing:.5px;line-height:1;margin-top:2px;display:block;text-align:center}
+#hud-fab:hover{transform:scale(1.1);box-shadow:0 5px 20px rgba(192,132,252,.5)}
+#hud-fab-label{display:none}
 
 /* ── Side panel — slides in from right, no backdrop ── */
 #lexical-hud{
@@ -3587,7 +3582,6 @@ function setGuideMode(taskType, mode) {
   } else {
     if (lbl) lbl.textContent = '🔧 Cómo mejorar tu respuesta';
     bodyEl.innerHTML = _agData[taskType].postBody || '<div class="ag-empty">Graba tu respuesta — luego aquí aparecerán los consejos para mejorarla</div>';
-    if (stepsEl) stepsEl.style.display = 'none';
     if (retry) retry.classList.toggle('show', !!_agData[taskType].postBody);
   }
 }
