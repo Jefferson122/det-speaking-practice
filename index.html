@@ -44,9 +44,6 @@ main{margin-top:60px}
 .home-hero{text-align:center;margin-bottom:44px}
 .home-hero h1{font-size:2rem;font-weight:900;margin-bottom:6px}
 .home-hero p{color:var(--tl);font-weight:600;font-size:.95rem}
-.pill-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.pill{font-size:.72rem;font-weight:800;padding:5px 13px;border-radius:20px;background:var(--bl);color:var(--bd)}
-.pill.g{background:#E8F8E0;color:var(--gd)}.pill.y{background:var(--yl);color:var(--yd)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
 .card{background:var(--w);border:2px solid var(--br);border-radius:22px;padding:28px 22px;cursor:pointer;
   transition:.22s;text-align:center;box-shadow:var(--sh0);position:relative;overflow:hidden}
@@ -1304,14 +1301,8 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 <!-- ═══ HOME ═══ -->
 <div id="screen-home" class="active">
   <div class="home-hero">
-    <h1>Choose a Speaking Task</h1>
-    <p>Real DET format · Microphone recording · AI reads questions aloud</p>
-    <div class="pill-row">
-      <span class="pill g">🎙 Real Mic</span>
-      <span class="pill">🔊 TTS Questions</span>
-      <span class="pill">📝 Live Transcript</span>
-      <span class="pill y">🤖 AI Interactive</span>
-    </div>
+    <h1>DET Speaking Practice</h1>
+    <p>Formato real del examen · Grabación con micrófono · Coach IA después de cada respuesta</p>
   </div>
 
   <!-- Daily Goal Widget -->
@@ -1332,44 +1323,30 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="card" onclick="goTo('photo')">
       <div class="card-ico">🖼️</div>
       <div class="card-title">Speak About the Photo</div>
-      <div class="card-desc">Describe a photo in detail. Structure your answer from general to specific.</div>
-      <span class="card-tag">20s prep · 90s response</span>
-      <div class="card-stat" id="stat-photo-card"><span>25</span> photos · <span>1</span> per exam</div>
+      <div class="card-desc">Describe una foto con detalle. Del contexto general al específico.</div>
+      <span class="card-tag">20s prep · 90s respuesta</span>
+      <div class="card-stat" id="stat-photo-card"><span>25</span> fotos · <span>1</span> en el examen</div>
     </div>
     <div class="card" onclick="goTo('read')">
       <div class="card-ico">📖</div>
       <div class="card-title">Read, Then Speak</div>
-      <div class="card-desc">Read a prompt, hear it spoken aloud, then give a structured response.</div>
-      <span class="card-tag">20s prep · 90s response</span>
-      <div class="card-stat" id="stat-read-card"><span>80+</span> questions · AI reads aloud</div>
+      <div class="card-desc">Lee el prompt, escúchalo en voz alta, da tu respuesta estructurada.</div>
+      <span class="card-tag">20s prep · 90s respuesta</span>
+      <div class="card-stat" id="stat-read-card"><span>80+</span> preguntas · IA lee en voz alta</div>
     </div>
     <div class="card" onclick="goTo('sample')">
       <div class="card-ico">🎤</div>
       <div class="card-title">Speaking Sample</div>
-      <div class="card-desc">Extended response viewed by universities. This is your interview.</div>
-      <span class="card-tag">30s prep · up to 3 min</span>
-      <div class="card-stat" id="stat-sample-card"><span>60+</span> questions · 4 categories</div>
+      <div class="card-desc">Respuesta extendida que ven las universidades. Este es tu video de entrevista.</div>
+      <span class="card-tag">30s prep · hasta 3 min</span>
+      <div class="card-stat" id="stat-sample-card"><span>60+</span> preguntas · 4 categorías</div>
     </div>
     <div class="card" onclick="goTo('interactive')">
       <div class="card-ico">🤖</div>
       <div class="card-title">Interactive Speaking</div>
-      <div class="card-desc">6 questions on 2 topics. AI avatar speaks each question to you naturally.</div>
-      <span class="card-tag new">NEW 2025 · 35s each</span>
-      <div class="card-stat" id="stat-is-card"><span>20</span> sets · <span>120+</span> questions</div>
-    </div>
-    <div class="card" onclick="goTo('templates')" style="border-color:#B388FF;background:linear-gradient(135deg,#F5F0FF,#EDF9FF)">
-      <div class="card-ico">📋</div>
-      <div class="card-title">Templates de Speaking</div>
-      <div class="card-desc">Estudia y practica los 4 marcos estructurales sin timer · escucha cada frase · memoriza paso a paso.</div>
-      <span class="card-tag" style="background:#EDE0FF;color:#6B21A8">4 módulos · I-LAST · FOTO · RTS · IS</span>
-      <div class="card-stat">Estructuras para puntaje <span>140+</span></div>
-    </div>
-    <div class="card drill-card" onclick="goTo('drill')">
-      <div class="card-ico">⚡</div>
-      <div class="card-title">Template Drill</div>
-      <div class="card-desc">15 estructuras C1 con evaluación IA + templates de foto, sample y más. Graba → Claude evalúa → Mejora tu pronunciación.</div>
-      <span class="card-tag new">⭐ C1 · IA · Pronunciación</span>
-      <div class="card-stat"><span>15</span> C1 structures · <span>18</span> template phrases</div>
+      <div class="card-desc">6 preguntas en 2 temas. La IA habla cada pregunta naturalmente.</div>
+      <span class="card-tag new">NUEVO 2025 · 35s cada una</span>
+      <div class="card-stat" id="stat-is-card"><span>20</span> sets · <span>120+</span> preguntas</div>
     </div>
   </div>
 </div>
