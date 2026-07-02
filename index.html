@@ -448,6 +448,15 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ag-mode-btn.on{background:#6B44E0;color:#fff}
 .ag-retry-hint{background:#F0FFF4;border:1px solid #B2EFC0;border-radius:8px;padding:6px 10px;font-size:.7rem;font-weight:700;color:var(--gd);margin-top:8px;text-align:center;display:none}
 .ag-retry-hint.show{display:block}
+.vc-inline{margin-top:10px;border-top:1px dashed var(--br);padding-top:8px}
+.vc-inline summary{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.6px;color:var(--tm);cursor:pointer;list-style:none;display:flex;align-items:center;gap:5px;user-select:none}
+.vc-inline summary::after{content:'▸';font-size:.65rem;transition:.2s}
+.vc-inline[open] summary::after{transform:rotate(90deg)}
+.vc-inline summary::-webkit-details-marker{display:none}
+.vc-body{padding:8px 0 2px}
+.vc-save-btn{background:#6B44E0;border:none;border-radius:6px;padding:2px 7px;font:.58rem/1 'Nunito',sans-serif;font-weight:900;color:#fff;cursor:pointer;flex-shrink:0;transition:.2s}
+.vc-save-btn:hover{background:#5030C0}
+.vc-save-btn.saved{background:#16a34a}
 .ag-word-target{display:flex;align-items:center;gap:8px;padding:7px 13px;background:linear-gradient(90deg,#F8F5FF,#EDF9FF);border-bottom:1.5px solid var(--br);flex-wrap:wrap}
 .ag-wt-time{font-size:.68rem;font-weight:900;background:var(--yl);color:#5C3D00;padding:2px 9px;border-radius:10px;white-space:nowrap}
 .ag-wt-goal{font-size:.8rem;font-weight:900;color:#4B22CC}
@@ -3806,7 +3815,8 @@ Máx 18 palabras en español por observación. Sé concreto.`;
         const quoteMatch = t.match(/[""]([^""]+)[""]/);
         if (quoteMatch) { esText = t.slice(0, t.indexOf(quoteMatch[0])).trim(); enPhrase = quoteMatch[1]; }
       }
-      const enBlock = enPhrase ? `<div style="background:#F0F4FF;border:1.5px solid #BFD0FF;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a3a8a;font-style:italic">"${enPhrase}"</div>` : '';
+      const safePhrase = enPhrase ? enPhrase.replace(/"/g,'&quot;').replace(/'/g,'&#39;') : '';
+      const enBlock = enPhrase ? `<div style="background:#F0F4FF;border:1.5px solid #BFD0FF;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a3a8a;display:flex;align-items:center;gap:6px"><span style="flex:1;font-style:italic">"${enPhrase}"</span><button class="vc-save-btn" data-tasktype="${taskType}" data-step="${i+1}" data-phrase="${safePhrase}" onclick="vcSavePhrase(this)" title="Guardar en vocabulario">💾</button></div>` : '';
       return `<div class="ag-tip-item"><span class="ag-tip-icon">${icons[i] || '💡'}</span><div style="flex:1"><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:2px">${labels[i] || ''}</span><span style="font-size:.75rem">${esText}</span>${enBlock}</div></div>`;
     }).join('');
 
@@ -3824,7 +3834,8 @@ Máx 18 palabras en español por observación. Sé concreto.`;
     const coverageHtml = coverageLines.length > 0
       ? `<div style="margin-bottom:8px;padding:8px 10px;background:#EEF4FF;border-radius:10px;border:1.5px solid #C7D9FF"><div style="font-size:.58rem;font-weight:900;text-transform:uppercase;color:#1e3a8a;letter-spacing:.7px;margin-bottom:4px">📋 Cobertura de la pregunta</div>${coverageLines.map(l=>{const c=l.replace(/^📋\s*/,'');const ok=c.startsWith('✅');return`<div style="font-size:.72rem;margin:2px 0;color:${ok?'#166534':'#991B1B'}">${c}</div>`}).join('')}</div>`
       : '';
-    const fullHtml = coverageHtml + tipsHtml + grammarHtml;
+    const vocabDetailsHtml = `<details class="vc-inline" ontoggle="if(this.open)vcRenderInline('${taskType}')"><summary>📚 Mi Vocabulario DET</summary><div class="vc-body" id="vc-body-${taskType}"></div></details>`;
+    const fullHtml = coverageHtml + tipsHtml + grammarHtml + vocabDetailsHtml;
 
     if (isSample) {
       const ld = document.getElementById('sp-coach-sidebar-loading');
@@ -5641,6 +5652,72 @@ async function svSuggestFromTranscript(transcript,qType){
 
 function svInitAll(){
   ['photo','read','sample','interactive'].forEach(sec=>svRender(sec));
+}
+
+// ─── VOCAB INLINE (coach panel collapsible) ───
+const _vcStepLabels={
+  photo:['Visión general','Primer plano','Fondo/Lugar','Ambiente','Conclusión'],
+  read:['Tu opinión','Primer punto','Segundo punto','Contrapunto','Conclusión'],
+  sample:['Intro','Experiencia','Vocab avanzado','Detalle','Conclusión'],
+  interactive:['Respuesta directa','Razón','Ejemplo personal']
+};
+
+function vcRenderInline(taskType){
+  const el=document.getElementById('vc-body-'+taskType);
+  if(!el)return;
+  const bank=svGetBank();
+  const sec=taskType;
+  const steps=SV_STEPS[sec]||5;
+  const labels=_vcStepLabels[sec]||[];
+  const uid='vc-qi-'+taskType;
+  let html=`<div style="display:flex;gap:5px;margin-bottom:8px"><input id="${uid}" class="sv-inp" style="flex:1" placeholder="+ añadir palabra o frase…" onkeydown="if(event.key==='Enter')vcAdd('${taskType}')"><button class="sv-inp-btn" onclick="vcAdd('${taskType}')">+</button></div>`;
+  let total=0;
+  for(let n=1;n<=steps;n++){
+    const items=(bank[sec]&&bank[sec][n])||[];
+    total+=items.length;
+    if(!items.length)continue;
+    html+=`<div style="margin-bottom:6px"><div style="font-size:.57rem;font-weight:900;text-transform:uppercase;color:var(--tm);margin-bottom:3px">${labels[n-1]||'Paso '+n}</div><div style="display:flex;flex-wrap:wrap;gap:3px">${items.map((item,i)=>`<span class="sv-chip${item.ai?' sv-ai':''}" style="font-size:.66rem">${item.text}<button class="sv-del" onclick="vcDel('${sec}',${n},${i})">×</button></span>`).join('')}</div></div>`;
+  }
+  if(!total)html+=`<div style="font-size:.72rem;color:var(--tm);text-align:center;padding:6px 0">Sin palabras guardadas aún — toca 💾 en cualquier frase del coach</div>`;
+  el.innerHTML=html;
+}
+
+function vcAdd(taskType){
+  const inp=document.getElementById('vc-qi-'+taskType);
+  const text=(inp&&inp.value||'').trim();
+  if(!text)return;
+  const bank=svGetBank();
+  if(!bank[taskType])bank[taskType]={};
+  if(!bank[taskType][1])bank[taskType][1]=[];
+  bank[taskType][1].unshift({text,ai:false,addedAt:Date.now()});
+  svSaveBank(bank);
+  svRender(taskType);
+  inp.value='';
+  vcRenderInline(taskType);
+}
+
+function vcDel(sec,step,idx){
+  svDelete(sec,step,idx);
+  vcRenderInline(sec);
+}
+
+function vcSavePhrase(btn){
+  const taskType=btn.dataset.tasktype;
+  const step=parseInt(btn.dataset.step)||1;
+  const phrase=btn.dataset.phrase;
+  if(!phrase)return;
+  const bank=svGetBank();
+  if(!bank[taskType])bank[taskType]={};
+  if(!bank[taskType][step])bank[taskType][step]=[];
+  if(!bank[taskType][step].find(i=>i.text===phrase)){
+    bank[taskType][step].unshift({text:phrase,ai:true,addedAt:Date.now()});
+    svSaveBank(bank);
+    svRender(taskType);
+  }
+  btn.textContent='✓';btn.classList.add('saved');
+  setTimeout(()=>{btn.textContent='💾';btn.classList.remove('saved');},2000);
+  const vcBody=document.getElementById('vc-body-'+taskType);
+  if(vcBody&&vcBody.children.length)vcRenderInline(taskType);
 }
 
 // ─── WELCOME SCREEN ───
