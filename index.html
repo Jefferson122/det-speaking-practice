@@ -463,16 +463,12 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ag-wt-hint{font-size:.66rem;font-weight:700;color:var(--tm);margin-left:auto}
 .live-stat .wc-target{color:var(--tm);font-weight:600;font-size:.68rem}
 
-/* ─── PREP OVERLAY ─── */
-#prep-overlay{position:fixed;bottom:80px;right:16px;z-index:150;width:264px;background:var(--w);border:2px solid var(--y);border-radius:16px;padding:13px 15px;box-shadow:var(--shl);display:none;pointer-events:none}
-#prep-overlay.show{display:block;animation:po-in .28s ease}
-@keyframes po-in{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
-#prep-overlay h5{font-size:.67rem;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--yd);margin-bottom:8px}
-.po-step{display:flex;gap:7px;margin-bottom:6px;align-items:flex-start}
-.po-n{background:var(--y);color:#5C3D00;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:900;flex-shrink:0;margin-top:2px}
-.po-content{flex:1}
-.po-name{font-size:.69rem;font-weight:900;color:var(--t)}
-.po-phrase{font-size:.63rem;font-weight:600;color:var(--tl);font-style:italic;line-height:1.3;margin-top:1px}
+/* ─── COACH REMINDER BANNER ─── */
+.coach-banner{display:none;background:#F0EBFF;border:1.5px solid #C4B5FD;border-radius:12px;padding:9px 13px;margin-top:10px}
+.coach-banner.show{display:block}
+.coach-banner-lbl{font-size:.57rem;font-weight:900;text-transform:uppercase;color:#6B44E0;letter-spacing:.6px;margin-bottom:5px}
+.coach-banner-item{font-size:.71rem;font-weight:700;color:var(--t);display:flex;gap:5px;margin:2px 0;align-items:flex-start;line-height:1.4}
+.coach-banner-item span:first-child{color:#9B59B6;flex-shrink:0}
 
 /* ─── TEMPLATES SCREEN ─── */
 #screen-templates{display:none;max-width:780px;margin:0 auto;padding:28px 20px 70px}
@@ -1283,12 +1279,6 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 
 <main>
 
-<!-- ─── PREP OVERLAY ─── -->
-<div id="prep-overlay">
-  <h5>🧠 Tu estructura</h5>
-  <div id="prep-overlay-body"></div>
-</div>
-
 <!-- ─── FIRST WORDS TOAST (IS) ─── -->
 <div id="first-words-toast">
   <div class="fwt-row"><span class="fwt-bad">❌ NO digas:</span><span style="color:#F87171;font-size:.78rem;font-weight:700">"That's a great question!" · "Interesting!"</span></div>
@@ -1414,6 +1404,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <button class="btn btn-ghost btn-sm" onclick="resetPhoto()">↺ Reset</button>
     </div>
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new photo · <kbd>D</kbd> done early</p>
+    <div class="coach-banner" id="coach-banner-photo"></div>
   </div>
 
   <div class="ai-guide-card" id="ai-guide-photo">
@@ -1540,6 +1531,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <button class="btn btn-ghost btn-sm" onclick="resetRead()">↺ Reset</button>
     </div>
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>N</kbd> new question · <kbd>D</kbd> done early</p>
+    <div class="coach-banner" id="coach-banner-read"></div>
   </div>
 
   <div class="ai-guide-card" id="ai-guide-read">
@@ -1701,6 +1693,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <button class="btn btn-ghost btn-sm" onclick="resetSample()">↺ Reset</button>
     </div>
     <p class="kbd-hint"><kbd>Space</kbd> start · <kbd>R</kbd> reset · <kbd>D</kbd> done early</p>
+    <div class="coach-banner" id="coach-banner-sample"></div>
   </div>
 
   <!-- Marco I-LAST hidden: vocab zones must stay in DOM for svRender -->
@@ -1823,6 +1816,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <button class="btn btn-b" id="is-next" onclick="nextISQ()" style="display:none">Next Question →</button>
     </div>
     <p class="kbd-hint">Set: <strong id="is-set-label">—</strong> · <kbd>Space</kbd> answer · <kbd>D</kbd> done early</p>
+    <div class="coach-banner" id="coach-banner-interactive"></div>
   </div>
 
   <div class="ai-guide-card" id="ai-guide-interactive">
@@ -3810,8 +3804,8 @@ Máx 18 palabras en español por observación. Sé concreto.`;
         if (quoteMatch) { esText = t.slice(0, t.indexOf(quoteMatch[0])).trim(); enPhrase = quoteMatch[1]; }
       }
       const safePhrase = enPhrase ? enPhrase.replace(/"/g,'&quot;').replace(/'/g,'&#39;') : '';
-      const enBlock = enPhrase ? `<div style="background:#F0F4FF;border:1.5px solid #BFD0FF;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a3a8a;display:flex;align-items:center;gap:6px"><span style="flex:1;font-style:italic">"${enPhrase}"</span><button class="vc-save-btn" data-tasktype="${taskType}" data-step="${i+1}" data-phrase="${safePhrase}" onclick="vcSavePhrase(this)" title="Guardar en vocabulario">💾</button></div>` : '';
-      return `<div class="ag-tip-item"><span class="ag-tip-icon">${icons[i] || '💡'}</span><div style="flex:1"><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:2px">${labels[i] || ''}</span><span style="font-size:.75rem">${esText}</span>${enBlock}</div></div>`;
+      const enBlock = enPhrase ? `<div style="background:#F0F4FF;border:1.5px solid #BFD0FF;border-radius:8px;padding:3px 7px;margin-top:3px;font-size:.67rem;font-weight:800;color:#1a3a8a;display:flex;align-items:center;gap:5px"><span style="flex:1;font-style:italic">"${enPhrase}"</span><button class="vc-save-btn" data-tasktype="${taskType}" data-step="${i+1}" data-phrase="${safePhrase}" onclick="vcSavePhrase(this)" title="Guardar palabra clave al HUD">💾</button></div>` : '';
+      return `<div class="ag-tip-item"><span class="ag-tip-icon">${icons[i] || '💡'}</span><div style="flex:1"><span style="font-size:.55rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:1px">${labels[i] || ''}</span><span style="font-size:.68rem">${esText}</span>${enBlock}</div></div>`;
     }).join('');
 
     const grammarHtml = grammarLines.map(gl => {
@@ -3822,14 +3816,26 @@ Máx 18 palabras en español por observación. Sé concreto.`;
         errText = clean.slice(0, arrowIdx).trim().replace(/^[""]|[""]$/g, '');
         fixText = clean.slice(arrowIdx).replace(/^→\s*Corrección:/i, '').trim().replace(/^[""]|[""]$/g, '');
       }
-      return `<div class="ag-tip-item" style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--br)"><span class="ag-tip-icon">✏️</span><div style="flex:1"><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:2px">GRAMÁTICA</span><span style="font-size:.75rem;color:var(--r)">"${errText}"</span>${fixText ? `<div style="background:#E8F8E0;border:1.5px solid #B2EFC0;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a5c1a">✅ "${fixText}"</div>` : ''}</div></div>`;
+      return `<div class="ag-tip-item" style="margin-top:5px;padding-top:5px;border-top:1px dashed var(--br)"><span class="ag-tip-icon">✏️</span><div style="flex:1"><span style="font-size:.55rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:1px">GRAMÁTICA</span><span style="font-size:.68rem;color:var(--r)">"${errText}"</span>${fixText ? `<div style="background:#E8F8E0;border:1.5px solid #B2EFC0;border-radius:8px;padding:3px 7px;margin-top:3px;font-size:.67rem;font-weight:800;color:#1a5c1a">✅ "${fixText}"</div>` : ''}</div></div>`;
     }).join('');
 
     const coverageHtml = coverageLines.length > 0
-      ? `<div style="margin-bottom:8px;padding:8px 10px;background:#EEF4FF;border-radius:10px;border:1.5px solid #C7D9FF"><div style="font-size:.58rem;font-weight:900;text-transform:uppercase;color:#1e3a8a;letter-spacing:.7px;margin-bottom:4px">📋 Cobertura de la pregunta</div>${coverageLines.map(l=>{const c=l.replace(/^📋\s*/,'');const ok=c.startsWith('✅');return`<div style="font-size:.72rem;margin:2px 0;color:${ok?'#166534':'#991B1B'}">${c}</div>`}).join('')}</div>`
+      ? `<div style="margin-bottom:8px;padding:8px 10px;background:#EEF4FF;border-radius:10px;border:1.5px solid #C7D9FF"><div style="font-size:.55rem;font-weight:900;text-transform:uppercase;color:#1e3a8a;letter-spacing:.7px;margin-bottom:4px">📋 Cobertura de la pregunta</div>${coverageLines.map(l=>{const c=l.replace(/^📋\s*/,'');const ok=c.startsWith('✅');return`<div style="font-size:.68rem;margin:2px 0;color:${ok?'#166534':'#991B1B'}">${c}</div>`}).join('')}</div>`
       : '';
-    const vocabDetailsHtml = `<details class="vc-inline" ontoggle="if(this.open)vcRenderInline('${taskType}')"><summary>📚 Mi Vocabulario DET</summary><div class="vc-body" id="vc-body-${taskType}"></div></details>`;
-    const fullHtml = coverageHtml + tipsHtml + grammarHtml + vocabDetailsHtml;
+    const fullHtml = coverageHtml + tipsHtml + grammarHtml;
+
+    // Populate persistent coach banner below templates
+    const bannerEl = document.getElementById('coach-banner-' + taskType);
+    if (bannerEl) {
+      const bannerItems = tips.slice(0, 3).map(t => {
+        const arrowIdx = t.search(/→/);
+        const raw = arrowIdx > 0 ? t.slice(0, arrowIdx).trim() : t.trim();
+        const clean = raw.replace(/^\[Paso \d+[^\]]*\]:\s*/i, '').replace(/^[🎯📝🔍🔗🏁💡]\s*/u, '').trim();
+        return `<div class="coach-banner-item"><span>▸</span><span>${clean}</span></div>`;
+      }).join('');
+      bannerEl.innerHTML = `<div class="coach-banner-lbl">🔧 Hazlo de nuevo — mejora esto</div>${bannerItems}`;
+      bannerEl.classList.add('show');
+    }
 
     if (isSample) {
       const ld = document.getElementById('sp-coach-sidebar-loading');
