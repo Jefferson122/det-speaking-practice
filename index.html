@@ -742,6 +742,9 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .tpl-sel-btn .ts-name{font-size:.67rem;font-weight:900;color:var(--t);display:block;margin-top:1px}
 .tpl-sel-btn .ts-desc{font-size:.56rem;font-weight:600;color:var(--tm);display:block;line-height:1.25;margin-top:2px}
 .tpl-sel-btn.active .ts-num,.tpl-sel-btn.active .ts-name{color:#3D1A6B}
+.ts-badge{display:inline-block;font-size:.5rem;font-weight:900;letter-spacing:.4px;border-radius:5px;padding:1px 5px;margin-top:3px;text-transform:uppercase}
+.ts-badge.det{background:#FEF3C7;color:#92400E;border:1px solid #F59E0B}
+.ts-badge.alt{background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
 
 /* ─── LEXICAL HUD ─── */
 #hud-fab{
@@ -1407,7 +1410,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="tpl-sel" id="tpl-sel-photo">
     <span class="tpl-sel-lbl">Template:</span>
     <div class="tpl-sel-btns">
-      <button class="tpl-sel-btn active" onclick="selectTemplate('photo',1)"><span class="ts-num">T1</span><span class="ts-name">O·D·I·C</span><span class="ts-desc">Overview→Detail→Inference→Conclusion</span></button>
+      <button class="tpl-sel-btn active" onclick="selectTemplate('photo',1)"><span class="ts-num">T1</span><span class="ts-name">O·D·I·C</span><span class="ts-desc">Overview→Detail→Inference→Conclusion</span><span class="ts-badge det">★ DET</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('photo',2)"><span class="ts-num">T2</span><span class="ts-name">V·A·R·E</span><span class="ts-desc">Visual→Action→Relationship→Emotion</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('photo',3)"><span class="ts-num">T3</span><span class="ts-name">F·B·S·P</span><span class="ts-desc">Foreground→Background→Speculation→Personal</span></button>
     </div>
@@ -1533,8 +1536,8 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="tpl-sel" id="tpl-sel-read">
     <span class="tpl-sel-lbl">Template:</span>
     <div class="tpl-sel-btns">
-      <button class="tpl-sel-btn active" onclick="selectTemplate('read',1)"><span class="ts-num">T1</span><span class="ts-name">P·R·E·L</span><span class="ts-desc">Position→Reason→Evidence→Link</span></button>
-      <button class="tpl-sel-btn" onclick="selectTemplate('read',2)"><span class="ts-num">T2</span><span class="ts-name">T·A·C·C</span><span class="ts-desc">Thesis→Argument→Counter→Conclusion</span></button>
+      <button class="tpl-sel-btn active" onclick="selectTemplate('read',1)"><span class="ts-num">T1</span><span class="ts-name">P·R·E·L</span><span class="ts-desc">Position→Reason→Evidence→Link</span><span class="ts-badge det">★ DET</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('read',2)"><span class="ts-num">T2</span><span class="ts-name">T·A·C·C</span><span class="ts-desc">Thesis→Argument→Counter→Conclusion</span><span class="ts-badge alt">✓ Alt debate</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('read',3)"><span class="ts-num">T3</span><span class="ts-name">I·P·C</span><span class="ts-desc">Introduction→Points→Conclusion</span></button>
     </div>
   </div>
@@ -1678,7 +1681,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="tpl-sel" id="tpl-sel-sample">
     <span class="tpl-sel-lbl">Template:</span>
     <div class="tpl-sel-btns">
-      <button class="tpl-sel-btn active" onclick="selectTemplate('sample',1)"><span class="ts-num">T1</span><span class="ts-name">I·L·A·S·T</span><span class="ts-desc">Intro→Life exp.→Advanced→Specific→Thought</span></button>
+      <button class="tpl-sel-btn active" onclick="selectTemplate('sample',1)"><span class="ts-num">T1</span><span class="ts-name">I·L·A·S·T</span><span class="ts-desc">Intro→Life exp.→Advanced→Specific→Thought</span><span class="ts-badge det">★ DET</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('sample',2)"><span class="ts-num">T2</span><span class="ts-name">P·E·E·L</span><span class="ts-desc">Point→Explanation→Example→Link</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('sample',3)"><span class="ts-num">T3</span><span class="ts-name">T·E·A·C</span><span class="ts-desc">Thesis→Evidence→Analysis→Conclusion</span></button>
     </div>
@@ -1816,7 +1819,7 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="tpl-sel" id="tpl-sel-interactive">
     <span class="tpl-sel-lbl">Template:</span>
     <div class="tpl-sel-btns">
-      <button class="tpl-sel-btn active" onclick="selectTemplate('interactive',1)"><span class="ts-num">T1</span><span class="ts-name">A·R·E</span><span class="ts-desc">Answer→Reason→Example (35s)</span></button>
+      <button class="tpl-sel-btn active" onclick="selectTemplate('interactive',1)"><span class="ts-num">T1</span><span class="ts-name">A·R·E</span><span class="ts-desc">Answer→Reason→Example (35s)</span><span class="ts-badge det">★ DET</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('interactive',2)"><span class="ts-num">T2</span><span class="ts-name">P·S·C</span><span class="ts-desc">Position→Support→Closing</span></button>
       <button class="tpl-sel-btn" onclick="selectTemplate('interactive',3)"><span class="ts-num">T3</span><span class="ts-name">D·E·R</span><span class="ts-desc">Direct→Expand→Relate personally</span></button>
     </div>
