@@ -5701,23 +5701,30 @@ function vcDel(sec,step,idx){
   vcRenderInline(sec);
 }
 
+function _hudCategory(phrase){
+  const p=phrase.toLowerCase();
+  if(/\b(however|therefore|furthermore|moreover|consequently|nevertheless|whereas|although|despite|not only|but also|in addition|on the other hand|having said that|it is worth noting|it should be noted|as a result|in conclusion|to sum up|firstly|secondly|finally|additionally|what is more|in contrast|by contrast|in spite of|even though|provided that)\b/.test(p))return'Connector';
+  if(/\b(argue|demonstrate|indicate|suggest|reveal|convey|highlight|emphasize|significant|crucial|fundamental|substantial|phenomenon|perspective|framework|approach|strategy|concept|theory|aspect|analyze|evaluate|implication|notably|evident|apparent|illustrate|examine)\b/.test(p))return'Academic';
+  if(/\b(technology|digital|data|system|process|mechanism|function|technical|software|hardware|infrastructure|implement|integrate)\b/.test(p))return'Technical';
+  if(/\b(feel|emotion|sentiment|experience|memory|personal|reflect|nostalgia|meaningful|profound|deep|moving|heartfelt|passionate)\b/.test(p))return'Emotional';
+  if(/\b(society|community|culture|people|social|public|communication|interact|share|collaborate|together|collective|diverse|relationship)\b/.test(p))return'Social';
+  if(/\b(power|influence|impact|transform|challenge|overcome|achieve|leadership|drive|motivate|determine|compelling|critical)\b/.test(p))return'Power';
+  return'Academic';
+}
+
 function vcSavePhrase(btn){
   const taskType=btn.dataset.tasktype;
-  const step=parseInt(btn.dataset.step)||1;
   const phrase=btn.dataset.phrase;
   if(!phrase)return;
-  const bank=svGetBank();
-  if(!bank[taskType])bank[taskType]={};
-  if(!bank[taskType][step])bank[taskType][step]=[];
-  if(!bank[taskType][step].find(i=>i.text===phrase)){
-    bank[taskType][step].unshift({text:phrase,ai:true,addedAt:Date.now()});
-    svSaveBank(bank);
-    svRender(taskType);
+
+  // Add to HUD with auto-classification
+  if(window.LexicalHUD){
+    const category=_hudCategory(phrase);
+    LexicalHUD.addWord(phrase,category,'Coach DET — '+taskType);
   }
+
   btn.textContent='✓';btn.classList.add('saved');
   setTimeout(()=>{btn.textContent='💾';btn.classList.remove('saved');},2000);
-  const vcBody=document.getElementById('vc-body-'+taskType);
-  if(vcBody&&vcBody.children.length)vcRenderInline(taskType);
 }
 
 // ─── WELCOME SCREEN ───
