@@ -731,6 +731,18 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 .ai-coach-panel li::before{content:"▸";position:absolute;left:0;color:#9B59B6;font-weight:900}
 .coach-close{float:right;background:none;border:none;cursor:pointer;font-size:.67rem;color:#9B59B6;font-weight:800;font-family:'Nunito',sans-serif;padding:0;margin-bottom:3px}
 
+/* ─── TEMPLATE SELECTOR ─── */
+.tpl-sel{background:var(--w);border:2px solid var(--br);border-radius:14px;padding:9px 12px;margin:8px 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tpl-sel-lbl{font-size:.68rem;font-weight:900;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.tpl-sel-btns{display:flex;gap:5px;flex-wrap:wrap;flex:1}
+.tpl-sel-btn{flex:1;min-width:0;background:var(--bg);border:1.5px solid var(--br);border-radius:10px;padding:5px 7px;cursor:pointer;font-family:'Nunito',sans-serif;text-align:center;transition:.15s;line-height:1}
+.tpl-sel-btn.active{background:linear-gradient(135deg,#EDE0FF,#D4EAFF);border-color:#9B59B6}
+.tpl-sel-btn:hover:not(.active){background:var(--bl);border-color:var(--b)}
+.tpl-sel-btn .ts-num{font-size:.65rem;font-weight:900;color:#6B44E0;display:block}
+.tpl-sel-btn .ts-name{font-size:.67rem;font-weight:900;color:var(--t);display:block;margin-top:1px}
+.tpl-sel-btn .ts-desc{font-size:.56rem;font-weight:600;color:var(--tm);display:block;line-height:1.25;margin-top:2px}
+.tpl-sel-btn.active .ts-num,.tpl-sel-btn.active .ts-name{color:#3D1A6B}
+
 /* ─── LEXICAL HUD ─── */
 #hud-fab{
   position:fixed;bottom:84px;left:16px;z-index:160;
@@ -1218,6 +1230,20 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 }
 #hud-fab-badge.show{display:block;animation:badge-pop .3s cubic-bezier(.34,1.56,.64,1)}
 @keyframes badge-pop{from{transform:scale(0)}to{transform:scale(1)}}
+/* ─── FIRST WORDS TOAST (Interactive Speaking) ─── */
+#first-words-toast{
+  position:fixed;top:70px;left:50%;transform:translateX(-50%);z-index:800;
+  background:#1a0a3d;border:2px solid #6B44E0;border-radius:14px;
+  padding:11px 20px;box-shadow:0 8px 32px rgba(107,68,224,.45);
+  display:none;min-width:300px;max-width:360px;
+}
+#first-words-toast.show{display:block;animation:fw-drop .3s cubic-bezier(.34,1.56,.64,1)}
+@keyframes fw-drop{from{transform:translateX(-50%) translateY(-20px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+.fwt-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-size:.8rem;font-weight:800;font-family:'Nunito',sans-serif}
+.fwt-bad{color:#F87171}.fwt-good{color:#4ADE80}
+.fwt-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.fwt-chip{background:rgba(107,68,224,.25);border:1.5px solid rgba(107,68,224,.5);border-radius:8px;padding:3px 9px;font-size:.72rem;font-weight:800;color:#C4B5FD;cursor:pointer;font-family:'Nunito',sans-serif;transition:.15s}
+.fwt-chip:hover{background:rgba(107,68,224,.45);color:#fff}
 </style>
 </head>
 <body>
@@ -1257,6 +1283,19 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
 <div id="prep-overlay">
   <h5>🧠 Tu estructura</h5>
   <div id="prep-overlay-body"></div>
+</div>
+
+<!-- ─── FIRST WORDS TOAST (IS) ─── -->
+<div id="first-words-toast">
+  <div class="fwt-row"><span class="fwt-bad">❌ NO digas:</span><span style="color:#F87171;font-size:.78rem;font-weight:700">"That's a great question!" · "Interesting!"</span></div>
+  <div class="fwt-row"><span class="fwt-good">✅ Empieza con:</span></div>
+  <div class="fwt-chips">
+    <span class="fwt-chip" onclick="hearPhrase('I believe that');dismissFWT()">I believe that…</span>
+    <span class="fwt-chip" onclick="hearPhrase('In my view,');dismissFWT()">In my view,…</span>
+    <span class="fwt-chip" onclick="hearPhrase('Personally speaking,');dismissFWT()">Personally speaking,…</span>
+    <span class="fwt-chip" onclick="hearPhrase('I would argue that');dismissFWT()">I would argue that…</span>
+    <span class="fwt-chip" onclick="hearPhrase('From my perspective,');dismissFWT()">From my perspective,…</span>
+  </div>
 </div>
 
 <!-- ═══ HOME ═══ -->
@@ -1363,6 +1402,15 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
       <button class="hint-toggle" onclick="toggleHint('ph-hint')">👁 Show Hints</button>
     </div>
     <div class="hint-box" id="ph-hint"><p id="ph-hint-text">Hint will appear here.</p></div>
+  </div>
+
+  <div class="tpl-sel" id="tpl-sel-photo">
+    <span class="tpl-sel-lbl">Template:</span>
+    <div class="tpl-sel-btns">
+      <button class="tpl-sel-btn active" onclick="selectTemplate('photo',1)"><span class="ts-num">T1</span><span class="ts-name">O·D·I·C</span><span class="ts-desc">Overview→Detail→Inference→Conclusion</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('photo',2)"><span class="ts-num">T2</span><span class="ts-name">V·A·R·E</span><span class="ts-desc">Visual→Action→Relationship→Emotion</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('photo',3)"><span class="ts-num">T3</span><span class="ts-name">F·B·S·P</span><span class="ts-desc">Foreground→Background→Speculation→Personal</span></button>
+    </div>
   </div>
 
   <div class="rec-area">
@@ -1480,6 +1528,15 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
   <div class="tts-bar" id="rd-tts-bar">
     <div class="tts-dots show" id="rd-tts-dots"><div class="tts-dot"></div><div class="tts-dot"></div><div class="tts-dot"></div></div>
     <span id="rd-tts-label" class="show">AI is reading the question…</span>
+  </div>
+
+  <div class="tpl-sel" id="tpl-sel-read">
+    <span class="tpl-sel-lbl">Template:</span>
+    <div class="tpl-sel-btns">
+      <button class="tpl-sel-btn active" onclick="selectTemplate('read',1)"><span class="ts-num">T1</span><span class="ts-name">P·R·E·L</span><span class="ts-desc">Position→Reason→Evidence→Link</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('read',2)"><span class="ts-num">T2</span><span class="ts-name">T·A·C·C</span><span class="ts-desc">Thesis→Argument→Counter→Conclusion</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('read',3)"><span class="ts-num">T3</span><span class="ts-name">I·P·C</span><span class="ts-desc">Introduction→Points→Conclusion</span></button>
+    </div>
   </div>
 
   <div class="rec-area">
@@ -1618,6 +1675,31 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <span style="font-size:.76rem;font-weight:700;color:var(--b);margin-left:4px">AI reading…</span>
   </div>
 
+  <div class="tpl-sel" id="tpl-sel-sample">
+    <span class="tpl-sel-lbl">Template:</span>
+    <div class="tpl-sel-btns">
+      <button class="tpl-sel-btn active" onclick="selectTemplate('sample',1)"><span class="ts-num">T1</span><span class="ts-name">I·L·A·S·T</span><span class="ts-desc">Intro→Life exp.→Advanced→Specific→Thought</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('sample',2)"><span class="ts-num">T2</span><span class="ts-name">P·E·E·L</span><span class="ts-desc">Point→Explanation→Example→Link</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('sample',3)"><span class="ts-num">T3</span><span class="ts-name">T·E·A·C</span><span class="ts-desc">Thesis→Evidence→Analysis→Conclusion</span></button>
+    </div>
+  </div>
+
+  <!-- Camera Tips — universities watch this video -->
+  <div style="background:linear-gradient(135deg,#FFF9E6,#FFF0F5);border:2px solid #F5A623;border-radius:14px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px">
+    <span style="font-size:1.4rem;flex-shrink:0;margin-top:2px">🏛</span>
+    <div style="flex:1">
+      <div style="font-size:.72rem;font-weight:900;color:#7A5F00;text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px">Las universidades VEN este video — prepárate</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>📷</span> Mira a la cámara, no a la pantalla</div>
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>💡</span> Cara bien iluminada, sin contraluz</div>
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>🎯</span> Fondo neutro y ordenado</div>
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>⏱</span> Meta: 90s–2min (no 3 minutos completos)</div>
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>👔</span> Viste apropiadamente</div>
+        <div style="font-size:.73rem;font-weight:700;color:#3D1A00;display:flex;align-items:center;gap:5px"><span>🎤</span> Habla claro y a velocidad natural</div>
+      </div>
+    </div>
+  </div>
+
   <div class="rec-area">
     <div class="mic-ring"><div class="mic-pulse" id="sp-pulse"></div><button class="mic-btn disabled" id="sp-mic" onclick="toggleSampleRec()">🎙️</button></div>
     <canvas id="wv-sample" width="500" height="60"></canvas>
@@ -1729,6 +1811,15 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
     <div class="q-topic" id="is-topic-name"></div>
     <div class="q-label" id="is-q-label">Question 1 of 6</div>
     <div class="q-text" id="is-q">Press "New Set" to begin a conversation with the AI examiner.</div>
+  </div>
+
+  <div class="tpl-sel" id="tpl-sel-interactive">
+    <span class="tpl-sel-lbl">Template:</span>
+    <div class="tpl-sel-btns">
+      <button class="tpl-sel-btn active" onclick="selectTemplate('interactive',1)"><span class="ts-num">T1</span><span class="ts-name">A·R·E</span><span class="ts-desc">Answer→Reason→Example (35s)</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('interactive',2)"><span class="ts-num">T2</span><span class="ts-name">P·S·C</span><span class="ts-desc">Position→Support→Closing</span></button>
+      <button class="tpl-sel-btn" onclick="selectTemplate('interactive',3)"><span class="ts-num">T3</span><span class="ts-name">D·E·R</span><span class="ts-desc">Direct→Expand→Relate personally</span></button>
+    </div>
   </div>
 
   <div class="phase-banner idle" id="is-banner"><div class="ph-left"><span id="is-banner-icon">⏸</span><span id="is-banner-text">Ready</span></div><span class="ph-num" id="is-banner-num">—</span></div>
@@ -2236,12 +2327,13 @@ kbd{background:var(--bg);border:1.5px solid var(--brs);border-radius:4px;padding
         <div class="sc-words" id="sc-words">— palabras · — ppm</div>
       </div>
     </div>
-    <div class="sc-section-lbl">Desglose · Breakdown</div>
+    <div class="sc-section-lbl">Criterios DET · Scoring Breakdown</div>
     <div class="sc-bars">
-      <div class="sc-bar-row"><span class="sc-bar-label">🗣 Fluidez</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-fluency"></div></div><span class="sc-bar-val" id="sv-fluency">—</span></div>
-      <div class="sc-bar-row"><span class="sc-bar-label">📚 Vocabulario</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-vocab"></div></div><span class="sc-bar-val" id="sv-vocab">—</span></div>
-      <div class="sc-bar-row"><span class="sc-bar-label">🔗 Estructura</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-structure"></div></div><span class="sc-bar-val" id="sv-structure">—</span></div>
-      <div class="sc-bar-row"><span class="sc-bar-label">⏱ Uso del tiempo</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-completion"></div></div><span class="sc-bar-val" id="sv-completion">—</span></div>
+      <div class="sc-bar-row"><span class="sc-bar-label">🗣 Fluency</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-fluency"></div></div><span class="sc-bar-val" id="sv-fluency">—</span></div>
+      <div class="sc-bar-row"><span class="sc-bar-label">📚 Lexis</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-vocab"></div></div><span class="sc-bar-val" id="sv-vocab">—</span></div>
+      <div class="sc-bar-row"><span class="sc-bar-label">✅ Grammar</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-grammar"></div></div><span class="sc-bar-val" id="sv-grammar">—</span></div>
+      <div class="sc-bar-row"><span class="sc-bar-label">🔗 Discourse</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-structure"></div></div><span class="sc-bar-val" id="sv-structure">—</span></div>
+      <div class="sc-bar-row"><span class="sc-bar-label">📝 Content</span><div class="sc-bar-track"><div class="sc-bar-fill" id="sb-completion"></div></div><span class="sc-bar-val" id="sv-completion">—</span></div>
     </div>
     <div class="sc-section-lbl">Retroalimentación · Feedback</div>
     <div class="sc-tips" id="sc-tips"></div>
@@ -2796,6 +2888,7 @@ function finishEarly(mod){
     const txt=document.getElementById('sp-transcript').textContent;
     lastTranscript=txt;lastQuestion=document.getElementById('sp-q').textContent;lastQType='Speaking Sample';lastHint='';
     setTimeout(()=>showScore(analyzeTranscript(txt,180)),500);
+    setTimeout(()=>coachAfterRecording('sample',txt,lastQuestion),600);
   } else if(mod==='interactive'){
     if(isPhase!=='speaking')return;
     clearInterval(isIv);isIv=null;
@@ -2828,6 +2921,7 @@ function startPhotoTimer(){
   setBanner('ph-banner','prep','⏳','PREPARATION TIME','0:20');
   setBar('ph-bar',20,20,'prep');setTB('prep','0:20');
   document.getElementById('ph-mic').className='mic-btn prep';
+  showPrepOverlay('photo');
   phIv=setInterval(()=>{
     phLeft--;
     if(phPhase==='speaking'){
@@ -3014,6 +3108,7 @@ function startReadTimer(){
   setBanner('rd-banner','prep','⏳','PREPARATION TIME','0:20');
   setBar('rd-bar',20,20,'prep');setTB('prep','0:20');
   document.getElementById('rd-tts-bar').style.display='none';
+  showPrepOverlay('read');
   rdIv=setInterval(()=>{
     rdLeft--;
     if(rdPhase==='speaking'){
@@ -3112,7 +3207,7 @@ const SAMPLE_QS=[
   {type:'opinion',label:'Opinion',text:"Are humans naturally cooperative or competitive? Which has helped societies progress more?"},
   {type:'opinion',label:'Opinion',text:"Should people be allowed to work from home permanently? What would be gained and lost?"},
 ];
-let spIv=null,spPhase='idle',spLeft=30,spRecording=false,spFilter='all';
+let spIv=null,spPhase='idle',spLeft=30,spRecording=false,spFilter='all',_spWordBase=0;
 
 function filterSample(type,el){
   spFilter=type;
@@ -3121,7 +3216,7 @@ function filterSample(type,el){
 }
 function newSampleQ(){
   clearInterval(spIv);spIv=null;stopRec();stopWaveform();stopSpeak();
-  spPhase='idle';spRecording=false;spLeft=30;
+  spPhase='idle';spRecording=false;spLeft=30;_spWordBase=0;
   const _sbP=document.getElementById('sp-coach-sidebar-placeholder');
   const _sbL=document.getElementById('sp-coach-sidebar-loading');
   const _sbI=document.getElementById('sp-coach-sidebar-items');
@@ -3143,7 +3238,7 @@ function newSampleQ(){
 }
 function resetSample(){
   clearInterval(spIv);spIv=null;stopRec();stopWaveform();stopSpeak();
-  spPhase='idle';spRecording=false;spLeft=30;
+  spPhase='idle';spRecording=false;spLeft=30;_spWordBase=0;
   document.getElementById('sp-mic').className='mic-btn disabled';
   document.getElementById('sp-pulse').classList.remove('active');
   setBanner('sp-banner','idle','⏸','Ready','—');
@@ -3152,7 +3247,10 @@ function resetSample(){
 }
 function toggleSampleRec(){
   if(spPhase!=='speaking')return;
-  if(spRecording){stopRec();stopWaveform();spRecording=false;
+  if(spRecording){
+    const _pausedTx=(document.getElementById('sp-transcript').textContent||'').trim();
+    _spWordBase+=_pausedTx?_pausedTx.split(/\s+/).filter(w=>w).length:0;
+    stopRec();stopWaveform();spRecording=false;
     document.getElementById('sp-mic').className='mic-btn';
     document.getElementById('sp-pulse').classList.remove('active');
     document.getElementById('sp-playback').classList.add('show');
@@ -3170,13 +3268,14 @@ function startSampleTimer(){
   setBanner('sp-banner','prep','⏳','PREPARATION TIME','0:30');
   setBar('sp-bar',30,30,'prep');setTB('prep','0:30');
   document.getElementById('sp-tts-bar').style.display='none';
+  showPrepOverlay('sample');
   spIv=setInterval(()=>{
     spLeft--;
     if(spPhase==='speaking'){
       const _tx=(document.getElementById('sp-transcript').textContent||'').trim();
-      const _wc=_tx?_tx.split(/\s+/).filter(w=>w).length:0;
+      const _wc=_spWordBase+(_tx?_tx.split(/\s+/).filter(w=>w).length:0);
       const _se=document.getElementById('sp-live-stat');
-      if(_se&&_wc>0){const _el=180-spLeft;const _wpm=Math.round(_wc/(Math.max(1,_el)/60));const _cls=_wc>=200?'wc-hi':_wc>=120?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} pal · ${_wpm} ppm</span><span class="wc-target"> — meta: 200–350</span>`;}
+      if(_se){const _el=180-spLeft;const _wpm=_wc>0?Math.round(_wc/(Math.max(1,_el)/60)):0;const _cls=_wc>=200?'wc-hi':_wc>=120?'wc-warn':'wc-bad';_se.classList.add('show');_se.innerHTML=`<span class="${_cls}">${_wc} pal${_wc>0?' · '+_wpm+' ppm':''}</span><span class="wc-target"> — meta: 200–350</span>`;}
     }
     if(spLeft<=0&&spPhase==='prep'){
       beepPhase();spPhase='speaking';spLeft=180;
@@ -3196,6 +3295,7 @@ function startSampleTimer(){
       const _spTxt=document.getElementById('sp-transcript').textContent;
       lastTranscript=_spTxt;lastQuestion=document.getElementById('sp-q').textContent;lastQType='Speaking Sample';
       setTimeout(()=>showScore(analyzeTranscript(_spTxt,180)),700);
+      setTimeout(()=>coachAfterRecording('sample',_spTxt,lastQuestion),800);
       return;
     }
     if(spPhase==='speaking'&&spLeft<=20){
@@ -3295,6 +3395,7 @@ function showISQ(doSpeak){
       setBanner('is-banner','idle','🎙','Your turn — press Answer','35s');
       document.getElementById('is-mic').className='mic-btn';
       setBar('is-bar',35,35,'');
+      showPrepOverlay('interactive');
     });
   }
   setTimeout(()=>genGuide('interactive'),350);
@@ -3309,6 +3410,7 @@ function startISTimer(){
   setBar('is-bar',35,35,'rec');setTB('rec','35s');
   document.getElementById('is-mic').className='mic-btn';
   showDoneBtn('interactive',true);
+  hidePrepOverlay();showFWT();
   // auto-start recording
   if(micGranted.val&&!isRec){
     if(startRec('is-audio',null)){isRec=true;
@@ -3331,7 +3433,7 @@ function startISTimer(){
       }
       const isLast=curQ>=curSet.qs.length-1;
       lastTranscript=_isTxt;lastQuestion=curSet.qs[curQ].q;lastQType='Interactive Speaking';lastHint='';
-      addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();
+      addXP(5);if(isLast)bumpTotal('is');hidePrepOverlay();dismissFWT();
       setTimeout(()=>coachAfterRecording('interactive',_isTxt,lastQuestion),800);
       if(isLast){
         setBanner('is-banner','idle','🏁','Set complete! ¡Excelente!','—');
@@ -3420,9 +3522,9 @@ async function genGuide(taskType) {
   if (refreshBtn) { refreshBtn.disabled = true; refreshBtn.textContent = '⏳'; }
 
   const prompts = {
-    photo: `Eres un coach del DET (Duolingo English Test). ${contextText}\n\nDame exactamente 4 consejos MUY específicos y concretos en español (máx 18 palabras cada uno) sobre QUÉ decir y CÓMO describir ESTA foto específica durante los 90 segundos. Enfócate en contenido concreto: qué mencionar en cada parte. Solo lista numerada sin intro.`,
-    read: `Eres un coach DET. Pregunta Read Then Speak (90s): "${contextText}"\n\nEscribe exactamente 3 frases en INGLÉS que el estudiante puede decir literalmente para esta pregunta. Sin labels, sin estructura — solo las frases:\n\n1. [Apertura + posición: usa "I truly believe / From my perspective / I strongly think" — máx 14 palabras]\n2. [Desarrollo con conectores: usa "First of all... Furthermore... For example... However..." — máx 22 palabras]\n3. [Cierre: usa "In conclusion / Ultimately / All things considered" — máx 12 palabras]\n\nSOLO las 3 frases numeradas en inglés. Sin comillas en tu respuesta. Sin explicaciones.`,
-    interactive: `Eres un coach DET. Pregunta Interactive Speaking (35s): "${contextText}"\n\nEscribe exactamente 3 frases en INGLÉS que el estudiante puede decir literalmente para responder esta pregunta. Sin labels — solo las frases:\n\n1. [Opinión inmediata: usa "I think / I believe / Personally / Definitely" — máx 10 palabras]\n2. [Razón: usa "because / The main reason is / This is because" — máx 11 palabras]\n3. [Ejemplo personal: usa "For example, in my case / In my experience / When I" — máx 13 palabras]\n\nSOLO las 3 frases numeradas en inglés. Sin comillas en tu respuesta. Sin explicaciones.`
+    photo: `You are a DET (Duolingo English Test) speaking coach. The student needs to describe this photo for 90 seconds. Photo: "${contextText}"\n\nGive exactly 4 short, concrete tips IN SPANISH (max 15 words each) about WHAT specific vocabulary and sentences to use for THIS exact photo. Focus on:\n1. The main subject/action in this specific photo (suggest exact English words/phrases to describe it)\n2. Foreground details (specific adjectives, nouns, -ing verbs relevant to this photo)\n3. Background/setting clues (location type, atmosphere words)\n4. One strong C1 inference sentence they can say\n\nFormat: numbered list 1-4. No intro. Spanish explanations, English phrases in quotes.`,
+    read: `You are a DET speaking coach. Read Then Speak question (90s response): "${contextText}"\n\nWrite exactly 3 ENGLISH sentences the student can say literally. Each must sound natural and meet DET C1 grammar criteria. NO labels — just the sentences:\n\n1. [Strong opening + clear position using: "I truly believe that" / "From my perspective," / "I would firmly argue that" — max 15 words]\n2. [Development using C1 connectors: "First and foremost,... Furthermore,... Not only does this... but it also..." — max 25 words with a concrete example]\n3. [Closing using: "All things considered," / "Ultimately," / "This is precisely why..." — max 12 words]\n\nONLY the 3 numbered sentences in English. No quotes around sentences. No explanations.`,
+    interactive: `You are a DET speaking coach. Interactive Speaking question (35 seconds to answer): "${contextText}"\n\nWrite exactly 3 ENGLISH sentences for a complete 35-second response. Each must be natural and show C1 level. NO labels — just sentences:\n\n1. [Immediate direct opinion — NO "That's a great question!" opener. Start with: "I firmly believe" / "In my view," / "Personally speaking," — max 10 words]\n2. [Reason + implication using: "The primary reason for this is that... which ultimately means that..." — max 14 words]\n3. [Personal example using: "For instance, in my own experience,... which clearly demonstrates that..." — max 14 words]\n\nONLY 3 numbered sentences in English. No quotes around sentences. No explanations.`
   };
 
   try {
@@ -3455,11 +3557,25 @@ async function genGuide(taskType) {
 }
 
 // Guide modes: 'pre' = before recording tips, 'post' = post-recording coaching
-const _agData = { photo: { preBody: '', postBody: '' }, read: { preBody: '', postBody: '' }, interactive: { preBody: '', postBody: '' } };
-let _agMode = { photo: 'pre', read: 'pre', interactive: 'pre' };
+const _agData = { photo: { preBody: '', postBody: '' }, read: { preBody: '', postBody: '' }, interactive: { preBody: '', postBody: '' }, sample: { preBody: '', postBody: '' } };
+let _agMode = { photo: 'pre', read: 'pre', interactive: 'pre', sample: 'pre' };
 
 function setGuideMode(taskType, mode) {
   _agMode[taskType] = mode;
+  if (taskType === 'sample') {
+    const ph = document.getElementById('sp-coach-sidebar-placeholder');
+    const ld = document.getElementById('sp-coach-sidebar-loading');
+    const items = document.getElementById('sp-coach-sidebar-items');
+    if (mode === 'post') {
+      if (ph) ph.style.display = 'none';
+      if (ld) ld.style.display = 'flex';
+      if (items) items.innerHTML = '';
+    } else {
+      if (ld) ld.style.display = 'none';
+      if (ph) ph.style.display = 'block';
+    }
+    return;
+  }
   const card = document.getElementById('ai-guide-' + taskType);
   const bodyEl = document.getElementById('ag-body-' + taskType);
   const lbl = document.getElementById('ag-tips-lbl-' + taskType);
@@ -3487,51 +3603,224 @@ function setGuideMode(taskType, mode) {
   }
 }
 
+// ─── TEMPLATE SELECTION STATE ───
+const _tplSelected = { photo: 1, read: 1, sample: 1, interactive: 1 };
+
+const _TPL_DEFS = {
+  photo: {
+    1: { name:'O·D·I·C', full:'Overview → Detail → Inference → Conclusion', steps:[
+      {name:'Overview',    time:'0–15s',   desc:'Describe the main scene broadly. "This image shows / depicts / captures…"'},
+      {name:'Detail',      time:'15–55s',  desc:'Foreground: people/objects with -ing verbs. Then background elements and spatial layout.'},
+      {name:'Inference',   time:'55–78s',  desc:'Interpret mood, atmosphere, possible story. "This suggests / implies / conveys…"'},
+      {name:'Conclusion',  time:'78–90s',  desc:'Summarize + personal reaction. "Overall, this image captures… What stands out most is…"'}
+    ]},
+    2: { name:'V·A·R·E', full:'Visual → Action → Relationship → Emotion', steps:[
+      {name:'Visual',       time:'0–15s',  desc:'First impression. "The first thing I notice is… The image depicts…"'},
+      {name:'Action',       time:'15–48s', desc:'All actions in -ing form. "…appears to be / seems to be / is engaged in…"'},
+      {name:'Relationship', time:'48–72s', desc:'How elements connect. "These people seem to be… The objects suggest a connection between…"'},
+      {name:'Emotion',      time:'72–90s', desc:'Emotional tone + personal comment. "The mood evokes… This image makes me think about…"'}
+    ]},
+    3: { name:'F·B·S·P', full:'Foreground → Background → Speculation → Personal', steps:[
+      {name:'Foreground',   time:'0–22s',  desc:'"In the foreground, I can clearly see…"'},
+      {name:'Background',   time:'22–52s', desc:'"In the background, I notice / can see…"'},
+      {name:'Speculation',  time:'52–75s', desc:'"This could be… / It looks as though… / I would guess that…"'},
+      {name:'Personal',     time:'75–90s', desc:'"What I find particularly striking / interesting is…"'}
+    ]}
+  },
+  read: {
+    1: { name:'P·R·E·L', full:'Position → Reason → Evidence → Link', steps:[
+      {name:'Position',  time:'0–12s',  desc:'State your view directly. "I believe / argue / feel that…" No long intro.'},
+      {name:'Reason',    time:'12–40s', desc:'Explain WHY. "The main reason for this is that… This is because…"'},
+      {name:'Evidence',  time:'40–72s', desc:'Use a bullet from the text + personal example. "According to the text… / For example, in my experience…"'},
+      {name:'Link',      time:'72–90s', desc:'Connect back to the question. "This ultimately shows that… / This is why I believe…"'}
+    ]},
+    2: { name:'T·A·C·C', full:'Thesis → Argument → Counter → Conclusion', steps:[
+      {name:'Thesis',          time:'0–10s',  desc:'Bold position statement. "I strongly believe that… / It is clear that…"'},
+      {name:'Argument',        time:'10–45s', desc:'Main reason + example. "The primary argument is… For instance…"'},
+      {name:'Counter+Rebuttal',time:'45–72s', desc:'"Although some might argue… / While it is true that…, however, I maintain that…"'},
+      {name:'Conclusion',      time:'72–90s', desc:'Reinforce your thesis. "Ultimately / In conclusion, I believe that…"'}
+    ]},
+    3: { name:'I·P·C', full:'Introduction → Points → Conclusion', steps:[
+      {name:'Introduction', time:'0–12s',  desc:'Restate the topic + your angle. "The topic of [X] is relevant because…"'},
+      {name:'Points',       time:'12–68s', desc:'Cover ALL bullet points from the text with personal expansion on each one.'},
+      {name:'Conclusion',   time:'68–90s', desc:'Personal opinion + recommendation. "In my view… / I would recommend that…"'}
+    ]}
+  },
+  sample: {
+    1: { name:'I·L·A·S·T', full:'Intro → Life exp. → Advanced vocab → Specific detail → Thought', steps:[
+      {name:'Intro',              time:'0–15s',      desc:'"This is an interesting question. I\'d like to talk about [topic]." Hook the listener.'},
+      {name:'Life experience',    time:'15–55s',     desc:'"In my experience… / When I was younger… / I remember that…" Ground in personal narrative.'},
+      {name:'Advanced vocabulary',time:'throughout', desc:'Weave in C1/C2 words: significant, contribute to, as a result, it is worth noting, moreover, however.'},
+      {name:'Specific detail',    time:'55–120s',    desc:'"For example… / For instance… / A clear case of this is…" Give a concrete story or fact.'},
+      {name:'Thought/Conclusion', time:'last 30s',   desc:'"In conclusion / To summarize / Ultimately, I believe that…" Wrap up clearly.'}
+    ]},
+    2: { name:'P·E·E·L', full:'Point → Explanation → Example → Link', steps:[
+      {name:'Point',       time:'0–15s',    desc:'State your main argument/position. "My main point is that… / I strongly believe that…"'},
+      {name:'Explanation', time:'15–55s',   desc:'Develop WHY. "This is because… / The reason for this is… / This matters because…"'},
+      {name:'Example',     time:'55–115s',  desc:'Concrete story or experience. "For example… / I remember when… / A clear case of this is…"'},
+      {name:'Link',        time:'last 20s', desc:'Connect back to the question. "This shows that… / This is why I believe that [topic] is…"'}
+    ]},
+    3: { name:'T·E·A·C', full:'Thesis → Evidence → Analysis → Conclusion', steps:[
+      {name:'Thesis',     time:'0–15s',    desc:'Bold, arguable claim. "I would argue that… / It is undeniable that…"'},
+      {name:'Evidence',   time:'15–60s',   desc:'Support with experience or facts. "In my experience… / A clear example of this is…"'},
+      {name:'Analysis',   time:'60–120s',  desc:'What the evidence MEANS. "This demonstrates / reveals / suggests that… which is significant because…"'},
+      {name:'Conclusion', time:'last 30s', desc:'Restate thesis + implication. "Ultimately… / The wider implication is that…"'}
+    ]}
+  },
+  interactive: {
+    1: { name:'A·R·E', full:'Answer → Reason → Example', steps:[
+      {name:'Answer', time:'0–6s',   desc:'Direct response — no filler intro. "Yes, I believe… / Absolutely… / In my view, [X] is…"'},
+      {name:'Reason', time:'6–22s',  desc:'"because… / The main reason is that… / This is largely due to…"'},
+      {name:'Example',time:'22–35s', desc:'Quick personal example. "For instance, I once… / In my experience… / A clear example is…"'}
+    ]},
+    2: { name:'P·S·C', full:'Position → Support → Closing', steps:[
+      {name:'Position', time:'0–7s',   desc:'"I firmly believe / strongly feel / would argue that [opinion]."'},
+      {name:'Support',  time:'7–27s',  desc:'2 quick supporting points. "First, … Additionally, … / Also, it is worth noting that…"'},
+      {name:'Closing',  time:'27–35s', desc:'Brief reinforcement. "That is why I believe… / Overall, [position] is the better option."'}
+    ]},
+    3: { name:'D·E·R', full:'Direct answer → Expand → Relate personally', steps:[
+      {name:'Direct', time:'0–5s',   desc:'One-sentence answer — no hedging. "I think [X]." / "Definitely [Y]."'},
+      {name:'Expand', time:'5–22s',  desc:'Elaborate with reasoning. "The reason I think so is… This is evident because…"'},
+      {name:'Relate', time:'22–35s', desc:'"In my personal experience… / When I think about my own life… / I have noticed that…"'}
+    ]}
+  }
+};
+
+function selectTemplate(taskType, num) {
+  _tplSelected[taskType] = num;
+  const container = document.getElementById('tpl-sel-' + taskType);
+  if (!container) return;
+  container.querySelectorAll('.tpl-sel-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i + 1 === num);
+  });
+  _syncSidebarToTemplate(taskType, num);
+}
+
+const _agStepsOrig = {};
+
+function _renderTplStepsHTML(taskType, num) {
+  const tpl = _TPL_DEFS[taskType]?.[num];
+  if (!tpl) return '';
+  const lets = tpl.name.split('·');
+  return `<div class="pro-tpl" style="padding:4px 0">
+    <div style="text-align:center;padding:5px 10px 10px;font-size:.7rem;font-weight:900;color:#6B44E0;letter-spacing:.3px;background:linear-gradient(135deg,#EDE0FF,#D4EAFF);border-radius:8px;margin-bottom:4px">${tpl.name} · ${tpl.full}</div>
+    ${tpl.steps.map((s,i) => `
+      ${i > 0 ? '<hr class="tfs-sep">' : ''}
+      <div class="tfs-block">
+        <div class="tfs-time-lbl">${(lets[i]||String(i+1)).trim()} · ${s.name} · ${s.time}</div>
+        <div style="font-size:.76rem;color:var(--tl);line-height:1.45;padding:3px 0 4px">${s.desc}</div>
+      </div>`).join('')}
+  </div>`;
+}
+
+function _syncSidebarToTemplate(taskType, num) {
+  const tpl = _TPL_DEFS[taskType]?.[num];
+  if (!tpl) return;
+  if (taskType === 'sample') {
+    const hdr = document.querySelector('#sp-coach-sidebar .tpl-hdr h4');
+    if (hdr) hdr.textContent = `📋 T${num} — ${tpl.name}: ${tpl.full}`;
+    const ph = document.getElementById('sp-coach-sidebar-placeholder');
+    if (ph && _agMode.sample !== 'post') {
+      ph.style.cssText = 'display:block;padding:8px 4px';
+      ph.innerHTML = _renderTplStepsHTML('sample', num);
+    }
+  } else {
+    const stepsEl = document.getElementById('ag-steps-' + taskType);
+    if (!stepsEl) return;
+    if (!_agStepsOrig[taskType]) _agStepsOrig[taskType] = stepsEl.innerHTML;
+    stepsEl.innerHTML = num === 1 ? _agStepsOrig[taskType] : _renderTplStepsHTML(taskType, num);
+  }
+}
+
 async function coachAfterRecording(taskType, transcript, question) {
   const key = localStorage.getItem('claude_api_key');
   if (!key || key.length < 20) return;
   if (!transcript || transcript.trim().length < 10) return;
 
-  // Switch to coaching mode and show loading
-  _agData[taskType].postBody = '';
-  setGuideMode(taskType, 'post');
-  document.getElementById('ag-body-' + taskType).innerHTML = '<div class="ag-loading"><div class="ag-spin"></div>Analizando tu respuesta…</div>';
+  const isSample = taskType === 'sample';
+  if (isSample) {
+    setGuideMode('sample', 'post');
+  } else {
+    _agData[taskType].postBody = '';
+    setGuideMode(taskType, 'post');
+    document.getElementById('ag-body-' + taskType).innerHTML = '<div class="ag-loading"><div class="ag-spin"></div>Analizando tu respuesta…</div>';
+  }
 
-  const icons = ['📝', '📚', '💬', '🔗'];
-  const labels = ['Qué le faltó', 'Vocabulario útil', 'Qué expandir', 'Conector sugerido'];
+  const selNum = _tplSelected[taskType] || 1;
+  const tplDef = _TPL_DEFS[taskType]?.[selNum];
+  const numSteps = tplDef ? tplDef.steps.length : 4;
 
-  const prompt = `Eres un coach del DET (Duolingo English Test) especializado en speaking.
+  const icons = tplDef
+    ? ['🎯','📝','🔍','🔗','🏁'].slice(0, numSteps)
+    : ['📝','📚','💬','🔗'];
+  const labels = tplDef
+    ? tplDef.steps.map(s => s.name)
+    : ['Qué le faltó','Vocabulario útil','Qué expandir','Conector sugerido'];
+
+  const stepsText = tplDef
+    ? tplDef.steps.map((s,i) => `Paso ${i+1} — ${s.name} (${s.time}): ${s.desc}`).join('\n')
+    : '';
+
+  const tplLabel = tplDef ? `Template ${selNum} — ${tplDef.name} (${tplDef.full})` : `Template ${selNum}`;
+
+  const formatLines = tplDef
+    ? tplDef.steps.map((s,i) => `${i+1}. [Paso ${i+1} — ${s.name}]: [¿cumplido? + qué mejorar, máx 15 palabras en español] → Mejora: "[frase exacta en inglés C1]"`).join('\n')
+    : `1. [qué le faltó] → Di: "[frase]\n2. [vocabulario] → Usa: "[frase]"\n3. [qué expandir] → Agrega: "[frase]"\n4. [conector] → Conecta con: "[frase]"`;
+
+  const grammarLine = `${numSteps+1}. ✏️ Gramática: identifica UNA frase del usuario con error gramatical (artículo, tiempo verbal, preposición) → Corrección: "[versión corregida exacta en inglés]". Si no hay errores claros, omite este punto.`;
+
+  const coverageInstruction = taskType === 'read'
+    ? `\n\nADEMÁS, analiza la COBERTURA de la pregunta. Identifica las 2-3 sub-preguntas o aspectos implícitos en: "${question}". Para cada uno escribe en línea propia: "📋 ✅ [aspecto cubierto]" si el usuario lo cubrió, o "📋 ❌ [aspecto NO cubierto]" si lo omitió. Pon estas líneas AL FINAL, después de todo lo anterior.`
+    : '';
+
+  const prompt = tplDef
+    ? `Eres un coach del DET (Duolingo English Test) especializado en speaking para hispanohablantes C1/C2.
+
+El usuario entrenó con el ${tplLabel} para el módulo "${taskType}".
+Estructura que debía seguir:
+${stepsText}
 
 Pregunta/contexto: "${question}"
-
 Lo que dijo el usuario: "${transcript}"
 
-Analiza su respuesta y dame exactamente 4 observaciones. Explica en español qué mejorar, pero incluye la frase exacta en inglés que debería decir (entre comillas). Formato:
-1. [Explica en español qué le faltó] → Di: "[frase exacta en inglés que debería agregar]"
-2. [Explica en español qué vocabulario mejorar] → Usa: "[palabra o frase avanzada en inglés con su uso en contexto]"
-3. [Explica en español qué expandir] → Agrega: "[ejemplo de oración completa en inglés para expandir esa parte]"
-4. [Explica en español qué conector usar] → Conecta con: "[conector + ejemplo de cómo usarlo en inglés]"
+Evalúa ESTRICTAMENTE si siguió cada paso del template. Para cada paso: ¿lo cumplió?, qué le faltó, y la frase exacta en inglés C1 que debería haber dicho.
 
-Máx 18 palabras en español por observación. Sé muy concreto y directo.`;
+Formato exacto (sin intro):
+${formatLines}
+${grammarLine}${coverageInstruction}`
+    : `Eres un coach del DET especializado en speaking.
+
+Pregunta/contexto: "${question}"
+Lo que dijo el usuario: "${transcript}"
+
+Dame exactamente 4 observaciones. Explica en español + frase exacta en inglés entre comillas.
+${formatLines}
+${grammarLine}${coverageInstruction}
+
+Máx 18 palabras en español por observación. Sé concreto.`;
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true', 'content-type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-haiku-4-5', max_tokens: 520,
+      body: JSON.stringify({ model: 'claude-haiku-4-5', max_tokens: 800,
         messages: [{ role: 'user', content: prompt }]
       })
     });
     const d = await r.json();
     const text = d.content?.[0]?.text || '';
-    const tips = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+\s*/, '').trim()).filter(l => l.length > 4).slice(0, 4);
+    const allLines = text.split('\n').map(l => l.replace(/^[\d\.\-\*•]+\s*/, '').trim()).filter(l => l.length > 4);
+    const coverageLines = taskType === 'read' ? allLines.filter(l => l.startsWith('📋')) : [];
+    const grammarLines = allLines.filter(l => /✏️|gramática:/i.test(l));
+    const tips = allLines.filter(l => !/✏️|gramática:/i.test(l) && !l.startsWith('📋')).slice(0, numSteps);
     if (tips.length === 0) throw new Error('No tips');
-    _agData[taskType].postBody = tips.map((t, i) => {
-      const arrowIdx = t.search(/→\s*(Di|Usa|Agrega|Conecta con):/i);
+
+    const tipsHtml = tips.map((t, i) => {
+      const arrowIdx = t.search(/→\s*(Mejora|Di|Usa|Agrega|Conecta con|Corrección):/i);
       let esText = t, enPhrase = '';
       if (arrowIdx !== -1) {
         esText = t.slice(0, arrowIdx).trim();
-        const afterArrow = t.slice(arrowIdx).replace(/^→\s*(Di|Usa|Agrega|Conecta con):/i, '').trim();
+        const afterArrow = t.slice(arrowIdx).replace(/^→\s*(Mejora|Di|Usa|Agrega|Conecta con|Corrección):/i, '').trim();
         enPhrase = afterArrow.replace(/^[""]|[""]$/g, '').trim();
       } else {
         const quoteMatch = t.match(/[""]([^""]+)[""]/);
@@ -3540,12 +3829,45 @@ Máx 18 palabras en español por observación. Sé muy concreto y directo.`;
       const enBlock = enPhrase ? `<div style="background:#F0F4FF;border:1.5px solid #BFD0FF;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a3a8a;font-style:italic">"${enPhrase}"</div>` : '';
       return `<div class="ag-tip-item"><span class="ag-tip-icon">${icons[i] || '💡'}</span><div style="flex:1"><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:2px">${labels[i] || ''}</span><span style="font-size:.75rem">${esText}</span>${enBlock}</div></div>`;
     }).join('');
-    document.getElementById('ag-body-' + taskType).innerHTML = _agData[taskType].postBody;
-    const retry = document.getElementById('ag-retry-' + taskType);
-    if (retry) retry.classList.add('show');
+
+    const grammarHtml = grammarLines.map(gl => {
+      const clean = gl.replace(/^✏️\s*(Gramática:\s*)?/i, '').trim();
+      const arrowIdx = clean.search(/→\s*Corrección:/i);
+      let errText = clean, fixText = '';
+      if (arrowIdx !== -1) {
+        errText = clean.slice(0, arrowIdx).trim().replace(/^[""]|[""]$/g, '');
+        fixText = clean.slice(arrowIdx).replace(/^→\s*Corrección:/i, '').trim().replace(/^[""]|[""]$/g, '');
+      }
+      return `<div class="ag-tip-item" style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--br)"><span class="ag-tip-icon">✏️</span><div style="flex:1"><span style="font-size:.6rem;font-weight:900;text-transform:uppercase;color:var(--tm);display:block;margin-bottom:2px">GRAMÁTICA</span><span style="font-size:.75rem;color:var(--r)">"${errText}"</span>${fixText ? `<div style="background:#E8F8E0;border:1.5px solid #B2EFC0;border-radius:8px;padding:4px 8px;margin-top:4px;font-size:.72rem;font-weight:800;color:#1a5c1a">✅ "${fixText}"</div>` : ''}</div></div>`;
+    }).join('');
+
+    const coverageHtml = coverageLines.length > 0
+      ? `<div style="margin-bottom:8px;padding:8px 10px;background:#EEF4FF;border-radius:10px;border:1.5px solid #C7D9FF"><div style="font-size:.58rem;font-weight:900;text-transform:uppercase;color:#1e3a8a;letter-spacing:.7px;margin-bottom:4px">📋 Cobertura de la pregunta</div>${coverageLines.map(l=>{const c=l.replace(/^📋\s*/,'');const ok=c.startsWith('✅');return`<div style="font-size:.72rem;margin:2px 0;color:${ok?'#166534':'#991B1B'}">${c}</div>`}).join('')}</div>`
+      : '';
+    const fullHtml = coverageHtml + tipsHtml + grammarHtml;
+
+    if (isSample) {
+      const ld = document.getElementById('sp-coach-sidebar-loading');
+      const items = document.getElementById('sp-coach-sidebar-items');
+      if (ld) ld.style.display = 'none';
+      if (items) items.innerHTML = fullHtml;
+    } else {
+      _agData[taskType].postBody = fullHtml;
+      document.getElementById('ag-body-' + taskType).innerHTML = fullHtml;
+      const retry = document.getElementById('ag-retry-' + taskType);
+      if (retry) retry.classList.add('show');
+    }
   } catch (e) {
-    _agData[taskType].postBody = '<div class="ag-error">Error al analizar. Verifica tu API key.</div>';
-    document.getElementById('ag-body-' + taskType).innerHTML = _agData[taskType].postBody;
+    const errHtml = '<div class="ag-error">Error al analizar. Verifica tu API key.</div>';
+    if (isSample) {
+      const ld = document.getElementById('sp-coach-sidebar-loading');
+      const items = document.getElementById('sp-coach-sidebar-items');
+      if (ld) ld.style.display = 'none';
+      if (items) items.innerHTML = errHtml;
+    } else {
+      _agData[taskType].postBody = errHtml;
+      document.getElementById('ag-body-' + taskType).innerHTML = errHtml;
+    }
   }
 }
 
@@ -3610,15 +3932,33 @@ function analyzeTranscript(text,targetSecs){
   const longWds=lw.filter(w=>w.length>=7).length;
   const voc=Math.min(100,ratio*160+(longWds/Math.max(wc,1))*80);
 
-  // Structure 0–100: discourse markers
+  // Discourse coherence 0–100: discourse markers
   const lower=clean.toLowerCase();
   const MARKERS=['first','firstly','to begin','second','secondly','finally','however','although','on the other hand','additionally','furthermore','moreover','in addition','therefore','consequently','in conclusion','to conclude','to sum up','for example','for instance','in my opinion','i believe','i think','in my experience','personally','from my perspective'];
   const usedM=MARKERS.filter(m=>lower.includes(m));
   const str=Math.min(100,10+usedM.length*15);
 
-  // Completion 0–100
+  // Content 0–100
   const expectedW=120*(targetSecs/60);
   const comp=Math.min(100,Math.round((wc/expectedW)*100));
+
+  // Grammar 0–100: complex sentence structures signal C1/C2 grammar
+  const GRAMMAR_C1=[
+    'not only','but also','despite','nevertheless','whereas','even though','provided that',
+    'as long as','in order to','so as to','had i','were it not','should you',
+    'having said that','what is more','it is worth noting','it should be noted',
+    'what is particularly','the fact that','the extent to which',
+    'i would argue','i would suggest','one might argue','it could be argued',
+    'which suggests','which indicates','which demonstrates','which reveals',
+    'this clearly shows','this strongly suggests','this is a clear reflection',
+    'not only does','far from being','what stands out','what is striking'
+  ];
+  const grammarHits=GRAMMAR_C1.filter(p=>lower.includes(p)).length;
+  // Also count subordinate clause markers and varied sentence length
+  const sentenceCount=(clean.match(/[.!?]+/g)||[]).length||1;
+  const avgSentLen=wc/sentenceCount;
+  const sentLenScore=avgSentLen>6&&avgSentLen<30?30:15;
+  const grammar=Math.min(100,Math.round(sentLenScore+grammarHits*14+(ratio>0.5?10:0)));
 
   // Filler words (um/uh always penalize in DET)
   const fillerRe=/\b(um+|uh+|umm+|uhh+|hmm+)\b/gi;
@@ -3626,8 +3966,8 @@ function analyzeTranscript(text,targetSecs){
   const fillerPenalty=Math.min(25,fillerCount*4);
   const vocFinal=Math.max(0,Math.round(voc)-fillerPenalty);
 
-  // Overall DET simulation 55–130
-  const composite=fl*0.35+vocFinal*0.30+str*0.20+comp*0.15;
+  // Overall DET simulation 55–130 (now 5 criteria)
+  const composite=fl*0.30+vocFinal*0.25+grammar*0.20+str*0.15+comp*0.10;
   const overall=Math.round(55+(composite/100)*75);
 
   const grade=overall>=115?'A+':overall>=105?'A':overall>=95?'B+':overall>=85?'B':overall>=75?'C+':overall>=65?'C':'D';
@@ -3694,6 +4034,11 @@ function showScore(result,nextCb,nextLabel){
     valEl.textContent=v;
     setTimeout(()=>fill.style.width=v+'%',150);
   });
+  // Grammar bar starts with loading state — AI will fill it
+  const gbFill=document.getElementById('sb-grammar');
+  const gbVal=document.getElementById('sv-grammar');
+  if(gbFill){gbFill.style.width='0%';gbFill.style.background='var(--br)';}
+  if(gbVal){gbVal.textContent='…';gbVal.style.color='var(--tm)';}
   const tips=document.getElementById('sc-tips');
   tips.innerHTML=result.tips.map(t=>`<div class="sc-tip ${t.ok}"><span class="sc-tip-icon">${t.ok==='ok'?'✓':t.ok==='bad'?'✗':'→'}</span><div><div>${t.t}</div>${t.es?`<span class="sc-bilin">🇪🇸 ${t.es}</span>`:''}</div></div>`).join('');
   const btns=document.getElementById('sc-btns');
@@ -3714,9 +4059,41 @@ function showScore(result,nextCb,nextLabel){
   if(hasKey&&lastTranscript&&lastTranscript.replace(/<[^>]+>/g,'').trim().length>=8){
     setTimeout(()=>requestImprovement(),800);
     setTimeout(()=>coachPostScore(),1200);
+    setTimeout(()=>aiScoreDET(),600);
   }
 }
 function closeScore(){const m=document.getElementById('score-modal');if(m)m.style.display='none';}
+
+async function aiScoreDET(){
+  const key=localStorage.getItem('claude_api_key');
+  if(!key||key.length<20)return;
+  const txt=(lastTranscript||'').replace(/<[^>]+>/g,'').trim();
+  if(txt.length<15)return;
+  const taskMap={'Speak About the Photo':'photo description (90s)','Read Then Speak':'read then speak (90s)','Speaking Sample':'speaking sample (1-3 min)','Interactive Speaking':'interactive speaking (35s)'};
+  const taskLabel=taskMap[lastQType]||'speaking';
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','content-type':'application/json'},
+      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:120,
+        messages:[{role:'user',content:`You are a DET (Duolingo English Test) scoring AI. Score this ${taskLabel} response on GRAMMAR only, on a 0-100 scale matching DET criteria.\n\nGrammar criteria: sentence variety, complex structures (subordinate clauses, conditionals, relative clauses, inversion), C1/C2 patterns (not only...but also, having said that, it is worth noting, despite, whereas), accurate tense use, absence of basic errors.\n\nResponse: "${txt.slice(0,600)}"\n\nReply with ONLY a JSON object: {"grammar":NUMBER} where NUMBER is 0-100. No other text.`}]
+      })
+    });
+    const d=await r.json();
+    const raw=d.content?.[0]?.text||'';
+    const m=raw.match(/"grammar"\s*:\s*(\d+)/);
+    if(m){
+      const g=Math.max(0,Math.min(100,parseInt(m[1])));
+      const fill=document.getElementById('sb-grammar');
+      const val=document.getElementById('sv-grammar');
+      if(fill){fill.style.background=g>=70?'var(--g)':g>=50?'var(--y)':'var(--r)';fill.style.width='0%';setTimeout(()=>fill.style.width=g+'%',100);}
+      if(val){val.textContent=g;val.style.color=g>=70?'var(--gd)':g>=50?'var(--yd)':'var(--r)';}
+    }
+  }catch(e){
+    const val=document.getElementById('sv-grammar');
+    if(val)val.textContent='—';
+  }
+}
 
 async function coachPostScore(){
   const key=localStorage.getItem('claude_api_key');
@@ -4659,30 +5036,30 @@ function showXPPop(text){
 // ════════════ PREP OVERLAY ════════════
 const PREP_STEPS={
   photo:[
-    {n:'1',name:'Overview',phrase:'"This photo shows…" / "The main focus is…"'},
-    {n:'2',name:'Foreground',phrase:'"In the foreground I can see…"'},
-    {n:'3',name:'Background',phrase:'"In the background I notice…"'},
-    {n:'4',name:'Atmosphere',phrase:'"The atmosphere is…"'},
-    {n:'5',name:'Conclusion',phrase:'"This reminds me of…"'},
+    {n:'👤',name:'WHO?',phrase:'¿Quién está en la foto? ¿Qué están haciendo?'},
+    {n:'📍',name:'WHERE?',phrase:'¿Interior/exterior? ¿Ciudad, naturaleza, trabajo?'},
+    {n:'🎭',name:'MOOD?',phrase:'¿Cuál es la atmósfera? peaceful / busy / tense / joyful'},
+    {n:'💭',name:'WHY?',phrase:'¿Qué historia cuenta? ¿Qué puedes inferir?'},
+    {n:'⭐',name:'OPEN WITH:',phrase:'"The image shows…" / "What is particularly striking is…"'},
   ],
   read:[
-    {n:'1',name:'Opinion',phrase:'"In my opinion,…" / "I believe…"'},
-    {n:'2',name:'First point',phrase:'"First of all,…" / "One reason is…"'},
-    {n:'3',name:'Second point',phrase:'"Also,…" / "Another reason is…"'},
-    {n:'4',name:'Counter',phrase:'"However,…"'},
-    {n:'5',name:'Conclusion',phrase:'"In conclusion,…"'},
+    {n:'1',name:'¿De qué trata?',phrase:'Lee los bullet points — son tu estructura'},
+    {n:'2',name:'Tu posición',phrase:'"I truly believe…" / "I would argue that…"'},
+    {n:'3',name:'Dos puntos',phrase:'"First…" + "Furthermore…" (un bullet = un punto)'},
+    {n:'4',name:'Contraste',phrase:'"While some may argue… the reality is…"'},
+    {n:'5',name:'Cierre',phrase:'"All things considered,…" (máx 10s)'},
   ],
   sample:[
-    {n:'I',name:'Intro',phrase:'"This is an interesting question…"'},
-    {n:'L',name:'Experience',phrase:'"In my experience,…" / "I remember…"'},
-    {n:'A',name:'Vocab',phrase:'"important" / "as a result" / "in my view"'},
-    {n:'S',name:'Specific',phrase:'"For example,…" / "For instance,…"'},
-    {n:'T',name:'Conclusion',phrase:'"In conclusion,…" / "To summarize,…"'},
+    {n:'I',name:'Intro breve',phrase:'"What comes to mind is…" (máx 10s — NO extiendas)'},
+    {n:'L',name:'Tu experiencia',phrase:'"In my experience…" / "I remember when…"'},
+    {n:'A',name:'Vocabulario C1',phrase:'Usa: "What is particularly striking" / "It is worth noting"'},
+    {n:'S',name:'Ejemplo concreto',phrase:'"For instance, in my own life…"'},
+    {n:'T',name:'Conclusión',phrase:'"All things considered,…" · meta: 90s-2min total'},
   ],
   interactive:[
-    {n:'1',name:'Direct answer',phrase:'"I think…" / "I believe…"'},
-    {n:'2',name:'Reason',phrase:'"Because…" / "The reason is…"'},
-    {n:'3',name:'Example',phrase:'"For example,…" / "In my country,…"'},
+    {n:'⚡',name:'Empieza DIRECTO',phrase:'❌ NO: "That\'s a great question!"'},
+    {n:'✅',name:'Abre con opinión',phrase:'"I believe…" / "In my view…" / "Personally…"'},
+    {n:'📝',name:'Estructura 35s',phrase:'Opinión (0-8s) → Razón (8-22s) → Ejemplo (22-33s)'},
   ],
 };
 function showPrepOverlay(mod){
@@ -4694,6 +5071,17 @@ function showPrepOverlay(mod){
 }
 function hidePrepOverlay(){
   const el=document.getElementById('prep-overlay');if(el)el.classList.remove('show');
+}
+let _fwtTimer=null;
+function showFWT(){
+  const t=document.getElementById('first-words-toast');if(!t)return;
+  t.classList.add('show');
+  clearTimeout(_fwtTimer);
+  _fwtTimer=setTimeout(()=>t.classList.remove('show'),5000);
+}
+function dismissFWT(){
+  const t=document.getElementById('first-words-toast');if(t)t.classList.remove('show');
+  clearTimeout(_fwtTimer);
 }
 
 // ════════════ DRILL MODE ════════════
